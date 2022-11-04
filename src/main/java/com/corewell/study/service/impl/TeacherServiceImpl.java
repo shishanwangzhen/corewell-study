@@ -5,9 +5,9 @@ import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.TeacherService;
+import com.corewell.study.utils.UUIDUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,12 +18,13 @@ import javax.annotation.Resource;
  */
 @Service("TeacherService")
 public class TeacherServiceImpl implements TeacherService {
-    @Resource
+    @Autowired
     private TeacherDao teacherDao;
 
     @Override
     public ResultMsg selectTeacher(String account, String password) {
         AccountDo accountDo = teacherDao.selectTeacher(account);
+        accountDo.setToken(UUIDUtil.get32uuid());
         if (accountDo == null) {
             return new ResultMsg(ResultStatusCode.NO_USER);
         }

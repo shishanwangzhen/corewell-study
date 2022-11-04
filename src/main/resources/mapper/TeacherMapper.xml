@@ -5,7 +5,9 @@
 <mapper namespace="com.corewell.study.dao.TeacherDao">
 
     <select id="selectTeacher" parameterType="String" resultType="AccountDo">
-        select account,password from teacher where account=#{account}
+        select account, password
+        from teacher
+        where account = #{account}
     </select>
 
 </mapper>

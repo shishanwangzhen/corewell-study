@@ -9,7 +9,9 @@ D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\domain\result\Re
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\utils\ExcelUtil.java
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\utils\ObjectUtil.java
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\controller\LoginController.java
+D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\config\GlobalCorsConfig.java
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\domain\Account.java
+D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\domain\request\StudentStudentReq.java
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\domain\Student.java
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\domain\result\ResultMsg.java
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\utils\SFTPUtil.java
@@ -34,5 +36,6 @@ D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\controller\Appro
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\controller\StudentController.java
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\service\AccountService.java
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\domain\request\AccountReq.java
+D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\domain\request\StudentReq.java
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\utils\ExcelListener.java
 D:\IdeaProjects\corewell-study\src\main\java\com\corewell\study\utils\JsonToMap.java

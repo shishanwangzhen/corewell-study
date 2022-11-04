@@ -1,8 +1,9 @@
 package com.corewell.study.controller;
 
-import com.corewell.study.domain.Account;
-import com.corewell.study.domain.request.AccountReq;
-import com.corewell.study.service.AccountService;
+import com.corewell.study.domain.Student;
+import com.corewell.study.domain.request.StudentReq;
+import com.corewell.study.domain.result.ResultMsg;
+import com.corewell.study.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,24 +25,23 @@ import javax.annotation.Resource;
 @Api(tags = "学生")
 public class StudentController {
     @Resource
-    private AccountService accountService;
-/*
-    @ApiOperation("")
-    @PostMapping("/")
-    public Account loginTeachers(@RequestBody AccountReq accountReq){
-        String account=accountReq.getAccount();
-        return accountService.selectAccount(account);
+    private StudentService studentService;
+
+    @ApiOperation("查询学生")
+    @PostMapping("/selectStudent")
+    public ResultMsg selectStudent(@RequestBody StudentReq studentReq) {
+
+        ResultMsg resultMsg = studentService.findStudent(studentReq);
+        return resultMsg;
 
     }
 
+    @ApiOperation("学生信息修改")
+    @PostMapping("/updateStudent")
+    public ResultMsg updateStudent(@RequestBody Student student) {
+        ResultMsg resultMsg = studentService.updateStudent(student);
+        return resultMsg;
 
-    @ApiOperation("")
-    @PostMapping("/")
-    public Account loginStudents(@RequestBody AccountReq accountReq){
-
-        String account=accountReq.getAccount();
-        return accountService.selectAccount(account);
-
-    }*/
+    }
 
 }

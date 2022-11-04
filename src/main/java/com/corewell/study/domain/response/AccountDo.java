@@ -20,8 +20,14 @@ public class AccountDo {
      */
     private String account;
     /**
-     * 账号
+     * 密码
      */
     private String password;
+
+    /**
+     * token
+     */
+    private String token;
+
 
 }
