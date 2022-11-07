@@ -28,17 +28,17 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public ResultMsg selectTeacher(String account, String password) {
         AccountDo accountDo = teacherDao.selectTeacher(account);
+        if (accountDo == null) {
+            return new ResultMsg(ResultStatusCode.NO_USER);
+        }
         //准备存放在IWT中的自定义数据
         Map<String, Object> info = new HashMap<>();
         info.put("username", "tom");
         info.put("pass", "admin");
-
         //生成JWT字符串
         String token = JwtUtil.sign(account, info);
         accountDo.setToken(token);
-        if (accountDo == null) {
-            return new ResultMsg(ResultStatusCode.NO_USER);
-        }
+
         if (!password.equals(accountDo.getPassword())) {
             return new ResultMsg(ResultStatusCode.LOGIN_ERR);
         }
