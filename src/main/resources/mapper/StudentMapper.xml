@@ -33,13 +33,16 @@
         select id, account, password, name, school, major, phone, email,
         create_time as createTime, update_time as updateTime, role,
         project_id as projectId, group_id as groupId, teacher_id as teacherId, status
-        from student where
-        <if test="id!=null and id!=''">
-             id=#{id}
-        </if>
-        <if test="status!=null and status!=''">
-            and status=#{status}
-        </if>
+        from student
+        <where>
+            <if test="id!=null and id!=''">
+                id=#{id}
+            </if>
+            <if test="status!=null and status!=''">
+                and status=#{status}
+            </if>
+        </where>
+
     </select>
 
     <insert id="insertStudent" parameterType="Student">
