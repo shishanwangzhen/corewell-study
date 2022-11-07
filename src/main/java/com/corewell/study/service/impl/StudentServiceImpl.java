@@ -8,12 +8,15 @@ import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.StudentService;
+import com.corewell.study.utils.JwtUtil;
 import com.corewell.study.utils.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +33,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public ResultMsg selectStudentByAccount(String account, String password) {
         AccountDo accountDo = studentDao.selectStudentByAccount(account);
-        accountDo.setToken(UUIDUtil.get32uuid());
+        //准备存放在IWT中的自定义数据
+        Map<String, Object> info = new HashMap<>();
+        info.put("account", account);
+        //生成JWT字符串
+        String token = JwtUtil.sign(account, info);
+        accountDo.setToken(token);
         if (accountDo == null) {
             return new ResultMsg(ResultStatusCode.NO_USER);
         }
@@ -48,6 +56,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResultMsg insertStudent(Student student) {
+        StudentReq studentReq=new StudentReq();
+        studentReq.setAccount(student.getAccount());
+        List<Student> studentList = studentDao.findStudent(studentReq);
+        if (studentList.get(0)!=null){
+            return new ResultMsg(ResultStatusCode.USER_CODE_ONLY);
+        }
         student.setCreateTime(new Date());
         student.setStatus("0");
         int result = studentDao.insertStudent(student);

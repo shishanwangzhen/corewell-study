@@ -1,5 +1,6 @@
 package com.corewell.study.config;
 
+import com.auth0.jwt.JWT;
 import com.corewell.study.utils.JwtUtil;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,6 +15,7 @@ import java.util.Map;
 public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println(request.getHeader("token"));
         //如果不是映射到方法直接通过
         if (!(handler instanceof HandlerMethod)) {
             return true;
@@ -21,9 +23,6 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         //从 http 请求头中取出 token
         System.out.println(request.getRequestURI());
-        if (request.getRequestURI().contains("/login")){
-            return true;
-        }
         String token = request.getHeader("token");
         System.out.println("此处测试是否拿到了token：" + token);
 

@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * @Description:
  */
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/core/student")
 @Api(tags = "学生")
 public class StudentController {
     @Resource

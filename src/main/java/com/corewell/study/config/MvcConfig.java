@@ -19,7 +19,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor())
-                .addPathPatterns("/login/loginStudent","/login/loginTeacher");
+                .addPathPatterns("/core/**");
     }
 
     /**
