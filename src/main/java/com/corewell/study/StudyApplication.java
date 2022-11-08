@@ -1,4 +1,5 @@
 package com.corewell.study;
+
 import com.spring4all.swagger.EnableSwagger2Doc;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -19,6 +20,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @EnableSwagger2Doc //开启swagger文档
 public class StudyApplication {
     public static void main(String[] args) {
-        SpringApplication.run(StudyApplication.class,args);
+        SpringApplication.run(StudyApplication.class, args);
     }
 }

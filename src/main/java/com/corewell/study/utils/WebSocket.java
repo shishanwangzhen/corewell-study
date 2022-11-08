@@ -55,6 +55,7 @@ public class WebSocket {
 
     /**
      * 收到客户端消息后调用的方法
+     *
      * @param message 客户端发送过来的消息
      */
     @OnMessage
@@ -73,7 +74,8 @@ public class WebSocket {
 
     /**
      * 发生错误时调用
-     @OnError
+     *
+     * @OnError
      */
     public void onError(Session session, Throwable error) {
         System.out.println("发生错误");
@@ -149,7 +151,7 @@ public class WebSocket {
     }
 
     public static void main(String[] args) {
-        int count =5;
+        int count = 5;
         System.out.println(count);
         System.out.println(count++);
         System.out.println(++count);

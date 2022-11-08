@@ -6,8 +6,10 @@
     <!-- 彩色日志 -->
     <!-- 彩色日志依赖的渲染类 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
-    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
-    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
     <!-- 彩色日志格式 -->
     <property name="LOG_DATEFORMAT_PATTERN" value="yyyy-MM-dd HH:mm:ss.SSS"/>
     <property name="CONSOLE_LOG_PATTERN"
@@ -93,18 +95,18 @@
 
 
     <logger name="com.corewell.study.dao" level="DEBUG"/>
-<!--    <logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"/>-->
-<!--    <logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"/>-->
-<!--    <logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN"/>-->
-<!--    <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"/>-->
-<!--    <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>-->
-<!--    <logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>-->
+    <!--    <logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"/>-->
+    <!--    <logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"/>-->
+    <!--    <logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN"/>-->
+    <!--    <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"/>-->
+    <!--    <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>-->
+    <!--    <logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>-->
 
 
     <!-- 日志输出级别 -->
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-<!--        <appender-ref ref="ASYNC-INFO"/>-->
-<!--        <appender-ref ref="ASYNC-ERROR"/>-->
+        <!--        <appender-ref ref="ASYNC-INFO"/>-->
+        <!--        <appender-ref ref="ASYNC-ERROR"/>-->
     </root>
 </configuration>

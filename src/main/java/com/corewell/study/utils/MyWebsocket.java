@@ -12,9 +12,22 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 */
 /**
- * 
  * @author cx
  * @version 1.0
+ * <p>
+ * 连接建立成功调用的方法
+ * <p>
+ * 连接关闭调用的方法
+ * <p>
+ * 给前台推消息
+ * @param rs
+ * @throws IOException
+ * @throws EncodeException
+ * <p>
+ * 收到前端客户端消息后调用的方方法
+ * @param message 客户端发送过来的消息
+ * <p>
+ * 发生异常时调用
  *//*
 
 
@@ -31,8 +44,8 @@ public class MyWebsocket {
 	private Session session;
     */
 /**
-     * 连接建立成功调用的方法
-     *//*
+ * 连接建立成功调用的方法
+ *//*
 
     @OnOpen
     public void onOpen(Session session) {
@@ -43,8 +56,8 @@ public class MyWebsocket {
 
     */
 /**
-     * 连接关闭调用的方法
-     *//*
+ * 连接关闭调用的方法
+ *//*
 
     @OnClose
     public void onClose() {
@@ -53,11 +66,11 @@ public class MyWebsocket {
 
     */
 /**
-     * 给前台推消息
-     * @param rs
-     * @throws IOException
-     * @throws EncodeException 
-     *//*
+ * 给前台推消息
+ * @param rs
+ * @throws IOException
+ * @throws EncodeException
+ *//*
 
     public void sendMessage(String rs) throws IOException {
     	if(this.session.isOpen()) {   //判断session是否是打开状态的，打开状态的才发。
@@ -76,9 +89,9 @@ public class MyWebsocket {
     
     */
 /**
-     * 收到前端客户端消息后调用的方方法
-     * @param message 客户端发送过来的消息
-     *//*
+ * 收到前端客户端消息后调用的方方法
+ * @param message 客户端发送过来的消息
+ *//*
 
     @OnMessage
     public void onMessage(String message, Session session) {
@@ -87,8 +100,8 @@ public class MyWebsocket {
 
     */
 /**
-     * 发生异常时调用
-     *//*
+ * 发生异常时调用
+ *//*
 
     @OnError
     public void onError(Session session, Throwable error) {

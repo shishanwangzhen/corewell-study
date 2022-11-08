@@ -55,13 +55,13 @@ public class DateUtil {
         return dateStr(new Date(), "yyyy-MM");
     }
 
-    public static Date getDayDate(){
+    public static Date getDayDate() {
         Date date = strDate(getDay(), "yyyy-MM-dd");
         return date;
     }
 
     public static void main(String[] args) {
-        System.out.println(dateStr(getDayDate(),"yyyy-MM-dd"));
+        System.out.println(dateStr(getDayDate(), "yyyy-MM-dd"));
 
     }
 
@@ -221,6 +221,7 @@ public class DateUtil {
 
     /**
      * 现在时间往前推参数小时
+     *
      * @return
      */
     public static Date getParameterHour(int hour) {

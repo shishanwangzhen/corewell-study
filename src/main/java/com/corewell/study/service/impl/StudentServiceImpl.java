@@ -56,10 +56,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResultMsg insertStudent(Student student) {
-        StudentReq studentReq=new StudentReq();
+        StudentReq studentReq = new StudentReq();
         studentReq.setAccount(student.getAccount());
         List<Student> studentList = studentDao.findStudent(studentReq);
-        if (studentList.get(0)!=null){
+        if (studentList.get(0) != null) {
             return new ResultMsg(ResultStatusCode.USER_CODE_ONLY);
         }
         student.setCreateTime(new Date());
