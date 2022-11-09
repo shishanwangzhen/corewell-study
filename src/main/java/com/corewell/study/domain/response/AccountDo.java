@@ -2,6 +2,7 @@ package com.corewell.study.domain.response;
 
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountDo {
+    /**
+     * 主键id
+     */
+    @ApiModelProperty(value = "主键id", required = true, example = "")
+    private Long id;
     /**
      * 账号
      */

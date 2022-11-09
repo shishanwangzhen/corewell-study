@@ -23,7 +23,7 @@
     </resultMap>
 
     <select id="selectStudentByAccount" parameterType="String" resultType="AccountDo">
-        select account, password
+        select id, account, password
         from student
         where account = #{account}
         and status = 1
