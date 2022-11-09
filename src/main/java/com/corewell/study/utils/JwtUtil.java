@@ -21,7 +21,7 @@ public class JwtUtil {
     /**
      * jwt密钥
      */
-    private static final String SECRET = "jwt_secret";
+    private static final String SECRET = "core_well_secret";
 
     /**
      * 生成jwt字符串，五分钟后过期  JWT(json web token)

@@ -70,4 +70,11 @@ public class LoginController {
 
     }
 
+    @ApiOperation("退出登录")
+    @PostMapping("/loginOut")
+    public ResultMsg loginOut() {
+        return ResultMsg.success();
+
+    }
+
 }

@@ -31,16 +31,15 @@ public class TeacherServiceImpl implements TeacherService {
         if (accountDo == null) {
             return new ResultMsg(ResultStatusCode.NO_USER);
         }
+        if (!password.equals(accountDo.getPassword())) {
+            return new ResultMsg(ResultStatusCode.LOGIN_ERR);
+        }
         //准备存放在IWT中的自定义数据
         Map<String, Object> info = new HashMap<>();
         info.put("account", account);
         //生成JWT字符串
         String token = JwtUtil.sign(account, info);
         accountDo.setToken(token);
-
-        if (!password.equals(accountDo.getPassword())) {
-            return new ResultMsg(ResultStatusCode.LOGIN_ERR);
-        }
         return ResultMsg.success(accountDo);
     }
 }
