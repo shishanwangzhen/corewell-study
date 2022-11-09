@@ -31,10 +31,10 @@ public class ProjectReq {
     @ApiModelProperty(value = "项目名称", required = true, example = "")
     private String name;
     /**
-     * 管理员
+     * 创建者id
      */
-    @ApiModelProperty(value = "管理员", required = true, example = "")
-    private String creator;
+    @ApiModelProperty(value = "创建者id", required = true, example = "")
+    private String creatorId;
     /**
      * 项目描述
      */
