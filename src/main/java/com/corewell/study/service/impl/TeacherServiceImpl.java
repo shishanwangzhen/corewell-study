@@ -1,6 +1,8 @@
 package com.corewell.study.service.impl;
 
 import com.corewell.study.dao.TeacherDao;
+import com.corewell.study.domain.Student;
+import com.corewell.study.domain.Teacher;
 import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,5 +44,11 @@ public class TeacherServiceImpl implements TeacherService {
         String token = JwtUtil.sign(account, info);
         accountDo.setToken(token);
         return ResultMsg.success(accountDo);
+    }
+
+    @Override
+    public ResultMsg findTeacher() {
+        List<Teacher> teacherList = teacherDao.findTeacher();
+        return ResultMsg.success(teacherList);
     }
 }

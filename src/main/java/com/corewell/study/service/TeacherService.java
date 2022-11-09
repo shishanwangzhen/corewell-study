@@ -1,6 +1,9 @@
 package com.corewell.study.service;
 
+import com.corewell.study.domain.Teacher;
 import com.corewell.study.domain.result.ResultMsg;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,4 +21,11 @@ public interface TeacherService {
      * @return
      */
     ResultMsg selectTeacher(String account, String password);
+
+    /**
+     * 查询老师
+     *
+     * @return
+     */
+    ResultMsg findTeacher();
 }

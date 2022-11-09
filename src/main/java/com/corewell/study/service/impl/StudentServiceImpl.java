@@ -58,7 +58,7 @@ public class StudentServiceImpl implements StudentService {
         StudentReq studentReq = new StudentReq();
         studentReq.setAccount(student.getAccount());
         List<Student> studentList = studentDao.findStudent(studentReq);
-        if (studentList != null && studentList.get(0) != null) {
+        if (studentList.size()>0) {
             return new ResultMsg(ResultStatusCode.USER_CODE_ONLY);
         }
         student.setCreateTime(new Date());

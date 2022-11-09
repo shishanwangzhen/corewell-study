@@ -26,7 +26,7 @@ public interface StudentDao {
     AccountDo selectStudentByAccount(String account);
 
     /**
-     * 查询账号
+     * 查询学生
      *
      * @param studentReq
      * @return

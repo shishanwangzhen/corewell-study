@@ -10,5 +10,11 @@
         where account = #{account}
     </select>
 
+    <select id="findTeacher" resultType="Teacher">
+        select id, name
+        from teacher
+
+    </select>
+
 </mapper>
 

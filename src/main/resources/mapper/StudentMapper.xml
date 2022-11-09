@@ -113,9 +113,6 @@
             <if test="school!=null and school!=''">
                 #{school},
             </if>
-            <if test="id!=null and id!=''">
-                #{id},
-            </if>
             <if test="major!=null and major!=''">
                 #{major},
             </if>
