@@ -34,9 +34,9 @@
         create_time as createTime, update_time as updateTime, role,
         project_id as projectId, group_id as groupId, teacher_id as teacherId, status
         from student
-        <where>
+        where 1=1
             <if test="id!=null and id!=''">
-                id=#{id}
+               and id=#{id}
             </if>
             <if test="account!=null and account!=''">
                 and account=#{account}
@@ -44,7 +44,16 @@
             <if test="status!=null and status!=''">
                 and status=#{status}
             </if>
-        </where>
+            <if test="groupId!=null and groupId!=''">
+                and group_id=#{groupId}
+            </if>
+            <if test="projectId!=null and projectId!=''">
+                and project_id=#{projectId}
+            </if>
+            <if test="teacherId!=null and teacherId!=''">
+                and teacher_id=#{teacherId}
+            </if>
+
 
     </select>
 
