@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//www.mybatis.org//DTD Mapper 3.0//EN"
+        "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.corewell.study.dao.ProjectDao">
+    <resultMap id="ProjectMap" type="com.corewell.study.domain.Project">
+        <id property="id" column="id"/>
+        <result property="number" column="number"/>
+        <result property="name" column="name"/>
+        <result property="creator" column="creator"/>
+        <result property="info" column="info"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+
+    </resultMap>
+
+    <select id="findProject" parameterType="ProjectReq" resultType="Project">
+        select id, number, name, creator, info,
+        create_time as createTime, update_time as updateTime, status
+        from project
+        where status=1
+        <if test="id!=null and id!=''">
+            and id=#{id}
+        </if>
+        <if test="creator!=null and creator!=''">
+            and creator=#{creator}
+        </if>
+
+    </select>
+
+    <insert id="insertProject" parameterType="Project">
+        insert into project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null and id!=''">
+                id,
+            </if>
+            <if test="number!=null and number!=''">
+                number,
+            </if>
+            <if test="name!=null and name!=''">
+                name,
+            </if>
+            <if test="creator!=null and creator!=''">
+                creator,
+            </if>
+            <if test="info!=null and info!=''">
+                info,
+            </if>
+            <if test="createTime!=null">
+                create_time,
+            </if>
+            <if test="updateTime!=null">
+                update_time,
+            </if>
+            <if test="status!=null and status!=''">
+                status
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id!=null and id!=''">
+                #{id},
+            </if>
+            <if test="number!=null and number!=''">
+                #{number},
+            </if>
+            <if test="name!=null and name!=''">
+                #{name},
+            </if>
+            <if test="creator!=null and creator!=''">
+                #{creator},
+            </if>
+            <if test="info!=null and info!=''">
+                #{info},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+            <if test="updateTime!=null">
+                #{updateTime},
+            </if>
+            <if test="status!=null and status!=''">
+                #{status}
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateProject" parameterType="Project">
+        update project
+        <set>
+            <if test="number!=null and number!=''">
+                number =#{number},
+            </if>
+            <if test="name!=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="creator!=null and creator!=''">
+                creator =#{creator},
+            </if>
+            <if test="info!=null and info!=''">
+                info =#{info},
+            </if>
+            <if test="createTime!=null">
+                create_time =#{createTime},
+            </if>
+            <if test="updateTime!=null">
+                update_time =#{updateTime},
+            </if>
+            <if test="status!=null and status!=''">
+                status =#{status}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateProjectStatus" parameterType="Long">
+        update project
+        set status=0,
+            update_time=now()
+        where id = #{id}
+    </update>
+</mapper>
+
