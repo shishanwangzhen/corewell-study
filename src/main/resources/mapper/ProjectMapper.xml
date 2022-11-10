@@ -15,16 +15,16 @@
 
     </resultMap>
 
-    <select id="findProject" parameterType="ProjectReq" resultType="Project">
-        select id, number, name, creator_id as creatorId, info,
-        create_time as createTime, update_time as updateTime, status
-        from project
+    <select id="findProject" parameterType="ProjectReq" resultType="ProjectDo">
+        select p.id, p.number, p.name, p.creator_id as creatorId, t.name as creatorName, p.info,
+        p.create_time as createTime, p.update_time as updateTime, p.status
+        from project p left join teacher t on p.creator_id = t.id
         where status=1
         <if test="id!=null and id!=''">
-            and id=#{id}
+            and p.id=#{id}
         </if>
         <if test="creatorId!=null and creatorId!=''">
-            and creator_id=#{creatorId}
+            and p.creator_id=#{creatorId}
         </if>
 
     </select>

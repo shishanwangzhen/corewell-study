@@ -3,6 +3,7 @@ package com.corewell.study.service.impl;
 import com.corewell.study.dao.ProjectDao;
 import com.corewell.study.domain.Project;
 import com.corewell.study.domain.request.ProjectReq;
+import com.corewell.study.domain.response.ProjectDo;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResultMsg findProject(ProjectReq projectReq) {
-        List<Project> projectList=projectDao.findProject(projectReq);
-
-
-        return ResultMsg.success(projectList);
+        List<ProjectDo> projectDos=projectDao.findProject(projectReq);
+        return ResultMsg.success(projectDos);
     }
 
     @Override

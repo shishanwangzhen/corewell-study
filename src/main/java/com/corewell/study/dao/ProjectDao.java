@@ -2,6 +2,7 @@ package com.corewell.study.dao;
 
 import com.corewell.study.domain.Project;
 import com.corewell.study.domain.request.ProjectReq;
+import com.corewell.study.domain.response.ProjectDo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,7 +23,7 @@ public interface ProjectDao {
      * @param projectReq
      * @return
      */
-    List<Project> findProject(ProjectReq projectReq);
+    List<ProjectDo> findProject(ProjectReq projectReq);
 
     /**
      * 新增项目
