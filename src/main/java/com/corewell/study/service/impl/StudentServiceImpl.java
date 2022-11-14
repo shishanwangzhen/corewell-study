@@ -3,7 +3,7 @@ package com.corewell.study.service.impl;
 import com.corewell.study.dao.StudentDao;
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
-import com.corewell.study.domain.request.StudentStudentReq;
+import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
@@ -81,8 +81,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public ResultMsg updateStudentStatus(StudentStudentReq studentStudentReq) {
-        int result = studentDao.updateStudentStatus(studentStudentReq);
+    public ResultMsg updateStudentStatus(StudentStatusReq studentStatusReq) {
+        int result = studentDao.updateStudentStatus(studentStatusReq);
         if (result == 1) {
             return ResultMsg.success();
         }

@@ -2,7 +2,7 @@ package com.corewell.study.service;
 
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
-import com.corewell.study.domain.request.StudentStudentReq;
+import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.result.ResultMsg;
 
 /**
@@ -50,9 +50,9 @@ public interface StudentService {
     /**
      * 审核学生注册申请
      *
-     * @param studentStudentReq
+     * @param studentStatusReq
      * @return
      */
-    ResultMsg updateStudentStatus(StudentStudentReq studentStudentReq);
+    ResultMsg updateStudentStatus(StudentStatusReq studentStatusReq);
 
 }

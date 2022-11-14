@@ -16,7 +16,7 @@ import java.util.Date;
 @ApiModel("学生用户")
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentStudentReq {
+public class StudentStatusReq {
     /**
      * 主键id
      */

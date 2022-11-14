@@ -39,7 +39,7 @@ public class GroupReq {
      * 创建者id
      */
     @ApiModelProperty(value = "创建者id", required = true, example = "")
-    private String creatorId;
+    private Long creatorId;
     /**
      * 项目id
      */

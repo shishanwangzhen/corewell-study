@@ -2,7 +2,7 @@ package com.corewell.study.dao;
 
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
-import com.corewell.study.domain.request.StudentStudentReq;
+import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.response.AccountDo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -52,10 +52,10 @@ public interface StudentDao {
     /**
      * 审核学生注册申请
      *
-     * @param studentStudentReq
+     * @param studentStatusReq
      * @return
      */
-    int updateStudentStatus(StudentStudentReq studentStudentReq);
+    int updateStudentStatus(StudentStatusReq studentStatusReq);
 
 
 }
