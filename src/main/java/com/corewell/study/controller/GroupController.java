@@ -1,5 +1,6 @@
 package com.corewell.study.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.corewell.study.domain.Group;
 import com.corewell.study.domain.request.GroupReq;
 import com.corewell.study.domain.result.ResultMsg;
@@ -38,6 +39,7 @@ public class GroupController {
     @ApiOperation("项目信息修改")
     @PostMapping("/updateGroup")
     public ResultMsg updateGroup(@RequestBody Group group) {
+        System.out.println(JSON.toJSON(group));
         ResultMsg resultMsg = groupService.updateGroup(group);
         return resultMsg;
 
@@ -46,6 +48,7 @@ public class GroupController {
     @ApiOperation("项目信息新增")
     @PostMapping("/insertGroup")
     public ResultMsg insertGroup(@RequestBody Group group) {
+        System.out.println(JSON.toJSON(group));
         ResultMsg resultMsg = groupService.insertGroup(group);
         return resultMsg;
 

@@ -206,7 +206,7 @@
         where id=#{id}
     </update>
 
-    <update id="updateStudentStatus" parameterType="StudentStudentReq">
+    <update id="updateStudentStatus" parameterType="StudentStatusReq">
         update student
         set status=#{status},
         update_time=now()

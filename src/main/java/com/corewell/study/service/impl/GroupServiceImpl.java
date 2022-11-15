@@ -43,6 +43,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ResultMsg updateGroup(Group group) {
         group.setUpdateTime(new Date());
+
         int result = groupDao.updateGroup(group);
         if (result == 1) {
             return ResultMsg.success();
