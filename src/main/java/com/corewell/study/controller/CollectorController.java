@@ -30,26 +30,26 @@ public class CollectorController {
 
     @ApiOperation("查询采集器")
     @PostMapping("/findCollector")
-    public ResultMsg findCollector(@RequestBody CollectorReq CollectorReq) {
-        ResultMsg resultMsg = CollectorService.findCollector(CollectorReq);
+    public ResultMsg findCollector(@RequestBody CollectorReq collectorReq) {
+        ResultMsg resultMsg = CollectorService.findCollector(collectorReq);
         return resultMsg;
 
     }
 
     @ApiOperation("采集器修改")
     @PostMapping("/updateCollector")
-    public ResultMsg updateCollector(@RequestBody Collector Collector) {
-        System.out.println(JSON.toJSON(Collector));
-        ResultMsg resultMsg = CollectorService.updateCollector(Collector);
+    public ResultMsg updateCollector(@RequestBody Collector collector) {
+        System.out.println(JSON.toJSON(collector));
+        ResultMsg resultMsg = CollectorService.updateCollector(collector);
         return resultMsg;
 
     }
 
     @ApiOperation("采集器新增")
     @PostMapping("/insertCollector")
-    public ResultMsg insertCollector(@RequestBody Collector Collector) {
-        System.out.println(JSON.toJSON(Collector));
-        ResultMsg resultMsg = CollectorService.insertCollector(Collector);
+    public ResultMsg insertCollector(@RequestBody Collector collector) {
+        System.out.println(JSON.toJSON(collector));
+        ResultMsg resultMsg = CollectorService.insertCollector(collector);
         return resultMsg;
 
     }

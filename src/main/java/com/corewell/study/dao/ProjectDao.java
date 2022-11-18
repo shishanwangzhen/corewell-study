@@ -49,5 +49,13 @@ public interface ProjectDao {
      */
     int updateProjectStatus(@Param("id") Long id);
 
+    /**
+     * 查询项目
+     *
+     * @param creatorId
+     * @return
+     */
+    List<Long> findProjectId(@Param("creatorId") Long creatorId);
+
 
 }

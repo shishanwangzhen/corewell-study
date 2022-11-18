@@ -18,22 +18,22 @@ public class Teacher {
     /**
      * 主键id
      */
-    @ApiModelProperty(value = "主键id", required = true, example = "")
+    @ApiModelProperty(value = "主键id", required = false, example = "")
     private Long id;
     /**
      * 账号
      */
-    @ApiModelProperty(value = "账号", required = true, example = "")
+    @ApiModelProperty(value = "账号", required = false, example = "")
     private String account;
     /**
      * 密码
      */
-    @ApiModelProperty(value = "密码", required = true, example = "")
+    @ApiModelProperty(value = "密码", required = false, example = "")
     private String password;
     /**
      * 名字
      */
-    @ApiModelProperty(value = "名字", required = true, example = "")
+    @ApiModelProperty(value = "名字", required = false, example = "")
     private String name;
 
 }

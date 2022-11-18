@@ -18,26 +18,26 @@ public interface CollectorService {
     /**
      * 查询采集器
      *
-     * @param CollectorReq
+     * @param collectorReq
      * @return
      */
-    ResultMsg findCollector(CollectorReq CollectorReq);
+    ResultMsg findCollector(CollectorReq collectorReq);
 
     /**
      * 新增采集器
      *
-     * @param Collector
+     * @param collector
      * @return
      */
-    ResultMsg insertCollector(Collector Collector);
+    ResultMsg insertCollector(Collector collector);
 
     /**
      * 修改采集器
      *
-     * @param Collector
+     * @param collector
      * @return
      */
-    ResultMsg updateCollector(Collector Collector);
+    ResultMsg updateCollector(Collector collector);
 
     /**
      * 删除采集器

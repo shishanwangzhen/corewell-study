@@ -25,16 +25,17 @@ public class CollectorServiceImpl implements CollectorService {
     private CollectorDao CollectorDao;
 
     @Override
-    public ResultMsg findCollector(CollectorReq agreementReq) {
-        List<Collector> CollectorList = CollectorDao.findCollector(agreementReq);
+    public ResultMsg findCollector(CollectorReq collectorReq) {
+        List<Collector> CollectorList = CollectorDao.findCollector(collectorReq);
         return ResultMsg.success(CollectorList);
     }
 
     @Override
-    public ResultMsg insertCollector(Collector Collector) {
-        Collector.setCreateTime(new Date());
-        Collector.setDeleteFlag("1");
-        int result = CollectorDao.insertCollector(Collector);
+    public ResultMsg insertCollector(Collector collector) {
+        collector.setCreateTime(new Date());
+        collector.setStatus("0");
+        collector.setDeleteFlag("1");
+        int result = CollectorDao.insertCollector(collector);
         if (result == 1) {
             return ResultMsg.success();
         }
@@ -42,10 +43,9 @@ public class CollectorServiceImpl implements CollectorService {
     }
 
     @Override
-    public ResultMsg updateCollector(Collector Collector) {
-        Collector.setUpdateTime(new Date());
-
-        int result = CollectorDao.updateCollector(Collector);
+    public ResultMsg updateCollector(Collector collector) {
+        collector.setUpdateTime(new Date());
+        int result = CollectorDao.updateCollector(collector);
         if (result == 1) {
             return ResultMsg.success();
         }

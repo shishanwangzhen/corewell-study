@@ -5,8 +5,6 @@ import com.corewell.study.domain.request.ProjectReq;
 import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  *
@@ -47,6 +45,14 @@ public interface ProjectService {
      * @return
      */
     ResultMsg updateProjectStatus(Long id);
+
+    /**
+     * 一键删除项目
+     *
+     * @param creatorId
+     * @return
+     */
+    ResultMsg updateProjectStatusByCreatorId(Long creatorId);
 
 
 }

@@ -29,6 +29,13 @@
 
     </select>
 
+    <select id="findProjectId" parameterType="Long" resultType="Long">
+        select id
+        from project
+        where status = 1
+          and creator_id = #{creatorId}
+    </select>
+
     <insert id="insertProject" parameterType="Project">
         insert into project
         <trim prefix="(" suffix=")" suffixOverrides=",">

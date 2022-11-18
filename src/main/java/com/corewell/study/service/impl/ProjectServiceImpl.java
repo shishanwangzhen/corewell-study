@@ -26,7 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResultMsg findProject(ProjectReq projectReq) {
-        List<ProjectDo> projectDos=projectDao.findProject(projectReq);
+        List<ProjectDo> projectDos = projectDao.findProject(projectReq);
         return ResultMsg.success(projectDos);
     }
 
@@ -58,5 +58,14 @@ public class ProjectServiceImpl implements ProjectService {
             return ResultMsg.success();
         }
         return ResultMsg.error();
+    }
+
+    @Override
+    public ResultMsg updateProjectStatusByCreatorId(Long creatorId) {
+        List<Long> list = projectDao.findProjectId(creatorId);
+        for (Long id : list) {
+            int result = projectDao.updateProjectStatus(id);
+        }
+        return ResultMsg.success();
     }
 }

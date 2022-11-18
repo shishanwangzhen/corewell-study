@@ -7,7 +7,6 @@ import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.ProjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +58,14 @@ public class ProjectController {
     @PostMapping("/updateProjectStatus")
     public ResultMsg updateProjectStatus(Long id) {
         ResultMsg resultMsg = projectService.updateProjectStatus(id);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("项目一键删除")
+    @PostMapping("/updateProjectStatusByCreatorId")
+    public ResultMsg updateProjectStatusByCreatorId(Long creatorId) {
+        ResultMsg resultMsg = projectService.updateProjectStatusByCreatorId(creatorId);
         return resultMsg;
 
     }
