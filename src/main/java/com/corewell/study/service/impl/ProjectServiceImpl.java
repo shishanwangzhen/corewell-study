@@ -5,6 +5,7 @@ import com.corewell.study.domain.Project;
 import com.corewell.study.domain.request.ProjectReq;
 import com.corewell.study.domain.response.ProjectDo;
 import com.corewell.study.domain.result.ResultMsg;
+import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.UPDATE_FAILED);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
     }
 
     @Override

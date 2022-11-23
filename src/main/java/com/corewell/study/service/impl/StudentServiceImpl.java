@@ -58,7 +58,7 @@ public class StudentServiceImpl implements StudentService {
         StudentReq studentReq = new StudentReq();
         studentReq.setAccount(student.getAccount());
         List<Student> studentList = studentDao.findStudent(studentReq);
-        if (studentList.size()>0) {
+        if (studentList.size() > 0) {
             return new ResultMsg(ResultStatusCode.USER_CODE_ONLY);
         }
         student.setCreateTime(new Date());
@@ -77,7 +77,7 @@ public class StudentServiceImpl implements StudentService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.UPDATE_FAILED);
     }
 
     @Override
@@ -86,6 +86,6 @@ public class StudentServiceImpl implements StudentService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
     }
 }

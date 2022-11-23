@@ -4,6 +4,7 @@ import com.corewell.study.dao.SensorConfigDao;
 import com.corewell.study.domain.SensorConfig;
 import com.corewell.study.domain.request.SensorConfigReq;
 import com.corewell.study.domain.result.ResultMsg;
+import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.SensorConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class SensorConfigServiceImpl implements SensorConfigService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.UPDATE_FAILED);
     }
 
     @Override
@@ -58,6 +59,6 @@ public class SensorConfigServiceImpl implements SensorConfigService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
     }
 }

@@ -4,6 +4,7 @@ import com.corewell.study.dao.DecoderDao;
 import com.corewell.study.domain.Decoder;
 import com.corewell.study.domain.request.DecoderReq;
 import com.corewell.study.domain.result.ResultMsg;
+import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.DecoderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class DecoderServiceImpl implements DecoderService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.UPDATE_FAILED);
     }
 
     @Override
@@ -58,6 +59,6 @@ public class DecoderServiceImpl implements DecoderService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
     }
 }

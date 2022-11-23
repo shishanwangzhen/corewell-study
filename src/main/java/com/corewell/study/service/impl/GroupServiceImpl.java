@@ -4,6 +4,7 @@ import com.corewell.study.dao.GroupDao;
 import com.corewell.study.domain.Group;
 import com.corewell.study.domain.request.GroupReq;
 import com.corewell.study.domain.result.ResultMsg;
+import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class GroupServiceImpl implements GroupService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.UPDATE_FAILED);
     }
 
     @Override
@@ -57,6 +58,6 @@ public class GroupServiceImpl implements GroupService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
     }
 }

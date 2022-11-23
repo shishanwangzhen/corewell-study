@@ -4,6 +4,7 @@ import com.corewell.study.dao.CollectorDao;
 import com.corewell.study.domain.Collector;
 import com.corewell.study.domain.request.CollectorReq;
 import com.corewell.study.domain.result.ResultMsg;
+import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.CollectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class CollectorServiceImpl implements CollectorService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.UPDATE_FAILED);
     }
 
     @Override
@@ -58,6 +59,6 @@ public class CollectorServiceImpl implements CollectorService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
     }
 }

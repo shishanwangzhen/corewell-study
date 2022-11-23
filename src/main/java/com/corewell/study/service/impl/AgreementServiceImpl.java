@@ -1,11 +1,10 @@
 package com.corewell.study.service.impl;
 
 import com.corewell.study.dao.AgreementDao;
-import com.corewell.study.dao.GroupDao;
 import com.corewell.study.domain.Agreement;
-import com.corewell.study.domain.Group;
 import com.corewell.study.domain.request.AgreementReq;
 import com.corewell.study.domain.result.ResultMsg;
+import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.AgreementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +24,12 @@ public class AgreementServiceImpl implements AgreementService {
 
     @Autowired
     private AgreementDao agreementDao;
+
     @Override
     public ResultMsg findAgreement(AgreementReq agreementReq) {
         List<Agreement> agreementList = agreementDao.findAgreement(agreementReq);
-        return ResultMsg.success(agreementList);    }
+        return ResultMsg.success(agreementList);
+    }
 
     @Override
     public ResultMsg insertAgreement(Agreement agreement) {
@@ -38,7 +39,8 @@ public class AgreementServiceImpl implements AgreementService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();    }
+        return ResultMsg.error();
+    }
 
     @Override
     public ResultMsg updateAgreement(Agreement agreement) {
@@ -48,7 +50,8 @@ public class AgreementServiceImpl implements AgreementService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();    }
+        return new ResultMsg(ResultStatusCode.UPDATE_FAILED);
+    }
 
     @Override
     public ResultMsg updateAgreementStatus(Long id) {
@@ -56,6 +59,6 @@ public class AgreementServiceImpl implements AgreementService {
         if (result == 1) {
             return ResultMsg.success();
         }
-        return ResultMsg.error();
-        }
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
+    }
 }

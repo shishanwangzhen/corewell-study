@@ -50,6 +50,8 @@ public enum ResultStatusCode {
     RFID_ISRELIEVE(30012, "标签已解除"),
     PLEASE_BIND(30010, "删除前请先解绑"),
     TID_ISRELIEVED(30011, "此标签已解除,无法再次绑定"),
+    DELETE_FAILED(20001, "删除失败"),
+    UPDATE_FAILED(30001, "修改失败"),
     FILE_IS_NOT_EXSIT(30012, "目标文件不在指定路径,请检查!");
 
 
