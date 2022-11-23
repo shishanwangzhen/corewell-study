@@ -18,6 +18,10 @@ public class MvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        //TODO 测试环境关闭token检验
+        if (true){
+            return;
+        }
         registry.addInterceptor(jwtInterceptor())
                 .addPathPatterns("/core/**");
     }
