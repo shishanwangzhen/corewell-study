@@ -3,6 +3,7 @@ package com.corewell.study.dao;
 import com.corewell.study.domain.Group;
 import com.corewell.study.domain.request.GroupReq;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -54,6 +55,14 @@ public interface GroupDao {
      * @return
      */
     int updateGroupStatusByProjectId(Long projectId);
+
+    /**
+     * 删除项目
+     *
+     * @param teacherId
+     * @return
+     */
+    int updateGroupStatusByCreatorId(@Param("teacherId") Long teacherId);
 
 
 }

@@ -5,6 +5,7 @@ import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.response.AccountDo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -78,7 +79,15 @@ public interface StudentDao {
      * @param projectId
      * @return
      */
-    int updateGroupStudentByProjectId(Long projectId);
+    int updateProjectStudentByProjectId(Long projectId);
+
+    /**
+     * 删除项目
+     *
+     * @param creatorId
+     * @return
+     */
+    int updateProjectStatusByTeacherId(@Param("creatorId") Long creatorId);
 
 
 

@@ -229,13 +229,22 @@
             update_time=now()
         where  group_id= #{groupId}
     </update>
-    <update id="updateGroupStudentByProjectId" parameterType="Long">
+    <update id="updateProjectStudentByProjectId" parameterType="Long">
         update student
         set group_id=0,
             project_id=0,
             role=0,
             update_time=now()
         where project_id = #{projectId}
+    </update>
+
+    <update id="updateProjectStatusByTeacherId" parameterType="Long">
+        update student
+        set group_id=0,
+            project_id=0,
+            role=0,
+            update_time=now()
+        where teacher_id = #{teacherId}
     </update>
 </mapper>
 

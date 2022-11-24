@@ -61,7 +61,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResultMsg updateProjectStatus(Long id) {
         int result = projectDao.updateProjectStatus(id);
-        studentDao.updateGroupStudentByProjectId(id);
+        studentDao.updateProjectStudentByProjectId(id);
         groupDao.updateGroupStatusByProjectId(id);
         if (result == 1) {
             return ResultMsg.success();
@@ -72,6 +72,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResultMsg updateProjectStatusByCreatorId(Long creatorId) {
         int result = projectDao.updateProjectStatusByCreatorId(creatorId);
+        studentDao.updateProjectStatusByTeacherId(creatorId);
+        groupDao.updateGroupStatusByCreatorId(creatorId);
         System.out.println("删除数目：：：：："+result);
         if (result >0) {
             return ResultMsg.success();
