@@ -47,7 +47,7 @@ public interface GroupService {
     ResultMsg updateGroupStatus(Long id);
 
     /**
-     * 删除项目组学生
+     * 删除项目组一个学生
      *
      * @param id
      * @return

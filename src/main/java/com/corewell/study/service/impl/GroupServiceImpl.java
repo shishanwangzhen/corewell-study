@@ -58,6 +58,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ResultMsg updateGroupStatus(Long id) {
         int result = groupDao.updateGroupStatus(id);
+        studentDao.updateGroupStudentByGroupId(id);
         if (result == 1) {
             return ResultMsg.success();
         }

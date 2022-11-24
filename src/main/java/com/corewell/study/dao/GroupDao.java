@@ -47,5 +47,13 @@ public interface GroupDao {
      */
     int updateGroupStatus(Long id);
 
+    /**
+     * 根据projectId删除项目组
+     *
+     * @param projectId
+     * @return
+     */
+    int updateGroupStatusByProjectId(Long projectId);
+
 
 }

@@ -1,6 +1,8 @@
 package com.corewell.study.service.impl;
 
+import com.corewell.study.dao.GroupDao;
 import com.corewell.study.dao.ProjectDao;
+import com.corewell.study.dao.StudentDao;
 import com.corewell.study.domain.Project;
 import com.corewell.study.domain.request.ProjectReq;
 import com.corewell.study.domain.response.ProjectDo;
@@ -24,6 +26,10 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProjectDao projectDao;
+    @Autowired
+    private GroupDao groupDao;
+    @Autowired
+    private StudentDao studentDao;
 
     @Override
     public ResultMsg findProject(ProjectReq projectReq) {
@@ -55,6 +61,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ResultMsg updateProjectStatus(Long id) {
         int result = projectDao.updateProjectStatus(id);
+        studentDao.updateGroupStudentByProjectId(id);
+        groupDao.updateGroupStatusByProjectId(id);
         if (result == 1) {
             return ResultMsg.success();
         }

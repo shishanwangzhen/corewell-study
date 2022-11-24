@@ -64,6 +64,22 @@ public interface StudentDao {
      */
     int updateGroupStudent(Long id);
 
+    /**
+     * 删除项目组所有学生
+     *
+     * @param groupId
+     * @return
+     */
+    int updateGroupStudentByGroupId(Long groupId);
+
+    /**
+     * 删除项目所有学生
+     *
+     * @param projectId
+     * @return
+     */
+    int updateGroupStudentByProjectId(Long projectId);
+
 
 
 
