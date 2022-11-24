@@ -1,6 +1,7 @@
 package com.corewell.study.service.impl;
 
 import com.corewell.study.dao.GroupDao;
+import com.corewell.study.dao.StudentDao;
 import com.corewell.study.domain.Group;
 import com.corewell.study.domain.request.GroupReq;
 import com.corewell.study.domain.result.ResultMsg;
@@ -23,6 +24,8 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
     @Autowired
     private GroupDao groupDao;
+    @Autowired
+    private StudentDao studentDao;
 
     @Override
     public ResultMsg findGroup(GroupReq projectReq) {
@@ -60,4 +63,15 @@ public class GroupServiceImpl implements GroupService {
         }
         return new ResultMsg(ResultStatusCode.DELETE_FAILED);
     }
+
+    @Override
+    public ResultMsg updateGroupStudent(Long id) {
+        int result = studentDao.updateGroupStudent(id);
+        if (result == 1) {
+            return ResultMsg.success();
+        }
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
+    }
+
+
 }

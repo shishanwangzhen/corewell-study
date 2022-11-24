@@ -26,7 +26,7 @@
         select id, account, password
         from student
         where account = #{account}
-        and status = 1
+          and status = 1
     </select>
 
     <select id="findStudent" parameterType="StudentReq" resultType="Student">
@@ -35,24 +35,24 @@
         project_id as projectId, group_id as groupId, teacher_id as teacherId, status
         from student
         where 1=1
-            <if test="id!=null and id!=''">
-               and id=#{id}
-            </if>
-            <if test="account!=null and account!=''">
-                and account=#{account}
-            </if>
-            <if test="status!=null and status!=''">
-                and status=#{status}
-            </if>
-            <if test="groupId!=null and groupId!=''">
-                and group_id=#{groupId}
-            </if>
-            <if test="projectId!=null and projectId!=''">
-                and project_id=#{projectId}
-            </if>
-            <if test="teacherId!=null and teacherId!=''">
-                and teacher_id=#{teacherId}
-            </if>
+        <if test="id!=null and id!=''">
+            and id=#{id}
+        </if>
+        <if test="account!=null and account!=''">
+            and account=#{account}
+        </if>
+        <if test="status!=null and status!=''">
+            and status=#{status}
+        </if>
+        <if test="groupId!=null and groupId!=''">
+            and group_id=#{groupId}
+        </if>
+        <if test="projectId!=null and projectId!=''">
+            and project_id=#{projectId}
+        </if>
+        <if test="teacherId!=null and teacherId!=''">
+            and teacher_id=#{teacherId}
+        </if>
 
 
     </select>
@@ -209,7 +209,16 @@
     <update id="updateStudentStatus" parameterType="StudentStatusReq">
         update student
         set status=#{status},
-        update_time=now()
+            update_time=now()
+        where id = #{id}
+    </update>
+
+    <update id="updateGroupStudent" parameterType="Long">
+        update student
+        set group_id=0,
+            project_id=0,
+            role=0,
+            update_time=now()
         where id = #{id}
     </update>
 </mapper>

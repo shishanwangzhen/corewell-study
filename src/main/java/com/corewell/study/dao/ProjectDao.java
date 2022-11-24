@@ -50,6 +50,14 @@ public interface ProjectDao {
     int updateProjectStatus(@Param("id") Long id);
 
     /**
+     * 删除项目
+     *
+     * @param creatorId
+     * @return
+     */
+    int updateProjectStatusByCreatorId(@Param("creatorId") Long creatorId);
+
+    /**
      * 查询项目
      *
      * @param creatorId

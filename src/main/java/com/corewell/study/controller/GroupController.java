@@ -62,4 +62,13 @@ public class GroupController {
 
     }
 
+    @ApiOperation("项目组学生删除")
+    @PostMapping("/updateGroupStudent")
+    public ResultMsg updateGroupStudent(Long id) {
+        ResultMsg resultMsg = groupService.updateGroupStudent(id);
+        return resultMsg;
+
+    }
+
+
 }

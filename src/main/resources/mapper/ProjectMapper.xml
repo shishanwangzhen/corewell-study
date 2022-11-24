@@ -127,5 +127,14 @@
             update_time=now()
         where id = #{id}
     </update>
+
+    <update id="updateProjectStatusByCreatorId" parameterType="Long">
+        update project
+        set status=0,
+            update_time=now()
+        where creator_id = #{creatorId}
+    </update>
+
+
 </mapper>
 

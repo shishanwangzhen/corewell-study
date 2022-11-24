@@ -63,10 +63,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResultMsg updateProjectStatusByCreatorId(Long creatorId) {
-        List<Long> list = projectDao.findProjectId(creatorId);
-        for (Long id : list) {
-            int result = projectDao.updateProjectStatus(id);
+        int result = projectDao.updateProjectStatusByCreatorId(creatorId);
+        System.out.println("删除数目：：：：："+result);
+        if (result >0) {
+            return ResultMsg.success();
         }
-        return ResultMsg.success();
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
     }
 }

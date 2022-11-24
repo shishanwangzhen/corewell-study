@@ -56,6 +56,15 @@ public interface StudentDao {
      * @return
      */
     int updateStudentStatus(StudentStatusReq studentStatusReq);
+    /**
+     * 删除学生项目组
+     *
+     * @param id
+     * @return
+     */
+    int updateGroupStudent(Long id);
+
+
 
 
 }
