@@ -59,10 +59,10 @@ public interface GroupDao {
     /**
      * 删除项目
      *
-     * @param teacherId
+     * @param creatorId
      * @return
      */
-    int updateGroupStatusByCreatorId(@Param("teacherId") Long teacherId);
+    int updateGroupStatusByCreatorId(Long creatorId);
 
 
 }

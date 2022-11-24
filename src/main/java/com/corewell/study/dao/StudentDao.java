@@ -87,7 +87,7 @@ public interface StudentDao {
      * @param creatorId
      * @return
      */
-    int updateProjectStatusByTeacherId(@Param("creatorId") Long creatorId);
+    int updateProjectStatusByTeacherId(Long creatorId);
 
 
 

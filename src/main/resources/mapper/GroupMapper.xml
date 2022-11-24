@@ -133,5 +133,18 @@
             update_time=now()
         where id = #{id}
     </update>
+    <update id="updateGroupStatusByProjectId" parameterType="Long">
+        update `group`
+        set status=0,
+            update_time=now()
+        where project_id = #{projectId}
+    </update>
+
+    <update id="updateGroupStatusByCreatorId" parameterType="Long">
+        update `group`
+        set status=0,
+            update_time=now()
+        where creator_id = #{creatorId}
+    </update>
 </mapper>
 

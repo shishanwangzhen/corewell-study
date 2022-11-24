@@ -55,7 +55,7 @@ public interface ProjectDao {
      * @param creatorId
      * @return
      */
-    int updateProjectStatusByCreatorId(@Param("creatorId") Long creatorId);
+    int updateProjectStatusByCreatorId(Long creatorId);
 
     /**
      * 查询项目
@@ -63,7 +63,7 @@ public interface ProjectDao {
      * @param creatorId
      * @return
      */
-    List<Long> findProjectId(@Param("creatorId") Long creatorId);
+    List<Long> findProjectId(Long creatorId);
 
 
 }
