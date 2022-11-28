@@ -22,7 +22,7 @@
     <select id="findSensorConfig" parameterType="SensorConfigReq" resultType="SensorConfig">
         select id, number,Chinese_name as ChineseName,English_name as EnglishName,system_name as systemName,
         unity, creator_id as creatorId, create_time as createTime, update_time as updateTime,
-               Collector_id as CollectorId
+               Device_id as DeviceId
         from sensor_config
         where delete_flag=1
         <if test="id!=null and id!=''">
@@ -58,8 +58,8 @@
             <if test="creatorId!=null and creatorId!=''">
                 creator_id,
             </if>
-            <if test="CollectorId!=null and CollectorId!=''">
-                Collector_id,
+            <if test="DeviceId!=null and DeviceId!=''">
+                Device_id,
             </if>
             <if test="createTime!=null">
                 create_time,
@@ -93,8 +93,8 @@
             <if test="creatorId!=null and creatorId!=''">
                 #{creatorId},
             </if>
-            <if test="CollectorId!=null and CollectorId!=''">
-                #{CollectorId},
+            <if test="DeviceId!=null and DeviceId!=''">
+                #{DeviceId},
             </if>
             <if test="createTime!=null">
                 #{createTime},
@@ -130,8 +130,8 @@
             <if test="creatorId!=null and creatorId!=''">
                 creator_id=#{creatorId},
             </if>
-            <if test="CollectorId!=null and CollectorId!=''">
-                Collector_id= #{CollectorId},
+            <if test="DeviceId!=null and DeviceId!=''">
+                Device_id= #{DeviceId},
             </if>
             <if test="createTime!=null">
                 create_time=#{createTime},

@@ -46,14 +46,19 @@ public class SensorConfigReq {
     @ApiModelProperty(value = "解码器编号", required = false, example = "")
     private String number;
     /**
+     * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
+     */
+    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = false, example = "")
+    private String type;
+    /**
      * 创建者id
      */
     @ApiModelProperty(value = "创建者id", required = false, example = "")
     private Long creatorId;
     /**
-     * 采集器id
+     * 设备id
      */
-    @ApiModelProperty(value = "采集器id", required = false, example = "")
-    private Long CollectorId;
+    @ApiModelProperty(value = "设备id", required = false, example = "")
+    private Long DeviceId;
 
 }

@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface SensorConfigService {
     /**
-     * 查询采集器
+     * 查询设备
      *
      * @param sensorConfigReq
      * @return
@@ -24,7 +24,7 @@ public interface SensorConfigService {
     ResultMsg findSensorConfig(SensorConfigReq sensorConfigReq);
 
     /**
-     * 新增采集器
+     * 新增设备
      *
      * @param sensorConfig
      * @return
@@ -32,7 +32,7 @@ public interface SensorConfigService {
     ResultMsg insertSensorConfig(SensorConfig sensorConfig);
 
     /**
-     * 修改采集器
+     * 修改设备
      *
      * @param sensorConfig
      * @return
@@ -40,7 +40,7 @@ public interface SensorConfigService {
     ResultMsg updateSensorConfig(SensorConfig sensorConfig);
 
     /**
-     * 删除采集器
+     * 删除设备
      *
      * @param id
      * @return

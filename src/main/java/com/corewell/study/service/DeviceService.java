@@ -1,7 +1,7 @@
 package com.corewell.study.service;
 
-import com.corewell.study.domain.Decoder;
-import com.corewell.study.domain.request.DecoderReq;
+import com.corewell.study.domain.Device;
+import com.corewell.study.domain.request.DeviceReq;
 import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -14,30 +14,30 @@ import org.apache.ibatis.annotations.Param;
  * @Description:
  */
 @Mapper
-public interface DecoderService {
+public interface DeviceService {
     /**
      * 查询设备
      *
-     * @param decoderReq
+     * @param deviceReq
      * @return
      */
-    ResultMsg findDecoder(DecoderReq decoderReq);
+    ResultMsg findDevice(DeviceReq deviceReq);
 
     /**
      * 新增设备
      *
-     * @param decoder
+     * @param device
      * @return
      */
-    ResultMsg insertDecoder(Decoder decoder);
+    ResultMsg insertDevice(Device device);
 
     /**
      * 修改设备
      *
-     * @param decoder
+     * @param device
      * @return
      */
-    ResultMsg updateDecoder(Decoder decoder);
+    ResultMsg updateDevice(Device device);
 
     /**
      * 删除设备
@@ -45,7 +45,7 @@ public interface DecoderService {
      * @param id
      * @return
      */
-    ResultMsg updateDecoderStatus(@Param("id") Long id);
+    ResultMsg updateDeviceStatus(@Param("id") Long id);
 
 
 }

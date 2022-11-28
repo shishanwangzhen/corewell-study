@@ -17,7 +17,7 @@ import java.util.List;
 @Mapper
 public interface DecoderDao {
     /**
-     * 查询采集器
+     * 查询设备
      *
      * @param decoderReq
      * @return
@@ -25,7 +25,7 @@ public interface DecoderDao {
     List<Decoder> findDecoder(DecoderReq decoderReq);
 
     /**
-     * 新增采集器
+     * 新增设备
      *
      * @param decoder
      * @return
@@ -33,7 +33,7 @@ public interface DecoderDao {
     int insertDecoder(Decoder decoder);
 
     /**
-     * 修改采集器
+     * 修改设备
      *
      * @param decoder
      * @return
@@ -41,7 +41,7 @@ public interface DecoderDao {
     int updateDecoder(Decoder decoder);
 
     /**
-     * 删除采集器
+     * 删除设备
      *
      * @param id
      * @return

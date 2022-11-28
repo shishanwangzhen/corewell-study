@@ -15,8 +15,8 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("采集器")
-public class Collector {
+@ApiModel("设备")
+public class Device {
 
     /**
      * 主键id
@@ -35,10 +35,15 @@ public class Collector {
     @NotNull(message = "number不能为空")
     private String number;
     /**
-     * 采集器名称
+     * 设备名称
      */
-    @ApiModelProperty(value = "采集器名称", required = false, example = "")
+    @ApiModelProperty(value = "设备名称", required = false, example = "")
     private String name;
+    /**
+     * 协议类型
+     */
+    @ApiModelProperty(value = "协议类型", required = false, example = "")
+    private Long agreement;
     /**
      * 备注
      */
@@ -50,6 +55,21 @@ public class Collector {
     @ApiModelProperty(value = "状态（0.未绑定，1.在线，2.离线）", required = false, example = "")
     private String status;
     /**
+     * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
+     */
+    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = false, example = "")
+    private String type;
+    /**
+     * 状态（0.未绑定，1.在线，2.离线）
+     */
+    @ApiModelProperty(value = "状态（0.未绑定，1.在线，2.离线）", required = false, example = "")
+    private String isAlarms;
+    /**
+     * 创建者id
+     */
+    @ApiModelProperty(value = "创建者id", required = false, example = "")
+    private Long projectId;
+    /**
      * 创建者id
      */
     @ApiModelProperty(value = "创建者id", required = true, example = "")
@@ -59,11 +79,6 @@ public class Collector {
      */
     @ApiModelProperty(value = "解码器id", required = false, example = "")
     private Long decoderId;
-    /**
-     * 协议id
-     */
-    @ApiModelProperty(value = "协议id", required = false, example = "")
-    private Long agreementId;
     /**
      * 状态（0.删除，1.正常）
      */

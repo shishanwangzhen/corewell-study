@@ -1,7 +1,7 @@
 package com.corewell.study.dao;
 
-import com.corewell.study.domain.SensorConfig;
-import com.corewell.study.domain.request.SensorConfigReq;
+import com.corewell.study.domain.Device;
+import com.corewell.study.domain.request.DeviceReq;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,30 +15,30 @@ import java.util.List;
  * @Description:
  */
 @Mapper
-public interface SensorConfigDao {
+public interface DeviceDao {
     /**
      * 查询设备
      *
-     * @param decoderReq
+     * @param DeviceReq
      * @return
      */
-    List<SensorConfig> findSensorConfig(SensorConfigReq decoderReq);
+    List<Device> findDevice(DeviceReq DeviceReq);
 
     /**
      * 新增设备
      *
-     * @param sensorConfig
+     * @param Device
      * @return
      */
-    int insertSensorConfig(SensorConfig sensorConfig);
+    int insertDevice(Device Device);
 
     /**
      * 修改设备
      *
-     * @param sensorConfig
+     * @param Device
      * @return
      */
-    int updateSensorConfig(SensorConfig sensorConfig);
+    int updateDevice(Device Device);
 
     /**
      * 删除设备
@@ -46,7 +46,7 @@ public interface SensorConfigDao {
      * @param id
      * @return
      */
-    int updateSensorConfigStatus(@Param("id") Long id);
+    int updateDeviceStatus(@Param("id") Long id);
 
 
 }

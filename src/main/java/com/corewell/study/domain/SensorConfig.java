@@ -53,10 +53,10 @@ public class SensorConfig {
     @ApiModelProperty(value = "创建者id", required = false, example = "")
     private Long creatorId;
     /**
-     * 采集器id
+     * 设备id
      */
-    @ApiModelProperty(value = "采集器id", required = false, example = "")
-    private Long CollectorId;
+    @ApiModelProperty(value = "设备id", required = false, example = "")
+    private Long DeviceId;
     /**
      * 状态（0.删除，1.正常）
      */
