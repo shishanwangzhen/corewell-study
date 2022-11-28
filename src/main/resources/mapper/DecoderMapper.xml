@@ -14,14 +14,14 @@
         <result property="updateTime" column="update_time"/>
         <result property="creatorId" column="creator_id"/>
         <result property="decoderId" column="decoder_id"/>
-        <result property="agreementId" column="agreement_id"/>
+        <result property="agreement" column="agreement"/>
         <result property="deleteFlag" column="delete_flag"/>
 
     </resultMap>
 
     <select id="findDecoder" parameterType="DecoderReq" resultType="Decoder">
         select id, number, name, model, path, port,remarks, creator_id as creatorId,
-        create_time as createTime, update_time as updateTime, agreement_id as agreementId
+        create_time as createTime, update_time as updateTime, agreement
         from decoder
         where delete_flag=1
         <if test="id!=null and id!=''">
@@ -63,8 +63,8 @@
             <if test="creatorId!=null and creatorId!=''">
                 creator_id,
             </if>
-            <if test="agreementId!=null and agreementId!=''">
-                agreement_id,
+            <if test="agreement!=null and agreement!=''">
+                agreement,
             </if>
             <if test="model!=null and model!=''">
                 model,
@@ -108,8 +108,8 @@
             <if test="creatorId!=null and creatorId!=''">
                 #{creatorId},
             </if>
-            <if test="agreementId!=null and agreementId!=''">
-                #{agreementId},
+            <if test="agreement!=null and agreement!=''">
+                #{agreement},
             </if>
 
 
@@ -160,8 +160,8 @@
             <if test="creatorId!=null and creatorId!=''">
                 creator_id =#{creatorId},
             </if>
-            <if test="agreementId!=null and agreementId!=''">
-                agreement_id =#{agreementId},
+            <if test="agreement!=null and agreement!=''">
+                agreement =#{agreement},
             </if>
             <if test="deleteFlag!=null and deleteFlag!=''">
                 delete_flag =#{deleteFlag}

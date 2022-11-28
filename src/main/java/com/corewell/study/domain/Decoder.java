@@ -66,10 +66,10 @@ public class Decoder {
     private Long creatorId;
 
     /**
-     * 协议id
+     * 协议
      */
-    @ApiModelProperty(value = "协议id", required = false, example = "")
-    private Long agreementId;
+    @ApiModelProperty(value = "协议", required = false, example = "")
+    private String agreement;
 
     /**
      * 状态（0.删除，1.正常）
