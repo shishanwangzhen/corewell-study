@@ -2,6 +2,7 @@ package com.corewell.study.dao;
 
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.request.DeviceReq;
+import com.corewell.study.domain.response.DeviceDo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,7 +23,7 @@ public interface DeviceDao {
      * @param DeviceReq
      * @return
      */
-    List<Device> findDevice(DeviceReq DeviceReq);
+    List<DeviceDo> findDevice(DeviceReq DeviceReq);
 
     /**
      * 新增设备
@@ -47,6 +48,21 @@ public interface DeviceDao {
      * @return
      */
     int updateDeviceStatus(@Param("id") Long id);
+    /**
+     * 删除项目
+     *
+     * @param projectId
+     * @return
+     */
+    int updateBindingByProjectId(@Param("projectId") Long projectId);
+
+    /**
+     * 删除项目
+     *
+     * @param bindingId
+     * @return
+     */
+    int updateBindingByBindingId(Long bindingId);
 
 
 }

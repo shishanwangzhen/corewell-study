@@ -3,6 +3,7 @@ package com.corewell.study.service.impl;
 import com.corewell.study.dao.DeviceDao;
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.request.DeviceReq;
+import com.corewell.study.domain.response.DeviceDo;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.DeviceService;
@@ -23,12 +24,12 @@ import java.util.List;
 public class DeviceServiceImpl implements DeviceService {
 
     @Autowired
-    private DeviceDao DeviceDao;
+    private DeviceDao deviceDao;
 
     @Override
     public ResultMsg findDevice(DeviceReq deviceReq) {
-        List<Device> DeviceList = DeviceDao.findDevice(deviceReq);
-        return ResultMsg.success(DeviceList);
+        List<DeviceDo> DeviceDOList = deviceDao.findDevice(deviceReq);
+        return ResultMsg.success(DeviceDOList);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class DeviceServiceImpl implements DeviceService {
         device.setCreateTime(new Date());
         device.setStatus("0");
         device.setDeleteFlag("1");
-        int result = DeviceDao.insertDevice(device);
+        int result = deviceDao.insertDevice(device);
         if (result == 1) {
             return ResultMsg.success();
         }
@@ -46,7 +47,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public ResultMsg updateDevice(Device device) {
         device.setUpdateTime(new Date());
-        int result = DeviceDao.updateDevice(device);
+        int result = deviceDao.updateDevice(device);
         if (result == 1) {
             return ResultMsg.success();
         }
@@ -55,7 +56,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg updateDeviceStatus(Long id) {
-        int result = DeviceDao.updateDeviceStatus(id);
+        int result = deviceDao.updateDeviceStatus(id);
         if (result == 1) {
             return ResultMsg.success();
         }

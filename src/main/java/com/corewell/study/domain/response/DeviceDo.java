@@ -1,4 +1,4 @@
-package com.corewell.study.domain;
+package com.corewell.study.domain.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,8 +15,8 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("设备")
-public class Device {
+@ApiModel("设备查询还参")
+public class DeviceDo {
 
     /**
      * 主键id
@@ -109,4 +109,28 @@ public class Device {
      */
     @ApiModelProperty(value = "修改时间", required = false, example = "")
     private Date updateTime;
+
+    /**
+     * 绑定项目负责人
+     */
+    @ApiModelProperty(value = "绑定项目负责人", required = false, example = "")
+    private String bindingName;
+    /**
+     * 解码器
+     */
+    @ApiModelProperty(value = "解码器", required = false, example = "")
+    private String decoderName;
+    /**
+     * 设备导入人
+     */
+    @ApiModelProperty(value = "设备导入人", required = false, example = "")
+    private String creatorName;
+    /**
+     * 绑定项目
+     */
+    @ApiModelProperty(value = "绑定项目", required = false, example = "")
+    private String projectName;
+
+
+
 }

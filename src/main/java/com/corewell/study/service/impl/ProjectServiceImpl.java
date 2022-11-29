@@ -1,5 +1,6 @@
 package com.corewell.study.service.impl;
 
+import com.corewell.study.dao.DeviceDao;
 import com.corewell.study.dao.GroupDao;
 import com.corewell.study.dao.ProjectDao;
 import com.corewell.study.dao.StudentDao;
@@ -30,6 +31,8 @@ public class ProjectServiceImpl implements ProjectService {
     private GroupDao groupDao;
     @Autowired
     private StudentDao studentDao;
+    @Autowired
+    private DeviceDao deviceDao;
 
     @Override
     public ResultMsg findProject(ProjectReq projectReq) {
@@ -63,6 +66,7 @@ public class ProjectServiceImpl implements ProjectService {
         int result = projectDao.updateProjectStatus(id);
         studentDao.updateProjectStudentByProjectId(id);
         groupDao.updateGroupStatusByProjectId(id);
+        deviceDao.updateBindingByProjectId(id);
         if (result == 1) {
             return ResultMsg.success();
         }
@@ -74,6 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
         int result = projectDao.updateProjectStatusByCreatorId(creatorId);
         studentDao.updateProjectStatusByTeacherId(creatorId);
         groupDao.updateGroupStatusByCreatorId(creatorId);
+        deviceDao.updateBindingByBindingId(creatorId);
         System.out.println("删除数目：：：：："+result);
         if (result >0) {
             return ResultMsg.success();

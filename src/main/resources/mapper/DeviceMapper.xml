@@ -10,9 +10,11 @@
         <result property="name" column="name"/>
         <result property="agreement" column="agreement"/>
         <result property="remarks" column="remarks"/>
+        <result property="binding" column="binding"/>
         <result property="status" column="status"/>
         <result property="type" column="type"/>
         <result property="isAlarms" column="is_alarms"/>
+        <result property="bindingId" column="binding_id"/>
         <result property="projectId" column="project_id"/>
         <result property="creatorId" column="creator_id"/>
         <result property="decoderId" column="decoder_id"/>
@@ -22,11 +24,34 @@
 
     </resultMap>
 
-    <select id="findDevice" parameterType="DeviceReq" resultType="Device">
-        select id, model, number, name, agreement,remarks,status,type, is_alarms as isAlarms,project_id as projectId,
-        creator_id as creatorId, decoder_id as decoderId,create_time as createTime, update_time as updateTime
-        from device
-        where delete_flag=1
+    <select id="findDevice" parameterType="DeviceReq" resultType="DeviceDo">
+        select d.id,
+        d.model,
+        d.number,
+        d.name,
+        d.agreement,
+        d.manufacturer,
+        d.remarks,
+        d.binding,
+        d.status,
+        d.type,
+        d.is_alarms as isAlarms,
+        d.binding_id as bindingId,
+        d.project_id as projectId,
+        d.creator_id as creatorId,
+        d.decoder_id as decoderId,
+        d.create_time as createTime,
+        d.update_time as updateTime,
+        t.name as bindingName,
+        d2.name as decoderName,
+        p.name as projectName,
+        t2.name as creatorName
+        from device d
+        left join teacher t on d.binding_id = t.id
+        left join teacher t2 on t2.id=d.creator_id
+        left join decoder d2 on d.decoder_id = d2.id
+        left join project p on d.project_id = p.id
+        where d.delete_flag=1
         <if test="projectId!=null and projectId!=''">
             and project_id=#{projectId}
         </if>
@@ -38,6 +63,9 @@
         </if>
         <if test="creatorId!=null and creatorId!=''">
             and creator_id=#{creatorId}
+        </if>
+        <if test="binding!=null and binding!=''">
+            and binding=#{binding}
         </if>
         <if test="status!=null and status!=''">
             and status=#{status}
@@ -63,8 +91,14 @@
             <if test="agreement!=null and agreement!=''">
                 agreement,
             </if>
+            <if test="manufacturer!=null and manufacturer!=''">
+                manufacturer,
+            </if>
             <if test="remarks!=null and remarks!=''">
                 remarks,
+            </if>
+            <if test="binding!=null and binding!=''">
+                binding,
             </if>
             <if test="status!=null and status!=''">
                 status,
@@ -110,8 +144,14 @@
             <if test="agreement!=null and agreement!=''">
                 #{agreement},
             </if>
+            <if test="manufacturer!=null and manufacturer!=''">
+                #{manufacturer},
+            </if>
             <if test="remarks!=null and remarks!=''">
                 #{remarks},
+            </if>
+            <if test="binding!=null and binding!=''">
+                #{binding},
             </if>
             <if test="status!=null and status!=''">
                 #{status},
@@ -159,8 +199,14 @@
             <if test="agreement!=null and agreement!=''">
                 agreement =#{agreement},
             </if>
+            <if test="manufacturer!=null and manufacturer!=''">
+                manufacturer =#{manufacturer},
+            </if>
             <if test="remarks!=null and remarks!=''">
                 remarks =#{remarks},
+            </if>
+            <if test="binding!=null and binding!=''">
+                binding =#{binding},
             </if>
             <if test="status!=null and status!=''">
                 status =#{status},
@@ -198,6 +244,20 @@
         set delete_flag=0,
             update_time=now()
         where id = #{id}
+    </update>
+
+    <update id="updateBindingByProjectId" parameterType="Long">
+        update Device
+        set binding=0,
+            update_time=now()
+        where project_id = #{projectId}
+    </update>
+
+    <update id="updateBindingByBindingId" parameterType="Long">
+        update Device
+        set binding=0,
+            update_time=now()
+        where binding_id = #{bindingId}
     </update>
 </mapper>
 

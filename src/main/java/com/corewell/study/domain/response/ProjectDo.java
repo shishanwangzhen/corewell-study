@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("项目")
+@ApiModel("项目还参")
 public class ProjectDo {
   /**
    * 主键id
