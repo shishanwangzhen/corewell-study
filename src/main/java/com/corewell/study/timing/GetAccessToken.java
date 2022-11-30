@@ -2,6 +2,8 @@ package com.corewell.study.timing;
 
 import com.alibaba.fastjson.JSONObject;
 import com.corewell.study.constants.BaseRedisKeyConstants;
+import com.corewell.study.service.GetAccessTokenService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
@@ -11,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Map;
 
@@ -24,12 +27,14 @@ import java.util.Map;
 @Component
 public class GetAccessToken {
 
+    private static String accessToken;
+    @Resource
+    private GetAccessTokenService getAccessTokenService;
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     private static final String LOGIN_URL = "https://app.dtuip.com/oauth/token?grant_type=password&username=bydwadmin&password=bydwadmin123";
-    String accessToken = null;
     HttpHeaders headers = new HttpHeaders();
 
 
@@ -54,7 +59,8 @@ public class GetAccessToken {
      */
 
 
-    @Scheduled(cron = "0 0 2,8,16 * * ?")
+    //@Scheduled(cron = "0 0 2,8,16 * * ?")
+    //@Scheduled(cron = "0/2 * * * * ?")
     public void getAccessToken() {
         System.out.println("————————————$$$$$$$$$$$" + new Date() + "定时任务getAccessToken开始————————————————————");
         try {
@@ -64,8 +70,8 @@ public class GetAccessToken {
             System.out.println(responseEntity.getBody());
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
             accessToken = jsonObject.get("access_token").toString();
-            stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.redis_key_pre + "access_token", accessToken);
-            System.out.println("获取tlink的access_token值为：" + stringRedisTemplate.opsForValue().get("access_token"));
+            stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.ACCESS_TOKEN_KEY, accessToken);
+            System.out.println("获取tlink的access_token值为：" + stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.ACCESS_TOKEN_KEY));
         } catch (Exception e) {
             System.out.println(e);
         }
