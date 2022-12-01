@@ -2,6 +2,7 @@ package com.corewell.study.service.impl;
 
 import com.corewell.study.dao.DeviceDao;
 import com.corewell.study.domain.Device;
+import com.corewell.study.domain.request.DeviceBindingReq;
 import com.corewell.study.domain.request.DeviceReq;
 import com.corewell.study.domain.response.DeviceDo;
 import com.corewell.study.domain.result.ResultMsg;
@@ -10,6 +11,8 @@ import com.corewell.study.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Array;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -61,5 +64,15 @@ public class DeviceServiceImpl implements DeviceService {
             return ResultMsg.success();
         }
         return new ResultMsg(ResultStatusCode.DELETE_FAILED);
+    }
+
+    @Override
+    public ResultMsg updateDeviceBinding(DeviceBindingReq deviceBindingReq) {
+        int result = deviceDao.updateDeviceBinding(deviceBindingReq);
+        System.out.println("绑定结果：：："+result);
+        if (result > 0) {
+            return ResultMsg.success();
+        }
+        return ResultMsg.error();
     }
 }

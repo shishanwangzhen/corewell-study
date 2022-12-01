@@ -53,22 +53,31 @@
         left join project p on d.project_id = p.id
         where d.delete_flag=1
         <if test="projectId!=null and projectId!=''">
-            and project_id=#{projectId}
-        </if>
-        <if test="id!=null and id!=''">
-            and id=#{id}
-        </if>
-        <if test="type!=null and type!=''">
-            and type=#{type}
-        </if>
-        <if test="creatorId!=null and creatorId!=''">
-            and creator_id=#{creatorId}
+            and d.project_id=#{projectId}
         </if>
         <if test="binding!=null and binding!=''">
-            and binding=#{binding}
+            and d.binding=#{binding}
+        </if>
+        <if test="id!=null and id!=''">
+            and d.id=#{id}
+        </if>
+        <if test="type!=null and type!=''">
+            and d.type=#{type}
+        </if>
+        <if test="creatorId!=null and creatorId!=''">
+            and d.creator_id=#{creatorId}
+        </if>
+        <if test="binding!=null and binding!=''">
+            and d.binding=#{binding}
         </if>
         <if test="status!=null and status!=''">
-            and status=#{status}
+            and d.status=#{status}
+        </if>
+        <if test="number!=null and number!=''">
+            and d.number=#{number}
+        </if>
+        <if test="name!=null and name!=''">
+            and d.name like CONCAT('%' , #{name ,jdbcType=VARCHAR},'%')
         </if>
 
     </select>
@@ -259,5 +268,14 @@
             update_time=now()
         where binding_id = #{bindingId}
     </update>
+
+    <!--批量更新-->
+  <update id="updateDeviceBinding" parameterType="DeviceBindingReq">
+      update device set binding=#{binding},project_id=#{projectId},binding_id=#{bindingId} where id in
+      <foreach collection="ids"  item="ids" open="(" close=")" separator=",">
+          #{ids}
+      </foreach>
+
+  </update>
 </mapper>
 

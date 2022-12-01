@@ -2,6 +2,7 @@ package com.corewell.study.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.corewell.study.domain.Device;
+import com.corewell.study.domain.request.DeviceBindingReq;
 import com.corewell.study.domain.request.DeviceReq;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
@@ -58,6 +59,15 @@ public class DeviceController {
     @PostMapping("/updateDeviceStatus")
     public ResultMsg updateDeviceStatus(Long id) {
         ResultMsg resultMsg = DeviceService.updateDeviceStatus(id);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("项目配置设备")
+    @PostMapping("/updateDeviceBinding")
+    public ResultMsg updateDeviceBinding(@RequestBody DeviceBindingReq deviceBindingReq) {
+        System.out.println(JSON.toJSON(deviceBindingReq));
+        ResultMsg resultMsg = DeviceService.updateDeviceBinding(deviceBindingReq);
         return resultMsg;
 
     }

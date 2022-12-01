@@ -1,6 +1,7 @@
 package com.corewell.study.service;
 
 import com.corewell.study.domain.Device;
+import com.corewell.study.domain.request.DeviceBindingReq;
 import com.corewell.study.domain.request.DeviceReq;
 import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
@@ -46,6 +47,13 @@ public interface DeviceService {
      * @return
      */
     ResultMsg updateDeviceStatus(@Param("id") Long id);
+    /**
+     * 设备绑定项目
+     *
+     * @param deviceBindingReq
+     * @return
+     */
+    ResultMsg updateDeviceBinding(DeviceBindingReq deviceBindingReq);
 
 
 }

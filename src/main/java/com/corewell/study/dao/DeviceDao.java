@@ -1,6 +1,7 @@
 package com.corewell.study.dao;
 
 import com.corewell.study.domain.Device;
+import com.corewell.study.domain.request.DeviceBindingReq;
 import com.corewell.study.domain.request.DeviceReq;
 import com.corewell.study.domain.response.DeviceDo;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,26 +21,26 @@ public interface DeviceDao {
     /**
      * 查询设备
      *
-     * @param DeviceReq
+     * @param deviceReq
      * @return
      */
-    List<DeviceDo> findDevice(DeviceReq DeviceReq);
+    List<DeviceDo> findDevice(DeviceReq deviceReq);
 
     /**
      * 新增设备
      *
-     * @param Device
+     * @param device
      * @return
      */
-    int insertDevice(Device Device);
+    int insertDevice(Device device);
 
     /**
      * 修改设备
      *
-     * @param Device
+     * @param device
      * @return
      */
-    int updateDevice(Device Device);
+    int updateDevice(Device device);
 
     /**
      * 删除设备
@@ -63,6 +64,15 @@ public interface DeviceDao {
      * @return
      */
     int updateBindingByBindingId(Long bindingId);
+
+    /**
+     * 修改设备
+     *
+     * @param deviceBindingReq
+     * @return
+     */
+    int updateDeviceBinding(DeviceBindingReq deviceBindingReq);
+
 
 
 }
