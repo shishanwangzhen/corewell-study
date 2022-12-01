@@ -38,35 +38,22 @@ public class DecoderReq {
      */
     @ApiModelProperty(value = "解码器型号", required = false, example = "")
     private String model;
+    /**
+     * 厂商
+     */
+    @ApiModelProperty(value = "厂商", required = false, example = "")
+    private String manufacturer;
 
     /**
-     * 解码器路径
+     * 解码器类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
      */
-    @ApiModelProperty(value = "解码器路径", required = false, example = "")
-    private String path;
-
-    /**
-     * 解码器端口
-     */
-    @ApiModelProperty(value = "解码器端口", required = false, example = "")
-    private String port;
-
-    /**
-     * 备注
-     */
-    @ApiModelProperty(value = "备注", required = false, example = "")
-    private String remarks;
+    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = false, example = "")
+    private String type;
 
     /**
      * 创建者id
      */
     @ApiModelProperty(value = "创建者id", required = false, example = "")
     private Long creatorId;
-
-    /**
-     * 协议id
-     */
-    @ApiModelProperty(value = "协议id", required = false, example = "")
-    private Long agreementId;
-
 }
+
