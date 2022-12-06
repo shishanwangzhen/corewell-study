@@ -9,13 +9,13 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +34,7 @@ public class GetAccessToken {
     private RestTemplate restTemplate;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
-    private static final String LOGIN_URL = "https://app.dtuip.com/oauth/token?grant_type=password&username=bydwadmin&password=bydwadmin123";
+    private static final String LOGIN_URL = "https://app.dtuip.com/oauth/token?grant_type=password&username=jsnl&password=Corewell2022";
     HttpHeaders headers = new HttpHeaders();
 
 
@@ -58,25 +58,29 @@ public class GetAccessToken {
      * (15)0 0-5 14 * * ? 在每天下午2点到下午2:05期间的每1分钟触发
      */
 
-
-    //@Scheduled(cron = "0 0 2,8,16 * * ?")
-    //@Scheduled(cron = "0/2 * * * * ?")
-    public void getAccessToken() {
-        System.out.println("————————————$$$$$$$$$$$" + new Date() + "定时任务getAccessToken开始————————————————————");
+    public String getAccessToken() {
         try {
+            if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.ACCESS_TOKEN_KEY)){
+                accessToken = stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.ACCESS_TOKEN_KEY);
+                if (StringUtils.isNotBlank(accessToken)) {
+                    return accessToken;
+                }
+            }
             headers.clear();
-            headers.add("authorization", "Basic NGI4NDIwZDRkYzk3NGZkNDgyODUwODZkMDkwMjJmOWI6YzliM2RjYjBkNjcxNDE0YTg2Mjg2ZmQyZDNmMGM2N2I=");
+            headers.add("authorization", "Basic NjIxZDM1ODYwY2NlNDUxYTg4NmI5MzI5YWZmYjUyYzY6Mzk0MDA5YWI2ZjQxNGMxNGE3ZTYyZjlmZGRmOTM2OWI=");
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(LOGIN_URL, new HttpEntity<Map>(null, headers), String.class);
             System.out.println(responseEntity.getBody());
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+            Long expiresIn = jsonObject.getLong("expires_in");
             accessToken = jsonObject.get("access_token").toString();
-            stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.ACCESS_TOKEN_KEY, accessToken);
+            stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.ACCESS_TOKEN_KEY, accessToken, expiresIn, TimeUnit.SECONDS);
             System.out.println("获取tlink的access_token值为：" + stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.ACCESS_TOKEN_KEY));
         } catch (Exception e) {
             System.out.println(e);
         }
-
+        return accessToken;
     }
+
 }
 
 
