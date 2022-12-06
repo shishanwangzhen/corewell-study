@@ -10,8 +10,8 @@ import java.util.Base64;
  * @Description:
  */
 public class BaseUtil {
-    private static final String CLIENT_ID="4b8420d4dc974fd48285086d09022f9b";
-    private static final String SECRET="c9b3dcb0d671414a86286fd2d3f0c67b";
+    private static final String CLIENT_ID="621d35860cce451a886b9329affb52c6";
+    private static final String SECRET="394009ab6f414c14a7e62f9fddf9369b";
     /**
      * BASE64加密
      * */

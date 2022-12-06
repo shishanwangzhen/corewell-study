@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//www.mybatis.org//DTD Mapper 3.0//EN"
+        "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.corewell.study.dao.DeviceNumberDao">
+    <resultMap id="ProjectMap" type="com.corewell.study.domain.DeviceNumber">
+        <id property="id" column="id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="deviceNo" column="deviceNo"/>
+        <result property="status" column="status"/>
+
+    </resultMap>
+
+    <select id="findDeviceNumber" resultType="String">
+        select deviceNO
+        from device_number
+        where status = 0
+    </select>
+</mapper>
+
