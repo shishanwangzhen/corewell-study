@@ -6,10 +6,7 @@ import com.corewell.study.dao.DeviceDao;
 import com.corewell.study.dao.DeviceNumberDao;
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.DeviceNumber;
-import com.corewell.study.domain.request.DeviceBindingReq;
-import com.corewell.study.domain.request.DeviceInsertParam;
-import com.corewell.study.domain.request.DeviceReq;
-import com.corewell.study.domain.request.DeviceUpdateParam;
+import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.DeviceDTO;
 import com.corewell.study.domain.response.DeviceDo;
 import com.corewell.study.domain.result.ResultMsg;
@@ -44,6 +41,8 @@ public class DeviceServiceImpl implements DeviceService {
     private static final String TLINK_UPDATEDEVICE_URL = TLINK_URL + "updateDevice";
     private static final String TLINK_DELETEDEVICE_URL = TLINK_URL + "deleteDevice";
     private static final String TLINK_GETSINGLEDEVICEDATAS_URL = TLINK_URL + "getSingleDeviceDatas";
+    private static final String TLINK_SWITCHER_URL = TLINK_URL + "switcherController";
+    private static final String TLINK_WRITE_URL = TLINK_URL + "deviceWrite";
     @Autowired
     private DeviceDao deviceDao;
     @Autowired
@@ -115,8 +114,8 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("新增设备ru参：：" + JSON.toJSONString(mapParam));
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_ADDDEVICE_URL, new HttpEntity<Map>(mapParam, headers), String.class);
-            System.out.println("新增设备还参：：" + responseEntity.getBody());
-            if (!"00".equals(JSON.parseObject(responseEntity.getBody()).get("flag").toString())) {
+            System.out.println("新增设备还参：：" + responseEntity);
+            if (!JSON.parseObject(responseEntity.getBody()).containsKey("deviceId")) {
                 return ResultMsg.error();
             }
             ResponseEntity<String> responseEntity1 = restTemplate.postForEntity(TLINK_GETSINGLEDEVICEDATAS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
@@ -240,5 +239,58 @@ public class DeviceServiceImpl implements DeviceService {
             return ResultMsg.success();
         }
         return ResultMsg.error();
+    }
+
+    @Override
+    public ResultMsg switcherController(DeviceSwitcherParam deviceSwitcherParam) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceNo", deviceSwitcherParam.getDeviceNo());
+            mapParam.put("switcher", deviceSwitcherParam.getSwitcher());
+            mapParam.put("sensorId", deviceSwitcherParam.getSensorId());
+
+            System.out.println("设备开关下行控制ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_SWITCHER_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("设备开关下行控制还参：：" + responseEntity.getBody());
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+        String flag = jsonObject.get("flag").toString();
+        if ("00".equals(flag)) {
+            return ResultMsg.success();
+        } else {
+            return ResultMsg.error();
+        }
+    }
+
+
+    @Override
+    public ResultMsg deviceWrite(DeviceWriteParam deviceWriteParam) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceNo", deviceWriteParam.getDeviceNo());
+            mapParam.put("value", deviceWriteParam.getValue());
+            mapParam.put("sensorId", deviceWriteParam.getSensorId());
+
+            System.out.println("设备数据下行ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_WRITE_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("设备数据下行还参：：" + responseEntity.getBody());
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+        String flag = jsonObject.get("flag").toString();
+        if ("00".equals(flag)) {
+            return ResultMsg.success();
+        } else {
+            return ResultMsg.error();
+        }
     }
 }

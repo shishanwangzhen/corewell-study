@@ -1,10 +1,7 @@
 package com.corewell.study.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.corewell.study.domain.request.DeviceBindingReq;
-import com.corewell.study.domain.request.DeviceInsertParam;
-import com.corewell.study.domain.request.DeviceReq;
-import com.corewell.study.domain.request.DeviceUpdateParam;
+import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
 import io.swagger.annotations.Api;
@@ -90,5 +87,23 @@ public class DeviceController {
         return resultMsg;
 
     }
+
+    @ApiOperation("设备开关下行控制")
+    @PostMapping("/switcherController")
+    public ResultMsg switcherController(@RequestBody DeviceSwitcherParam deviceSwitcherParam) {
+        ResultMsg resultMsg = DeviceService.switcherController(deviceSwitcherParam);
+        return resultMsg;
+
+    }
+
+
+    @ApiOperation("设备数据下行")
+    @PostMapping("/deviceWrite")
+    public ResultMsg deviceWrite(@RequestBody DeviceWriteParam deviceWriteParam) {
+        ResultMsg resultMsg = DeviceService.deviceWrite(deviceWriteParam);
+        return resultMsg;
+
+    }
+
 
 }

@@ -1,10 +1,7 @@
 package com.corewell.study.service;
 
 import com.corewell.study.domain.Device;
-import com.corewell.study.domain.request.DeviceBindingReq;
-import com.corewell.study.domain.request.DeviceInsertParam;
-import com.corewell.study.domain.request.DeviceReq;
-import com.corewell.study.domain.request.DeviceUpdateParam;
+import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -73,5 +70,19 @@ public interface DeviceService {
      */
     ResultMsg updateDeviceBindingById(Long id);
 
+    /**
+     * 设备开关下行控制
+     *
+     * @param deviceSwitcherParam
+     * @return
+     */
+    ResultMsg switcherController(DeviceSwitcherParam deviceSwitcherParam);
 
+    /**
+     * 设备数据下行
+     *
+     * @param deviceWriteParam
+     * @return
+     */
+    ResultMsg deviceWrite(DeviceWriteParam deviceWriteParam);
 }
