@@ -103,9 +103,14 @@ public class DeviceServiceImpl implements DeviceService {
 
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
-            mapParam.put("userId", 77632);
             mapParam.put("deviceNo", deviceInsertParam.getDeviceNo());
-
+            mapParam.put("lat", "22.601376");
+            mapParam.put("lng", "113.956591");
+            mapParam.put("linkType", deviceInsertParam.getLinkType());
+            mapParam.put("timescale", deviceInsertParam.getTimescale());
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceName", deviceInsertParam.getDeviceName());
+            mapParam.put("sensorList", deviceInsertParam.getSensorList());
             HttpHeaders headers = getHeaders();
             System.out.println("新增设备ru参：：" + JSON.toJSONString(mapParam));
             RestTemplate restTemplate = new RestTemplate();
@@ -126,8 +131,9 @@ public class DeviceServiceImpl implements DeviceService {
                 device.setDeviceId(deviceDTO.getId());
                 device.setDeviceName(deviceInsertParam.getDeviceName());
                 device.setDeviceNo(deviceNo);
-                device.setIsDelete(0L);
                 device.setBinding("0");
+                device.setLinkType(deviceDTO.getLinktype());
+                device.setTimescale(Long.valueOf(deviceDTO.getDefaultTimescale()));
                 device.setType(deviceInsertParam.getType());
                 device.setCreatorId(deviceInsertParam.getCreatorId());
                 device.setCreateTime(new Date());
@@ -184,6 +190,7 @@ public class DeviceServiceImpl implements DeviceService {
         if (StringUtils.isNotBlank(deviceUpdateParam.getDeviceName())) {
             device.setDeviceName(deviceUpdateParam.getDeviceName());
         }
+        device.setUpdateTime(new Date());
         deviceDao.updateDevice(device);
         return ResultMsg.success();
     }

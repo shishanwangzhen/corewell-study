@@ -21,7 +21,7 @@ public class DeviceInsertParam {
     /**
      * 设备序列号
      */
-    @ApiModelProperty(value = "设备序列号", required = false, example = "")
+    @ApiModelProperty(value = "设备序列号", required = true, example = "")
     private String deviceNo;
 
     /**
@@ -44,7 +44,7 @@ public class DeviceInsertParam {
     /**
      * 传感器集合
      */
-    @ApiModelProperty(value = "删除的传感器Id，多个Id之间用英文逗号分隔 ，可选参数，没有需要删除的传感器则不用传", required = true, example = "")
+    @ApiModelProperty(value = "删除的传感器Id，多个Id之间用英文逗号分隔 ，可选参数，没有需要删除的传感器则不用传", required = false, example = "")
     private List<SensorParam> sensorList;
 
     /**
@@ -56,7 +56,7 @@ public class DeviceInsertParam {
     /**
      * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
      */
-    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = false, example = "")
+    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = true, example = "")
     private String type;
 
 }

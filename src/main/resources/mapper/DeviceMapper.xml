@@ -233,7 +233,7 @@
                 decoder_id=#{decoderId},
             </if>
         </set>
-        where id=#{id}
+        where device_id=#{deviceId}
     </update>
 
     <delete id="deleteDevice" parameterType="Long">
