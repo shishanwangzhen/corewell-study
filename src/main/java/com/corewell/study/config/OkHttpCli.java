@@ -1,9 +1,13 @@
 package com.corewell.study.config;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.corewell.study.timing.GetAccessToken;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -22,11 +26,15 @@ public class OkHttpCli {
     @Autowired
     private OkHttpClient okHttpClient;
 
+    @Autowired
+    private GetAccessToken getAccessToken;
+
     /**
      * get 请求
-     * @param url       请求url地址
+     *
+     * @param url 请求url地址
      * @return string
-     * */
+     */
     public String doGet(String url) {
         return doGet(url, null, null);
     }
@@ -34,20 +42,22 @@ public class OkHttpCli {
 
     /**
      * get 请求
-     * @param url       请求url地址
-     * @param params    请求参数 map
+     *
+     * @param url    请求url地址
+     * @param params 请求参数 map
      * @return string
-     * */
+     */
     public String doGet(String url, Map<String, String> params) {
         return doGet(url, params, null);
     }
 
     /**
      * get 请求
-     * @param url       请求url地址
-     * @param headers   请求头字段 {k1, v1 k2, v2, ...}
+     *
+     * @param url     请求url地址
+     * @param headers 请求头字段 {k1, v1 k2, v2, ...}
      * @return string
-     * */
+     */
     public String doGet(String url, String[] headers) {
         return doGet(url, null, headers);
     }
@@ -55,11 +65,12 @@ public class OkHttpCli {
 
     /**
      * get 请求
-     * @param url       请求url地址
-     * @param params    请求参数 map
-     * @param headers   请求头字段 {k1, v1 k2, v2, ...}
+     *
+     * @param url     请求url地址
+     * @param params  请求参数 map
+     * @param headers 请求头字段 {k1, v1 k2, v2, ...}
      * @return string
-     * */
+     */
     public String doGet(String url, Map<String, String> params, String[] headers) {
         StringBuilder sb = new StringBuilder(url);
         if (params != null && params.keySet().size() > 0) {
@@ -92,9 +103,49 @@ public class OkHttpCli {
     }
 
     /**
+     * get 请求
+     *
+     * @param url     请求url地址
+     * @param params  请求参数 map
+     * @param headers 请求头字段 {k1, v1 k2, v2, ...}
+     * @return string
+     */
+    public String doGet1(String url, Map<String, Object> params, String[] headers) {
+        StringBuilder sb = new StringBuilder(url);
+        if (params != null && params.keySet().size() > 0) {
+            boolean firstFlag = true;
+            for (String key : params.keySet()) {
+                if (firstFlag) {
+                    sb.append("?").append(key).append("=").append(params.get(key));
+                    firstFlag = false;
+                } else {
+                    sb.append("&").append(key).append("=").append(params.get(key));
+                }
+            }
+        }
+
+        Request.Builder builder = new Request.Builder();
+        if (headers != null && headers.length > 0) {
+            if (headers.length % 2 == 0) {
+                for (int i = 0; i < headers.length; i = i + 2) {
+                    builder.addHeader(headers[i], headers[i + 1]);
+                }
+            } else {
+                log.warn("headers's length[{}] is error.", headers.length);
+            }
+
+        }
+
+        Request request = builder.url(sb.toString()).build();
+        log.info("do get request and url[{}]", sb.toString());
+        return execute(request);
+    }
+
+    /**
      * post 请求
-     * @param url       请求url地址
-     * @param params    请求参数 map
+     *
+     * @param url    请求url地址
+     * @param params 请求参数 map
      * @return string
      */
     public String doPost(String url, Map<String, String> params) {
@@ -111,11 +162,38 @@ public class OkHttpCli {
         return execute(request);
     }
 
+    /**
+     * post 请求
+     *
+     * @param url    请求url地址
+     * @param params 请求参数 map
+     * @return string
+     */
+    public String doPost1(String url, Map<String, Object> params) {
+        FormBody.Builder builder = new FormBody.Builder();
+        if (params != null && params.keySet().size() > 0) {
+            System.out.println("keySet().size"+params.keySet().size()+"params::"+params);
+            for (String key : params.keySet()) {
+                builder.add(key, params.get(key).toString());
+            }
+        }
+        System.out.println("builder"+ com.alibaba.fastjson.JSON.toJSONString(builder));
+        Request request = new Request.Builder().url(url).post(builder.build())
+                .addHeader("Authorization", "Bearer" + " " + getAccessToken.getAccessToken())
+                .addHeader("Content-Type", "application/json")
+                .addHeader("tlinkAppId", "621d35860cce451a886b9329affb52c6")
+                .build();
+        log.info("do post request and url[{}]", url);
+
+        return execute(request);
+    }
+
 
     /**
      * post 请求, 请求数据为 json 的字符串
-     * @param url       请求url地址
-     * @param json      请求数据, json 字符串
+     *
+     * @param url  请求url地址
+     * @param json 请求数据, json 字符串
      * @return string
      */
     public String doPostJson(String url, String json) {
@@ -125,8 +203,9 @@ public class OkHttpCli {
 
     /**
      * post 请求, 请求数据为 xml 的字符串
-     * @param url       请求url地址
-     * @param xml       请求数据, xml 字符串
+     *
+     * @param url 请求url地址
+     * @param xml 请求数据, xml 字符串
      * @return string
      */
     public String doPostXml(String url, String xml) {
@@ -145,7 +224,9 @@ public class OkHttpCli {
     private String execute(Request request) {
         Response response = null;
         try {
+            System.out.println("okHttpClient :::::入参：" + com.alibaba.fastjson.JSON.toJSONString(request.toString()));
             response = okHttpClient.newCall(request).execute();
+            System.out.println("okHttpClient :::::出参：" + com.alibaba.fastjson.JSON.toJSONString(response.toString()));
             if (response.isSuccessful()) {
                 return response.body().string();
             }

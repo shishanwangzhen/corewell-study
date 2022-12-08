@@ -20,20 +20,15 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class OkHttpConfiguration {
 
-    @Value("${ok.http.connect-timeout}")
-    private Integer connectTimeout;
+    private final static Integer connectTimeout=30;
 
-    @Value("${ok.http.read-timeout}")
-    private Integer readTimeout;
+    private  final static Integer readTimeout=30;
 
-    @Value("${ok.http.write-timeout}")
-    private Integer writeTimeout;
+    private  final static Integer writeTimeout=30;
 
-    @Value("${ok.http.max-idle-connections}")
-    private Integer maxIdleConnections;
+    private  final static Integer maxIdleConnections=200;
 
-    @Value("${ok.http.keep-alive-duration}")
-    private Long keepAliveDuration;
+    private  final static Long keepAliveDuration=300L;
 
     @Bean
     public OkHttpClient okHttpClient() {
