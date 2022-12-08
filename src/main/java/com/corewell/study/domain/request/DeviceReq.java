@@ -22,34 +22,41 @@ public class DeviceReq {
      */
     @ApiModelProperty(value = "主键id", required = false, example = "")
     private Long id;
-
     /**
-     * 设备编号
+     * 设备id
      */
-    @ApiModelProperty(value = "设备编号", required = false, example = "")
-    @NotNull(message = "number不能为空")
-    private String number;
+    @ApiModelProperty(value = "设备id", required = false, example = "")
+    private Long deviceId;
     /**
      * 设备名称
      */
-    @ApiModelProperty(value = "设备名称", required = false, example = "")
-    private String name;
+    @ApiModelProperty(value = "设备名称", required = true, example = "")
+    private String deviceName;
+
     /**
-     * 绑定状态（0.未绑定项目，1.已绑定项目）
+     * 设备序列号
      */
-    @ApiModelProperty(value = "绑定状态（0.未绑定项目，1.已绑定项目）", required = false, example = "")
-    private String binding;
+    @ApiModelProperty(value = "设备序列号", required = false, example = "")
+    private String deviceNo;
+
     /**
-     * 工作状态（0.未绑定，1.在线，2.离线）
+     * 是否删除 0 否 1 是 2禁用
      */
-    @ApiModelProperty(value = "工作状态（0.未绑定，1.在线，2.离线）", required = false, example = "")
-    private String status;
+    @ApiModelProperty(value = "是否删除 0 否 1 是 2禁用", required = false, example = "")
+    private Long isDelete;
+
+
     /**
      * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
      */
     @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = false, example = "")
     private String type;
 
+    /**
+     * 绑定状态（0.未绑定项目，1.已绑定项目）
+     */
+    @ApiModelProperty(value = "绑定状态（0.未绑定项目，1.已绑定项目）", required = false, example = "")
+    private String binding;
     /**
      * 项目负责人id
      */

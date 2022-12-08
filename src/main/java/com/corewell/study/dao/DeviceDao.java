@@ -45,10 +45,10 @@ public interface DeviceDao {
     /**
      * 删除设备
      *
-     * @param id
+     * @param deviceId
      * @return
      */
-    int updateDeviceStatus(@Param("id") Long id);
+    int deleteDevice(@Param("deviceId") Long deviceId);
     /**
      * 删除项目
      *
@@ -72,6 +72,14 @@ public interface DeviceDao {
      * @return
      */
     int updateDeviceBinding(DeviceBindingReq deviceBindingReq);
+
+    /**
+     * 解绑设备
+     *
+     * @param id
+     * @return
+     */
+    int updateDeviceBindingById(@Param("id") Long id);
 
 
 

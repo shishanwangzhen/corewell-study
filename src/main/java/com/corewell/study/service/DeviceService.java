@@ -2,7 +2,9 @@ package com.corewell.study.service;
 
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.request.DeviceBindingReq;
+import com.corewell.study.domain.request.DeviceInsertParam;
 import com.corewell.study.domain.request.DeviceReq;
+import com.corewell.study.domain.request.DeviceUpdateParam;
 import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,28 +27,36 @@ public interface DeviceService {
     ResultMsg findDevice(DeviceReq deviceReq);
 
     /**
-     * 新增设备
+     * 根据deviceId查询设备详情
      *
-     * @param device
+     * @param deviceId
      * @return
      */
-    ResultMsg insertDevice(Device device);
+    ResultMsg findDeviceByDeviceId(Long deviceId);
+
+    /**
+     * 新增设备
+     *
+     * @param deviceInsertParam
+     * @return
+     */
+    ResultMsg insertDevice(DeviceInsertParam deviceInsertParam);
 
     /**
      * 修改设备
      *
-     * @param device
+     * @param deviceUpdateParam
      * @return
      */
-    ResultMsg updateDevice(Device device);
+    ResultMsg updateDevice(DeviceUpdateParam deviceUpdateParam);
 
     /**
      * 删除设备
      *
-     * @param id
+     * @param deviceId
      * @return
      */
-    ResultMsg updateDeviceStatus(@Param("id") Long id);
+    ResultMsg deleteDevice(Long deviceId);
     /**
      * 设备绑定项目
      *
@@ -54,6 +64,14 @@ public interface DeviceService {
      * @return
      */
     ResultMsg updateDeviceBinding(DeviceBindingReq deviceBindingReq);
+
+    /**
+     * 删除设备
+     *
+     * @param id
+     * @return
+     */
+    ResultMsg updateDeviceBindingById(Long id);
 
 
 }

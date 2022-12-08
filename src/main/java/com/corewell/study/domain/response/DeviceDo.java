@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -23,57 +22,51 @@ public class DeviceDo {
      */
     @ApiModelProperty(value = "主键id", required = false, example = "")
     private Long id;
+
     /**
-     * 设备型号
+     * 设备id
      */
-    @ApiModelProperty(value = "设备型号", required = false, example = "")
-    private String model;
-    /**
-     * 设备编号
-     */
-    @ApiModelProperty(value = "设备编号", required = false, example = "")
-    @NotNull(message = "number不能为空")
-    private String number;
+    @ApiModelProperty(value = "设备id", required = false, example = "")
+    private Long deviceId;
+
     /**
      * 设备名称
      */
-    @ApiModelProperty(value = "设备名称", required = false, example = "")
-    private String name;
+    @ApiModelProperty(value = "设备名称", required = true, example = "")
+    private String deviceName;
+
     /**
-     * 协议类型
+     * 设备序列号
      */
-    @ApiModelProperty(value = "协议类型", required = false, example = "")
-    private String agreement;
+    @ApiModelProperty(value = "设备序列号", required = false, example = "")
+    private String deviceNo;
     /**
-     * 厂商
+     * 协议类型 "tcp","modbus" "mdtcp","udp","mqtt","tp500","coap","http","nbiot" 注意区分大小写 必填参数
      */
-    @ApiModelProperty(value = "厂商", required = false, example = "")
-    private String manufacturer;
+    @ApiModelProperty(value = "协议类型  tcp,modbus,mdtcp,udp,mqtt,tp500coap,http,nbiot 注意区分大小写 必填参数", required = true, example = "")
+    private String linkType;
     /**
-     * 备注
+     * 掉线延时
      */
-    @ApiModelProperty(value = "备注", required = false, example = "")
-    private String remarks;
+    @ApiModelProperty(value = "掉线延时", required = false, example = "")
+    private Long timescale;
     /**
-     * 绑定状态（0.未绑定项目，1.已绑定项目）
+     * 设备图标
      */
-    @ApiModelProperty(value = "绑定状态（0.未绑定项目，1.已绑定项目）", required = false, example = "")
-    private String binding;
-    /**
-     * 工作状态（0.未绑定，1.在线，2.离线）
-     */
-    @ApiModelProperty(value = "工作状态（0.未绑定，1.在线，2.离线）", required = false, example = "")
-    private String status;
+    @ApiModelProperty(value = "设备图标", required = false, example = "")
+    private String iocUrl;
+
     /**
      * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
      */
     @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = false, example = "")
     private String type;
+
     /**
-     * 设备是否报警，(0 未报警，1已报警)
+     * 绑定状态（0.未绑定项目，1.已绑定项目）
      */
-    @ApiModelProperty(value = "设备是否报警，(0 未报警，1已报警)", required = false, example = "")
-    private String isAlarms;
+    @ApiModelProperty(value = "绑定状态（0.未绑定项目，1.已绑定项目）", required = false, example = "")
+    private String binding;
     /**
      * 项目负责人id
      */
@@ -89,16 +82,7 @@ public class DeviceDo {
      */
     @ApiModelProperty(value = "创建者id", required = true, example = "")
     private Long creatorId;
-    /**
-     * 解码器id
-     */
-    @ApiModelProperty(value = "解码器id", required = false, example = "")
-    private Long decoderId;
-    /**
-     * 状态（0.删除，1.正常）
-     */
-    @ApiModelProperty(value = "状态（0.删除，1.正常）", required = false, example = "")
-    private String deleteFlag;
+
     /**
      * 创建时间
      */
@@ -130,7 +114,6 @@ public class DeviceDo {
      */
     @ApiModelProperty(value = "绑定项目", required = false, example = "")
     private String projectName;
-
 
 
 }

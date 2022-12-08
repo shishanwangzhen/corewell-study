@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -24,56 +23,89 @@ public class Device {
     @ApiModelProperty(value = "主键id", required = false, example = "")
     private Long id;
     /**
-     * 设备型号
+     * 设备id
      */
-    @ApiModelProperty(value = "设备型号", required = false, example = "")
-    private String model;
+    @ApiModelProperty(value = "设备id", required = false, example = "")
+    private Long deviceId;
+
     /**
-     * 设备编号
+     * 设备组Id
      */
-    @ApiModelProperty(value = "设备编号", required = false, example = "")
-    @NotNull(message = "number不能为空")
-    private String number;
+    @ApiModelProperty(value = "设备组Id", required = false, example = "")
+    private Long groupId;
     /**
      * 设备名称
      */
-    @ApiModelProperty(value = "设备名称", required = false, example = "")
-    private String name;
+    @ApiModelProperty(value = "设备名称", required = true, example = "")
+    private String deviceName;
+
     /**
-     * 协议类型
+     * 设备序列号
      */
-    @ApiModelProperty(value = "协议类型", required = false, example = "")
-    private String agreement;
+    @ApiModelProperty(value = "设备序列号", required = false, example = "")
+    private String deviceNo;
     /**
-     * 厂商
+     * 设备在地图上的经度
      */
-    @ApiModelProperty(value = "厂商", required = false, example = "")
-    private String manufacturer;
+    @ApiModelProperty(value = "设备在地图上的经度", required = false, example = "")
+    private String lng;
     /**
-     * 备注
+     * 设备在地图上的纬度
      */
-    @ApiModelProperty(value = "备注", required = false, example = "")
-    private String remarks;
+    @ApiModelProperty(value = "设备在地图上的纬度", required = false, example = "")
+    private String lat;
     /**
-     * 绑定状态（0.未绑定项目，1.已绑定项目）
+     * 协议类型 "tcp","modbus" "mdtcp","udp","mqtt","tp500","coap","http","nbiot" 注意区分大小写 必填参数
      */
-    @ApiModelProperty(value = "绑定状态（0.未绑定项目，1.已绑定项目）", required = false, example = "")
-    private String binding;
-    /**
-     * 工作状态（0.未绑定，1.在线，2.离线）
-     */
-    @ApiModelProperty(value = "工作状态（0.未绑定，1.在线，2.离线）", required = false, example = "")
-    private String status;
-    /**
-     * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
-     */
-    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = false, example = "")
-    private String type;
+    @ApiModelProperty(value = "协议类型  tcp,modbus,mdtcp,udp,mqtt,tp500coap,http,nbiot 注意区分大小写 必填参数", required = true, example = "")
+    private String linkType;
     /**
      * 设备是否报警，(0 未报警，1已报警)
      */
     @ApiModelProperty(value = "设备是否报警，(0 未报警，1已报警)", required = false, example = "")
     private String isAlarms;
+    /**
+     * 掉线延时
+     */
+    @ApiModelProperty(value = "掉线延时", required = false, example = "")
+    private Long timescale;
+    /**
+     * 设备图标
+     */
+    @ApiModelProperty(value = "设备图标", required = false, example = "")
+    private String iocUrl;
+    /**
+     * 是否在线 0 否 1 是
+     */
+    @ApiModelProperty(value = "是否在线 0 否 1 是", required = false, example = "")
+    private Long isLine;
+    /**
+     * 是否删除 0 否 1 是 2禁用
+     */
+    @ApiModelProperty(value = "是否删除 0 否 1 是 2禁用", required = false, example = "")
+    private Long isDelete;
+
+    /**
+     * 用户Id
+     */
+    @ApiModelProperty(value = "用户Id", required = false, example = "")
+    private Long userId;
+    /**
+     * 用户名
+     */
+    @ApiModelProperty(value = "用户名", required = false, example = "")
+    private String userName;
+    /**
+     * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
+     */
+    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = false, example = "")
+    private String type;
+
+    /**
+     * 绑定状态（0.未绑定项目，1.已绑定项目）
+     */
+    @ApiModelProperty(value = "绑定状态（0.未绑定项目，1.已绑定项目）", required = false, example = "")
+    private String binding;
     /**
      * 项目负责人id
      */
@@ -94,11 +126,7 @@ public class Device {
      */
     @ApiModelProperty(value = "解码器id", required = false, example = "")
     private Long decoderId;
-    /**
-     * 状态（0.删除，1.正常）
-     */
-    @ApiModelProperty(value = "状态（0.删除，1.正常）", required = false, example = "")
-    private String deleteFlag;
+
     /**
      * 创建时间
      */
