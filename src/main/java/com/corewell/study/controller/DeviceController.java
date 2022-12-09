@@ -102,7 +102,20 @@ public class DeviceController {
     public ResultMsg deviceWrite(@RequestBody DeviceWriteParam deviceWriteParam) {
         ResultMsg resultMsg = DeviceService.deviceWrite(deviceWriteParam);
         return resultMsg;
+    }
 
+    @ApiOperation("传感器数据上报")
+    @PostMapping("/sendDataPoint")
+    public ResultMsg sendDataPoint(@RequestBody SendDataPointParam sendDataPointParam) {
+        ResultMsg resultMsg = DeviceService.sendDataPoint(sendDataPointParam);
+        return resultMsg;
+    }
+
+    @ApiOperation("获取设备传感器历史数据")
+    @PostMapping("/getSensorHistroy")
+    public ResultMsg getSensorHistroy(@RequestBody SensorHistoryParam sensorHistoryParam) {
+        ResultMsg resultMsg = DeviceService.getSensorHistroy(sensorHistoryParam);
+        return resultMsg;
     }
 
 

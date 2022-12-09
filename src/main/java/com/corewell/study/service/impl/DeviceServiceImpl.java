@@ -9,6 +9,7 @@ import com.corewell.study.domain.DeviceNumber;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.DeviceDTO;
 import com.corewell.study.domain.response.DeviceDo;
+import com.corewell.study.domain.response.SensorHistoryDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
@@ -43,6 +44,9 @@ public class DeviceServiceImpl implements DeviceService {
     private static final String TLINK_GETSINGLEDEVICEDATAS_URL = TLINK_URL + "getSingleDeviceDatas";
     private static final String TLINK_SWITCHER_URL = TLINK_URL + "switcherController";
     private static final String TLINK_WRITE_URL = TLINK_URL + "deviceWrite";
+    private static final String TLINK_SENDDATAPOINT_URL = TLINK_URL + "sendDataPoint";
+    private static final String TLINK_HISTORY_URL = TLINK_URL + "getSensorHistroy";
+
     @Autowired
     private DeviceDao deviceDao;
     @Autowired
@@ -90,10 +94,6 @@ public class DeviceServiceImpl implements DeviceService {
         } catch (Exception e) {
             e.printStackTrace();
             return ResultMsg.error();
-        } finally {
-            if (response != null) {
-                response.close();
-            }
         }
     }
 
@@ -290,6 +290,60 @@ public class DeviceServiceImpl implements DeviceService {
         if ("00".equals(flag)) {
             return ResultMsg.success();
         } else {
+            return ResultMsg.error();
+        }
+    }
+
+    @Override
+    public ResultMsg sendDataPoint(SendDataPointParam sendDataPointParam) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceNo", sendDataPointParam.getDeviceNo());
+            mapParam.put("addTime", sendDataPointParam.getAddTime());
+            mapParam.put("sensorDatas", sendDataPointParam.getSensorDatas());
+
+            System.out.println("传感器数据上报ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_SENDDATAPOINT_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("传感器数据上报还参：：" + responseEntity.getBody());
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+        String flag = jsonObject.get("flag").toString();
+        if ("00".equals(flag)) {
+            return ResultMsg.success();
+        } else {
+            return ResultMsg.error();
+        }
+    }
+
+    @Override
+    public ResultMsg getSensorHistroy(SensorHistoryParam sensorHistoryParam) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("sensorId", sensorHistoryParam.getSensorId());
+            mapParam.put("startDate", sensorHistoryParam.getStartDate());
+            mapParam.put("endDate", sensorHistoryParam.getEndDate());
+            mapParam.put("pagingState", sensorHistoryParam.getPagingState());
+            mapParam.put("pageSize", sensorHistoryParam.getPageSize());
+
+            System.out.println("获取设备传感器历史数据ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_HISTORY_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("设备数据下行还参：：" + responseEntity.toString());
+            SensorHistoryDTO sensorHistoryDTO = JSON.parseObject(responseEntity.getBody(), SensorHistoryDTO.class);
+            String flag = sensorHistoryDTO.getFlag();
+            if ("00".equals(flag)) {
+                return ResultMsg.success(sensorHistoryDTO);
+            } else {
+                return ResultMsg.error();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResultMsg.error();
         }
     }

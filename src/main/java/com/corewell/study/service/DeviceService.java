@@ -85,4 +85,21 @@ public interface DeviceService {
      * @return
      */
     ResultMsg deviceWrite(DeviceWriteParam deviceWriteParam);
+
+    /**
+     * 传感器数据上报
+     *
+     * @param sendDataPointParam
+     * @return
+     */
+    ResultMsg sendDataPoint(SendDataPointParam sendDataPointParam);
+
+
+    /**
+     * 获取设备传感器历史数据
+     *
+     * @param sensorHistoryParam
+     * @return
+     */
+    ResultMsg getSensorHistroy(SensorHistoryParam sensorHistoryParam);
 }
