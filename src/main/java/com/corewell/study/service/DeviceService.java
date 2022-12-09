@@ -1,10 +1,8 @@
 package com.corewell.study.service;
 
-import com.corewell.study.domain.Device;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * Created with IntelliJ IDEA.
@@ -143,4 +141,37 @@ public interface DeviceService {
      * @return
      */
     ResultMsg updateModbus(ModbusReq modbusReq);
+
+    /**
+     * 获取tcp/udp协议标签
+     *
+     * @param deviceId
+     * @return
+     */
+    ResultMsg getProtocolLabel(Long deviceId);
+
+    /**
+     * tcp/udp协议标签设置
+     *
+     * @param protocolLabelReq
+     * @return
+     */
+    ResultMsg setProtocolLabel(ProtocolLabelReq protocolLabelReq);
+
+
+    /**
+     * 获取mqtt/tp500/coap协议读写标识
+     *
+     * @param getSensorFlagReq
+     * @return
+     */
+    ResultMsg getFlag(GetSensorFlagReq getSensorFlagReq);
+
+    /**
+     * 设置mqtt/tp500/coap协议读写标识
+     *
+     * @param setFlagReq
+     * @return
+     */
+    ResultMsg setFlag(SetSensorFlagReq setFlagReq);
 }

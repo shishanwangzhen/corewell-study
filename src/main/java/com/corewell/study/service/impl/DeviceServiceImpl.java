@@ -7,10 +7,7 @@ import com.corewell.study.dao.DeviceNumberDao;
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.DeviceNumber;
 import com.corewell.study.domain.request.*;
-import com.corewell.study.domain.response.DeviceDTO;
-import com.corewell.study.domain.response.DeviceDo;
-import com.corewell.study.domain.response.ModbusDTO;
-import com.corewell.study.domain.response.SensorHistoryDTO;
+import com.corewell.study.domain.response.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
@@ -52,6 +49,11 @@ public class DeviceServiceImpl implements DeviceService {
     private static final String TLINK_SETMODBUS_URL = TLINK_URL + "setModbus";
     private static final String TLINK_GETMODBUS_URL = TLINK_URL + "getModbus";
     private static final String TLINK_UPDATEMODBUS_URL = TLINK_URL + "updateModbus";
+    private static final String TLINK_GETPROTOCOLLABEL_URL = TLINK_URL + "getProtocolLabel";
+    private static final String TLINK_SETPROTOCOLLABEL_URL = TLINK_URL + "setProtocolLabel";
+    private static final String TLINK_GETFLAG_URL = TLINK_URL + "getFlag";
+    private static final String TLINK_SETFLAG_URL = TLINK_URL + "setFlag";
+
 
     @Autowired
     private DeviceDao deviceDao;
@@ -447,7 +449,7 @@ public class DeviceServiceImpl implements DeviceService {
             responseEntity = restTemplate.postForEntity(TLINK_GETMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
             System.out.println("获取modbus读写指令还参：：" + responseEntity.getBody());
             ModbusDTO modbusDTO = JSON.parseObject(responseEntity.getBody(), ModbusDTO.class);
-             flag = modbusDTO.getFlag();
+            flag = modbusDTO.getFlag();
             if ("00".equals(flag)) {
                 return ResultMsg.success(modbusDTO);
             } else {
@@ -474,6 +476,111 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("modbus读写指令修改ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_UPDATEMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
             System.out.println("modbus读写指令修改还参：：" + responseEntity.getBody());
+            JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+            flag = jsonObject.get("flag").toString();
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        if ("00".equals(flag)) {
+            return ResultMsg.success();
+        } else {
+            return ResultMsg.error();
+        }
+    }
+
+    @Override
+    public ResultMsg getProtocolLabel(Long deviceId) {
+        ResponseEntity<String> responseEntity = null;
+        String flag = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceId", deviceId);
+
+            System.out.println("获取tcp/udp协议标签ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_GETPROTOCOLLABEL_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("获取tcp/udp协议标签还参：：" + responseEntity.getBody());
+            ProtocolLabelDTO protocolLabelDTO = JSON.parseObject(responseEntity.getBody(), ProtocolLabelDTO.class);
+            flag = protocolLabelDTO.getFlag();
+            if ("00".equals(flag)) {
+                return ResultMsg.success(protocolLabelDTO);
+            } else {
+                return ResultMsg.error();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+    }
+
+    @Override
+    public ResultMsg setProtocolLabel(ProtocolLabelReq protocolLabelReq) {
+        ResponseEntity<String> responseEntity = null;
+        String flag = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceId", protocolLabelReq.getDeviceId());
+            mapParam.put("linktype", protocolLabelReq.getLinktype());
+            mapParam.put("protocolLabel", protocolLabelReq.getProtocolLabel());
+
+            System.out.println("tcp/udp协议标签设置ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_SETPROTOCOLLABEL_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("tcp/udp协议标签设置还参：：" + responseEntity.getBody());
+            JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+            flag = jsonObject.get("flag").toString();
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        if ("00".equals(flag)) {
+            return ResultMsg.success();
+        } else {
+            return ResultMsg.error();
+        }
+    }
+
+    @Override
+    public ResultMsg getFlag(GetSensorFlagReq getSensorFlagReq) {
+        ResponseEntity<String> responseEntity = null;
+        String flag = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceId", getSensorFlagReq.getDeviceId());
+            mapParam.put("linktype", getSensorFlagReq.getLinktype());
+
+            System.out.println("获取mqtt/tp500/coap协议读写标识ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_GETFLAG_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("获取mqtt/tp500/coap协议读写标识还参：：" + responseEntity.getBody());
+            GetFlagDTO getFlagDTO = JSON.parseObject(responseEntity.getBody(), GetFlagDTO.class);
+            flag = getFlagDTO.getFlag();
+            if ("00".equals(flag)) {
+                return ResultMsg.success(getFlagDTO);
+            } else {
+                return ResultMsg.error();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+    }
+
+    @Override
+    public ResultMsg setFlag(SetSensorFlagReq setFlagReq) {
+        ResponseEntity<String> responseEntity = null;
+        String flag = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceId", setFlagReq.getDeviceId());
+            mapParam.put("linktype", setFlagReq.getLinktype());
+            mapParam.put("sensorList", setFlagReq.getSensorList());
+
+            System.out.println("设置mqtt/tp500/coap协议读写标识ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_SETFLAG_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("设置mqtt/tp500/coap协议读写标识还参：：" + responseEntity.getBody());
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {

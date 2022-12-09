@@ -23,7 +23,7 @@ public class SetParamsReq {
     /**
      * 参数值
      */
-    @ApiModelProperty(value = "参数值", required = true, example = "{\"TS\":\"30.0\",\"TP\":\"45.0\",\"HS\":\"45.0\",\"HP\":\"55.0\"}")
+    @ApiModelProperty(value = "参数值", required = true, example = "\"{\\\"TS\\\":\\\"30.0\\\",\\\"TP\\\":\\\"45.0\\\",\\\"HS\\\":\\\"45.0\\\",\\\"HP\\\":\\\"55.0\\\"}\"")
     private String params;
 
     /**
