@@ -46,6 +46,8 @@ public class DeviceServiceImpl implements DeviceService {
     private static final String TLINK_WRITE_URL = TLINK_URL + "deviceWrite";
     private static final String TLINK_SENDDATAPOINT_URL = TLINK_URL + "sendDataPoint";
     private static final String TLINK_HISTORY_URL = TLINK_URL + "getSensorHistroy";
+    private static final String TLINK_GETPARAMS_URL = TLINK_URL + "getParams";
+    private static final String TLINK_SETPARAMS_URL = TLINK_URL + "setParams";
 
     @Autowired
     private DeviceDao deviceDao;
@@ -344,6 +346,57 @@ public class DeviceServiceImpl implements DeviceService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return ResultMsg.error();
+        }
+    }
+
+    @Override
+    public ResultMsg getParams(Long deviceId) {
+        ResponseEntity<String> responseEntity = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceId", deviceId);
+
+            System.out.println("获取设备参数ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_GETPARAMS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("获取设备参数还参：：" + responseEntity.getBody());
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+        String flag = jsonObject.get("flag").toString();
+        if ("00".equals(flag) && jsonObject.containsKey("params")) {
+            return ResultMsg.success(jsonObject.get("params"));
+        } else {
+            return ResultMsg.error();
+        }
+    }
+
+    @Override
+    public ResultMsg setParams(SetParamsReq setParamsReq) {
+        ResponseEntity<String> responseEntity = null;
+        String flag = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceId", setParamsReq.getDeviceId());
+            mapParam.put("params", setParamsReq.getParams());
+            mapParam.put("isWrite", setParamsReq.getIsWrite());
+
+            System.out.println("设置参数ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_SETPARAMS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("设置参数还参：：" + responseEntity.getBody());
+            JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+            flag = jsonObject.get("flag").toString();
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        if ("00".equals(flag)) {
+            return ResultMsg.success();
+        } else {
             return ResultMsg.error();
         }
     }

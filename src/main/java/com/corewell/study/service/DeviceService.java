@@ -102,4 +102,20 @@ public interface DeviceService {
      * @return
      */
     ResultMsg getSensorHistroy(SensorHistoryParam sensorHistoryParam);
+
+    /**
+     * 获取设备参数
+     *
+     * @param deviceId
+     * @return
+     */
+    ResultMsg getParams(Long deviceId);
+
+    /**
+     * 获取设备参数
+     *
+     * @param setParamsReq
+     * @return
+     */
+    ResultMsg setParams(SetParamsReq setParamsReq);
 }

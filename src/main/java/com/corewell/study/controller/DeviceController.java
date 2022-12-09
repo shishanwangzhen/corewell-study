@@ -119,4 +119,18 @@ public class DeviceController {
     }
 
 
+    @ApiOperation("获取设备参数")
+    @PostMapping("/getParams")
+    public ResultMsg getParams(Long deviceId) {
+        ResultMsg resultMsg = DeviceService.getParams(deviceId);
+        return resultMsg;
+    }
+    @ApiOperation("设置参数")
+    @PostMapping("/setParams")
+    public ResultMsg setParams(@RequestBody SetParamsReq setParamsReq) {
+        ResultMsg resultMsg = DeviceService.setParams(setParamsReq);
+        return resultMsg;
+    }
+
+
 }
