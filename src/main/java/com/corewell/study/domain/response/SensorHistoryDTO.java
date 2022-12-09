@@ -16,22 +16,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel("传感器还参")
-public class SensorHistoryDTO {
-    /**
-     *
-     */
-    @ApiModelProperty(value = "", required = false, example = "")
-    private String msg;
+public class SensorHistoryDTO extends ResultDTO {
+
     /**
      * 传感器单位
      */
     @ApiModelProperty(value = "传感器单位", required = false, example = "")
     private String unit;
-    /**
-     *
-     */
-    @ApiModelProperty(value = "", required = false, example = "")
-    private String flag;
 
     /**
      * 传感器名称

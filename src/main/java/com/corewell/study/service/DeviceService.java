@@ -112,10 +112,35 @@ public interface DeviceService {
     ResultMsg getParams(Long deviceId);
 
     /**
-     * 获取设备参数
+     * 设置参数
      *
      * @param setParamsReq
      * @return
      */
     ResultMsg setParams(SetParamsReq setParamsReq);
+
+    /**
+     * modbus 协议读写指令设置
+     *
+     * @param modbusReq
+     * @return
+     */
+    ResultMsg setModbus(ModbusReq modbusReq);
+
+
+    /**
+     * 获取modbus读写指令
+     *
+     * @param modbusReq
+     * @return
+     */
+    ResultMsg getModbus(ModbusReq modbusReq);
+
+    /**
+     * modbus读写指令修改
+     *
+     * @param modbusReq
+     * @return
+     */
+    ResultMsg updateModbus(ModbusReq modbusReq);
 }

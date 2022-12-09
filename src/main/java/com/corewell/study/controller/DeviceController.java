@@ -96,7 +96,6 @@ public class DeviceController {
 
     }
 
-
     @ApiOperation("设备数据下行")
     @PostMapping("/deviceWrite")
     public ResultMsg deviceWrite(@RequestBody DeviceWriteParam deviceWriteParam) {
@@ -129,6 +128,29 @@ public class DeviceController {
     @PostMapping("/setParams")
     public ResultMsg setParams(@RequestBody SetParamsReq setParamsReq) {
         ResultMsg resultMsg = DeviceService.setParams(setParamsReq);
+        return resultMsg;
+    }
+
+    @ApiOperation("modbus 协议读写指令设置")
+    @PostMapping("/setModbus")
+    public ResultMsg setModbus(@RequestBody ModbusReq modbusReq) {
+        ResultMsg resultMsg = DeviceService.setModbus(modbusReq);
+        return resultMsg;
+    }
+
+
+    @ApiOperation("获取modbus读写指令")
+    @PostMapping("/getModbus")
+    public ResultMsg getModbus(@RequestBody ModbusReq modbusReq) {
+        ResultMsg resultMsg = DeviceService.getModbus(modbusReq);
+        return resultMsg;
+    }
+
+
+    @ApiOperation("modbus读写指令修改")
+    @PostMapping("/updateModbus")
+    public ResultMsg updateModbus(@RequestBody ModbusReq modbusReq) {
+        ResultMsg resultMsg = DeviceService.updateModbus(modbusReq);
         return resultMsg;
     }
 

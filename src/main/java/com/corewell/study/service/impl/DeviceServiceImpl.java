@@ -9,6 +9,7 @@ import com.corewell.study.domain.DeviceNumber;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.DeviceDTO;
 import com.corewell.study.domain.response.DeviceDo;
+import com.corewell.study.domain.response.ModbusDTO;
 import com.corewell.study.domain.response.SensorHistoryDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
@@ -48,6 +49,9 @@ public class DeviceServiceImpl implements DeviceService {
     private static final String TLINK_HISTORY_URL = TLINK_URL + "getSensorHistroy";
     private static final String TLINK_GETPARAMS_URL = TLINK_URL + "getParams";
     private static final String TLINK_SETPARAMS_URL = TLINK_URL + "setParams";
+    private static final String TLINK_SETMODBUS_URL = TLINK_URL + "setModbus";
+    private static final String TLINK_GETMODBUS_URL = TLINK_URL + "getModbus";
+    private static final String TLINK_UPDATEMODBUS_URL = TLINK_URL + "updateModbus";
 
     @Autowired
     private DeviceDao deviceDao;
@@ -388,6 +392,88 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("设置参数ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_SETPARAMS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
             System.out.println("设置参数还参：：" + responseEntity.getBody());
+            JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+            flag = jsonObject.get("flag").toString();
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        if ("00".equals(flag)) {
+            return ResultMsg.success();
+        } else {
+            return ResultMsg.error();
+        }
+    }
+
+    @Override
+    public ResultMsg setModbus(ModbusReq modbusReq) {
+        ResponseEntity<String> responseEntity = null;
+        String flag = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceId", modbusReq.getDeviceId());
+            mapParam.put("linktype", modbusReq.getLinktype());
+            mapParam.put("modbusList", modbusReq.getModbusList());
+
+            System.out.println("modbus 协议读写指令设置ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_SETMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("modbus 协议读写指令设置还参：：" + responseEntity.getBody());
+            JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+            flag = jsonObject.get("flag").toString();
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        if ("00".equals(flag)) {
+            return ResultMsg.success();
+        } else {
+            return ResultMsg.error();
+        }
+    }
+
+
+    @Override
+    public ResultMsg getModbus(ModbusReq modbusReq) {
+        ResponseEntity<String> responseEntity = null;
+        String flag = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceId", modbusReq.getDeviceId());
+            mapParam.put("linktype", modbusReq.getLinktype());
+
+            System.out.println("获取modbus读写指令ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_GETMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("获取modbus读写指令还参：：" + responseEntity.getBody());
+            ModbusDTO modbusDTO = JSON.parseObject(responseEntity.getBody(), ModbusDTO.class);
+             flag = modbusDTO.getFlag();
+            if ("00".equals(flag)) {
+                return ResultMsg.success(modbusDTO);
+            } else {
+                return ResultMsg.error();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+    }
+
+
+    @Override
+    public ResultMsg updateModbus(ModbusReq modbusReq) {
+        ResponseEntity<String> responseEntity = null;
+        String flag = null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("deviceId", modbusReq.getDeviceId());
+            mapParam.put("linktype", modbusReq.getLinktype());
+            mapParam.put("modbusList", modbusReq.getModbusList());
+
+            System.out.println("modbus读写指令修改ru参：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_UPDATEMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("modbus读写指令修改还参：：" + responseEntity.getBody());
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
