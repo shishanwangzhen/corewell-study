@@ -15,7 +15,6 @@ import java.util.List;
  * @Date: 2022/11/02/16:06
  * @Description:
  */
-@Mapper
 public interface AgreementService {
     /**
      * 查询项目

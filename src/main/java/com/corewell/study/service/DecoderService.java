@@ -13,7 +13,6 @@ import org.apache.ibatis.annotations.Param;
  * @Date: 2022/11/02/16:06
  * @Description:
  */
-@Mapper
 public interface DecoderService {
     /**
      * 查询设备

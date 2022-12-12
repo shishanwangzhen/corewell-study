@@ -10,7 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @Date: 2022/11/02/16:06
  * @Description:
  */
-@Mapper
 public interface DeviceNumberService {
     /**
      * 查询设备序列号
