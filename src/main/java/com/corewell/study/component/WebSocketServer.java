@@ -2,7 +2,6 @@ package com.corewell.study.component;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.internal.$Gson$Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,15 +10,13 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.corewell.study.utils.WebSocket.*;
 
 /**
  * @author 863586395
  */
-@ServerEndpoint("/socketServer/{userId}")
+@ServerEndpoint(value = "/socketServer/{userId}", configurator = HttpSessionWSHelper.class)
 @Component
 public class WebSocketServer {
     static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
@@ -108,10 +105,10 @@ public class WebSocketServer {
                 jsonObject.put("fromUserId", this.userId);
                 String toUserId = jsonObject.getString("toUserId");
                 //传送给对应的toUserId用户的webSocket
-                if (StringUtils.isNotBlank(toUserId)&&webSocketServerConcurrentHashMap.containsKey(toUserId)){
+                if (StringUtils.isNotBlank(toUserId) && webSocketServerConcurrentHashMap.containsKey(toUserId)) {
                     webSocketServerConcurrentHashMap.get(toUserId).sendMessage(jsonObject.toJSONString());
-                }else {
-                    logger.error("请求的userId：" + toUserId +"不在该服务器上");
+                } else {
+                    logger.error("请求的userId：" + toUserId + "不在该服务器上");
                 }
 
             } catch (Exception e) {
@@ -123,10 +120,10 @@ public class WebSocketServer {
     /**
      * @param session
      * @param throwable
-     * */
+     */
     @OnError
-    public void onError(Session session, Throwable throwable){
-        logger.error("用户错误："+this.userId+",原因"+throwable.getMessage());
+    public void onError(Session session, Throwable throwable) {
+        logger.error("用户错误：" + this.userId + ",原因" + throwable.getMessage());
         throwable.printStackTrace();
     }
 
@@ -135,38 +132,49 @@ public class WebSocketServer {
      * 实现服务器的主动推送
      */
 
-    public void sendMessage(String message) throws Exception {
+    private void sendMessage(String message) throws Exception {
+        logger.info("用户：" + userId + ",当前在线人数为：" + getOnlineCount() + "  session:::"+"     message::::"+message);
         this.session.getBasicRemote().sendText(message);
     }
 
     /**
+     * 实现服务器的主动推送全部用户
+     */
+
+    public void sendMessageAllUser(String message) throws Exception {
+        for (String userId:webSocketServerConcurrentHashMap.keySet()){
+            webSocketServerConcurrentHashMap.get(userId).sendMessage(message);
+        }
+    }
+
+    /**
      * 发送自定义消息
-     * */
-    public static void sendInfo(String message,@PathParam("userId") String userId) throws Exception {
+     */
+    public static void sendInfo(String message, @PathParam("userId") String userId) throws Exception {
 
-        logger.info("发送消息到："+userId+",报文："+message);
+        logger.info("发送消息到：" + userId + ",报文：" + message);
 
-        if (StringUtils.isNotBlank(userId)&&webSocketServerConcurrentHashMap.containsKey(userId)){
-          webSocketServerConcurrentHashMap.get(userId).sendMessage(message);
+        if (StringUtils.isNotBlank(userId) && webSocketServerConcurrentHashMap.containsKey(userId)) {
+            webSocketServerConcurrentHashMap.get(userId).sendMessage(message);
 
-        }else {
-            logger.error("用户"+userId+"，不在线！！！！");
+        } else {
+            logger.error("用户" + userId + "，不在线！！！！");
         }
 
     }
 
 
-    private static synchronized int getOnlineCount(){
+    private static synchronized int getOnlineCount() {
         return onlineCount;
     }
 
 
-    private static synchronized void addOnlineCount(){
-        WebSocketServer.addOnlineCount();
+    private static synchronized void addOnlineCount() {
+        onlineCount++;
     }
 
-    private static synchronized void subOnlineCount(){
-        WebSocketServer.subOnlineCount();
+    private static synchronized void subOnlineCount() {
+        onlineCount--;
     }
 
 }
