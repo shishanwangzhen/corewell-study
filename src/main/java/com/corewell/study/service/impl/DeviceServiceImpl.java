@@ -11,7 +11,6 @@ import com.corewell.study.domain.response.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
-import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -70,6 +69,7 @@ public class DeviceServiceImpl implements DeviceService {
         headers.add("Authorization", "Bearer" + " " + getAccessToken.getAccessToken());
         headers.add("Content-Type", "application/json");
         headers.add("tlinkAppId", "621d35860cce451a886b9329affb52c6");
+        System.out.println(JSON.toJSONString(headers));
         return headers;
     }
 
@@ -81,13 +81,14 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg findDeviceByDeviceId(Long deviceId) {
-        Response response = null;
         try {
+            if (deviceId == null || deviceId.longValue() == 0) {
+                return ResultMsg.error();
+            }
             Map<String, Object> mapParam = new HashMap<>(16);
-
             mapParam.put("userId", 77632);
             mapParam.put("deviceId", deviceId);
-
+            System.out.println("deviceNo查询设备ru参：：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_GETSINGLEDEVICEDATAS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
             System.out.println("deviceNo查询设备还参：：" + responseEntity.getBody());
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
@@ -120,7 +121,6 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("sensorList", deviceInsertParam.getSensorList());
             HttpHeaders headers = getHeaders();
             System.out.println("新增设备ru参：：" + JSON.toJSONString(mapParam));
-            RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_ADDDEVICE_URL, new HttpEntity<Map>(mapParam, headers), String.class);
             System.out.println("新增设备还参：：" + responseEntity);
             if (!JSON.parseObject(responseEntity.getBody()).containsKey("deviceId")) {
@@ -165,18 +165,19 @@ public class DeviceServiceImpl implements DeviceService {
     public ResultMsg updateDevice(DeviceUpdateParam deviceUpdateParam) {
 
         try {
-            Map<String, Object> mapParam = new HashMap<>(16);
-            mapParam.put("lat", "22.601376");
-            mapParam.put("lng", "113.956591");
-            mapParam.put("userId", 77632L);
-            mapParam.put("sensorList", deviceUpdateParam.getSensorList());
-            mapParam.put("deviceName", deviceUpdateParam.getDeviceName());
-            mapParam.put("timescale", deviceUpdateParam.getTimescale());
-            mapParam.put("linkType", deviceUpdateParam.getLinkType());
-            mapParam.put("deviceId", deviceUpdateParam.getDeviceId());
-            mapParam.put("delSensorIds", deviceUpdateParam.getDelSensorIds());
-            System.out.println("修改设备ru参：：" + JSON.toJSONString(mapParam));
-            ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_UPDATEDEVICE_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            Map<String, Object> body = new HashMap<>(16);
+            body.put("lat", "22.601376");
+            body.put("lng", "113.956591");
+            body.put("userId", 77632L);
+            body.put("sensorList", deviceUpdateParam.getSensorList());
+            body.put("deviceName", deviceUpdateParam.getDeviceName());
+            body.put("timescale", deviceUpdateParam.getTimescale());
+            body.put("linkType", deviceUpdateParam.getLinkType());
+            body.put("deviceId", deviceUpdateParam.getDeviceId());
+            body.put("delSensorIds", deviceUpdateParam.getDelSensorIds());
+            System.out.println("修改设备ru参：：" + JSON.toJSONString(body));
+            HttpEntity<Map> mapHttpEntity = new HttpEntity<Map>(body, getHeaders());
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_UPDATEDEVICE_URL, mapHttpEntity, String.class);
             System.out.println("修改设备还参：：" + responseEntity.getBody());
             if (!"00".equals(JSON.parseObject(responseEntity.getBody()).get("flag").toString())) {
                 return ResultMsg.error();
@@ -206,11 +207,11 @@ public class DeviceServiceImpl implements DeviceService {
     public ResultMsg deleteDevice(Long deviceId) {
         ResponseEntity<String> responseEntity = null;
         try {
-            Map<String, Object> mapParam = new HashMap<>(16);
-            mapParam.put("userId", 77632L);
-            mapParam.put("deviceId", deviceId);
-            System.out.println("删除设备ru参：：" + JSON.toJSONString(mapParam));
-            responseEntity = restTemplate.postForEntity(TLINK_DELETEDEVICE_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            Map<String, Object> body = new HashMap<>(16);
+            body.put("userId", 77632L);
+            body.put("deviceId", deviceId);
+            System.out.println("删除设备ru参：：" + JSON.toJSONString(body));
+            responseEntity = restTemplate.postForEntity(TLINK_DELETEDEVICE_URL, new HttpEntity<Map>(body, getHeaders()), String.class);
             System.out.println("删除设备还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();

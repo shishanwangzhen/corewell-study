@@ -142,8 +142,8 @@ public class WebSocketServer {
      */
 
     public void sendMessageAllUser(String message) throws Exception {
-        for (String userId:webSocketServerConcurrentHashMap.keySet()){
-            webSocketServerConcurrentHashMap.get(userId).sendMessage(message);
+        for (WebSocketServer webSocketServer:webSocketServerConcurrentHashMap.values()){
+            webSocketServer.sendMessage(message);
         }
     }
 

@@ -1,6 +1,5 @@
 package com.corewell.study.config;
 
-import com.auth0.jwt.JWT;
 import com.corewell.study.utils.JwtUtil;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
