@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
  */
 @Component
 public class WebsocketListener implements ServletRequestListener{
-    @Override
+   /* @Override
     public void requestInitialized(ServletRequestEvent sre)  {
         HttpSession session = ((HttpServletRequest) sre.getServletRequest()).getSession();
     }
@@ -20,5 +20,5 @@ public class WebsocketListener implements ServletRequestListener{
     public WebsocketListener(){}
 
     @Override
-    public void requestDestroyed(ServletRequestEvent arg0)  {}
+    public void requestDestroyed(ServletRequestEvent arg0)  {}*/
 }

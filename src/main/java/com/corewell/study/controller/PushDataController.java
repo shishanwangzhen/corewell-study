@@ -22,7 +22,6 @@ public class PushDataController {
     @ApiOperation("订阅实时数据")
     @PostMapping("/getPushData")
     public void getPushData(@RequestBody PushDataParam pushData){
-
         pushDataService.getPushData(pushData);
 
     }
