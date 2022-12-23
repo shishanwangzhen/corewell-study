@@ -31,6 +31,16 @@ spring:
     retention_policy: default
     retention_policy_time: 30d
 
+
+  #配置rabbitMq 服务器
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    #虚拟host 可以不设置,使用server默认host
+    #virtual-host: JCcccHost
+
   # Redis数据库索引（默认为0）
   redis:
     redisdatabase: 0
