@@ -5,6 +5,7 @@ import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.response.AccountDo;
+import com.corewell.study.domain.response.StudentDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.StudentService;
@@ -52,6 +53,28 @@ public class StudentServiceImpl implements StudentService {
         List<Student> studentList = studentDao.findStudent(studentReq);
         return ResultMsg.success(studentList);
     }
+
+    @Override
+    public ResultMsg selectStudentGroup(Long id) {
+        Long groupId=studentDao.findStudentGroupIdById(id);
+        if (groupId!=null&&groupId!=0){
+            StudentReq studentReq=new StudentReq();
+            studentReq.setGroupId(groupId);
+            List<Student> studentList = studentDao.findStudent(studentReq);
+            return ResultMsg.success(studentList);
+        }else {
+            return ResultMsg.success();
+        }
+
+    }
+    @Override
+    public ResultMsg selectStudentById(Long id) {
+
+        StudentDTO studentDTO = studentDao.selectStudentById(id);
+            return ResultMsg.success(studentDTO);
+
+    }
+
 
     @Override
     public ResultMsg insertStudent(Student student) {

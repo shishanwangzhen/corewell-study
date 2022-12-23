@@ -36,6 +36,24 @@ public class StudentController {
 
     }
 
+    @ApiOperation("查询组成员")
+    @PostMapping("/selectStudentGroup")
+    public ResultMsg selectStudentGroup(Long id) {
+
+        ResultMsg resultMsg = studentService.selectStudentGroup(id);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("查询学生信息")
+    @PostMapping("/selectStudentById")
+    public ResultMsg selectStudentById(Long id) {
+
+        ResultMsg resultMsg = studentService.selectStudentById(id);
+        return resultMsg;
+
+    }
+
     @ApiOperation("学生信息修改")
     @PostMapping("/updateStudent")
     public ResultMsg updateStudent(@RequestBody Student student) {

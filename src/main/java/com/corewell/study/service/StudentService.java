@@ -31,6 +31,22 @@ public interface StudentService {
     ResultMsg findStudent(StudentReq studentReq);
 
     /**
+     * 查询组成员
+     *
+     * @param id
+     * @return
+     */
+    ResultMsg selectStudentGroup(Long id);
+
+    /**
+     * 查询学生信息
+     *
+     * @param id
+     * @return
+     */
+    ResultMsg selectStudentById(Long id);
+
+    /**
      * 注册新增学生
      *
      * @param student

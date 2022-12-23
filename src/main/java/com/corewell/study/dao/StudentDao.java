@@ -4,6 +4,7 @@ import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.response.AccountDo;
+import com.corewell.study.domain.response.StudentDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -33,6 +34,22 @@ public interface StudentDao {
      * @return
      */
     List<Student> findStudent(StudentReq studentReq);
+
+    /**
+     * 查询学生
+     *
+     * @param id
+     * @return
+     */
+    Long findStudentGroupIdById(Long id);
+
+    /**
+     * 查询学生信息
+     *
+     * @param id
+     * @return
+     */
+    StudentDTO selectStudentById(Long id);
 
     /**
      * 注册新增学生
