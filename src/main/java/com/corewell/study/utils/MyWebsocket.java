@@ -81,7 +81,7 @@ public class MyWebsocket {
     public static void sendInfo(WebsocketMessage message) throws IOException {
         String json = JSONArray.toJSON(message).toString();
         if(!message.equals(null)) {
-            for (com.jsjunyi.access.utils.MyWebsocket item : webSocketSet) {   //这是默认给全部的连接发送消息   如果不需要给全部发，可以定义一个变量来区别每次链接的ID 给对应的ID发
+            for (MyWebsocket item : webSocketSet) {   //这是默认给全部的连接发送消息   如果不需要给全部发，可以定义一个变量来区别每次链接的ID 给对应的ID发
                 item.sendMessage(json);
             }
         }
