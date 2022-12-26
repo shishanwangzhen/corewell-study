@@ -55,21 +55,14 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public ResultMsg selectStudentGroup(Long id) {
-        Long groupId=studentDao.findStudentGroupIdById(id);
-        if (groupId!=null&&groupId!=0){
+    public ResultMsg selectStudentGroup(Long groupId) {
             StudentReq studentReq=new StudentReq();
             studentReq.setGroupId(groupId);
             List<Student> studentList = studentDao.findStudent(studentReq);
             return ResultMsg.success(studentList);
-        }else {
-            return ResultMsg.success();
-        }
-
     }
     @Override
     public ResultMsg selectStudentById(Long id) {
-
         StudentDTO studentDTO = studentDao.selectStudentById(id);
             return ResultMsg.success(studentDTO);
 

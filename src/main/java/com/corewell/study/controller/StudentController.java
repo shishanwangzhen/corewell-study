@@ -39,7 +39,7 @@ public class StudentController {
     @ApiOperation("查询组成员")
     @PostMapping("/selectStudentGroup")
     public ResultMsg selectStudentGroup(Long id) {
-
+        System.out.println("查询组成员 id");
         ResultMsg resultMsg = studentService.selectStudentGroup(id);
         return resultMsg;
 
@@ -48,7 +48,6 @@ public class StudentController {
     @ApiOperation("查询学生信息")
     @PostMapping("/selectStudentById")
     public ResultMsg selectStudentById(Long id) {
-
         ResultMsg resultMsg = studentService.selectStudentById(id);
         return resultMsg;
 

@@ -33,10 +33,10 @@ public interface StudentService {
     /**
      * 查询组成员
      *
-     * @param id
+     * @param groupId
      * @return
      */
-    ResultMsg selectStudentGroup(Long id);
+    ResultMsg selectStudentGroup(Long groupId);
 
     /**
      * 查询学生信息

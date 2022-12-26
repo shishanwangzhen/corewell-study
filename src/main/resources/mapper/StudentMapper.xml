@@ -30,9 +30,10 @@
     </select>
 
     <select id="selectStudentById" parameterType="Long" resultType="StudentDTO">
-        select s.role as role, p.name as projectName
+        select s.role as role,  s.project_id as projectId,s.teacher_id as teacherId,s.group_id as groupId,p.name as projectName,g.name as groupName
         from student s
                  left join project p on s.project_id = p.id
+                 left join `group` g on s.group_id = g.id
         where s.id = #{id}
           and s.status = 1
     </select>
