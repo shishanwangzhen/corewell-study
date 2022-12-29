@@ -1,6 +1,5 @@
 package com.corewell.study.domain.request;
 
-import com.corewell.study.domain.response.ResultDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -33,7 +32,7 @@ public class ProtocolLabelReq{
     /**
      * 当前协议对应的解析标签
      */
-    @ApiModelProperty(value = "当前协议对应的解析标签", required = true, example = "[H:#],[D?],[S:,],[D?],[S:,],[D?],[T:#]")
+    @ApiModelProperty(value = "当前协议对应的解析标签", required = true, example = "")
     private String protocolLabel;
 
 }
