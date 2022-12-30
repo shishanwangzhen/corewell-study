@@ -1,6 +1,7 @@
 package com.corewell.study.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.corewell.study.domain.Device;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
@@ -57,11 +58,55 @@ public class DeviceController {
     @PostMapping("/insertDevice")
     public ResultMsg insertDevice(@RequestBody DeviceInsertParam deviceInsertParam) {
         System.out.println(JSON.toJSON(deviceInsertParam));
-
         ResultMsg resultMsg = DeviceService.insertDevice(deviceInsertParam);
         return resultMsg;
 
     }
+
+    @ApiOperation("被控设备新增")
+    @PostMapping("/insertControllerDevice")
+    public ResultMsg insertControllerDevice(@RequestBody Device device) {
+        System.out.println(JSON.toJSON(device));
+        ResultMsg resultMsg = DeviceService.insertControllerDevice(device);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("被控设备修改")
+    @PostMapping("/updateControllerDevice")
+    public ResultMsg updateControllerDevice(@RequestBody Device device) {
+        System.out.println(JSON.toJSON(device));
+        ResultMsg resultMsg = DeviceService.updateControllerDevice(device);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("被控设备删除")
+    @PostMapping("/deleteControllerDevice")
+    public ResultMsg deleteControllerDevice(Long id) {
+        System.out.println(JSON.toJSON(id));
+        ResultMsg resultMsg = DeviceService.deleteControllerDevice(id);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("查询被控设备")
+    @PostMapping("/selectControllerDevice")
+    public ResultMsg selectControllerDevice(@RequestBody Device device) {
+        System.out.println(JSON.toJSON(device));
+        ResultMsg resultMsg = DeviceService.selectControllerDevice(device);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("解绑被控设备控制通道")
+    @PostMapping("/unbindDeviceNumberBindById")
+    public ResultMsg unbindDeviceNumberBindById(Long id) {
+        ResultMsg resultMsg = DeviceService.unbindDeviceNumberBindById(id);
+        return resultMsg;
+
+    }
+
 
     @ApiOperation("设备删除")
     @PostMapping("/deleteDevice")
@@ -124,6 +169,7 @@ public class DeviceController {
         ResultMsg resultMsg = DeviceService.getParams(deviceId);
         return resultMsg;
     }
+
     @ApiOperation("设置参数")
     @PostMapping("/setParams")
     public ResultMsg setParams(@RequestBody SetParamsReq setParamsReq) {
@@ -151,6 +197,43 @@ public class DeviceController {
     @PostMapping("/updateModbus")
     public ResultMsg updateModbus(@RequestBody ModbusReq modbusReq) {
         ResultMsg resultMsg = DeviceService.updateModbus(modbusReq);
+        return resultMsg;
+    }
+
+    @ApiOperation("获取tcp/udp协议标签")
+    @PostMapping("/getProtocolLabel")
+    public ResultMsg getProtocolLabel(Long deviceId) {
+        ResultMsg resultMsg = DeviceService.getProtocolLabel(deviceId);
+        return resultMsg;
+    }
+
+    @ApiOperation("获取mqtt/tp500/coap协议读写标识")
+    @PostMapping("/getFlag")
+    public ResultMsg getFlag(@RequestBody GetSensorFlagReq getSensorFlagReq) {
+        ResultMsg resultMsg = DeviceService.getFlag(getSensorFlagReq);
+        return resultMsg;
+    }
+
+
+    @ApiOperation("设置mqtt/tp500/coap协议读写标识")
+    @PostMapping("/setFlag")
+    public ResultMsg setFlag(@RequestBody SetSensorFlagReq setSensorFlagReq) {
+        ResultMsg resultMsg = DeviceService.setFlag(setSensorFlagReq);
+        return resultMsg;
+    }
+
+    @ApiOperation("设置tcp/udp协议标签")
+    @PostMapping("/setProtocolLabel")
+    public ResultMsg setProtocolLabel(@RequestBody ProtocolLabelReq protocolLabelReq) {
+        ResultMsg resultMsg = DeviceService.setProtocolLabel(protocolLabelReq);
+        return resultMsg;
+    }
+
+
+    @ApiOperation("获取单个传感器数据")
+    @PostMapping("/getSingleSensorDatas")
+    public ResultMsg getSingleSensorDatas(Long sensorId) {
+        ResultMsg resultMsg = DeviceService.getSingleSensorDatas(sensorId);
         return resultMsg;
     }
 

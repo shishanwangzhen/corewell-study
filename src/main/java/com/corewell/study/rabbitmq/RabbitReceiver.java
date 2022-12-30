@@ -41,7 +41,7 @@ public class RabbitReceiver {
                 //CORE_STUDY为表名
                 if (StringUtils.isAllBlank(sensorDates.getValue())||StringUtils.isAllBlank(sensorDates.getReVal())){
                     influxDB.write("test", "", Point.measurement("CORE_STUDY")
-                            .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                            .time(System.currentTimeMillis()+8*60*60*1000, TimeUnit.MILLISECONDS)
                             .tag("deviceId", deviceId)
                             .tag("sensorsId", sensorDates.getSensorsId().toString())
                             .addField("isAlarm", sensorDates.getIsAlarm())
@@ -50,13 +50,13 @@ public class RabbitReceiver {
                             .build());
                 }else {
                     influxDB.write("test", "", Point.measurement("CORE_STUDY")
-                            .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                            .time(System.currentTimeMillis()+8*60*60*1000, TimeUnit.MILLISECONDS)
                             .tag("deviceId", deviceId)
                             .tag("sensorsId", sensorDates.getSensorsId().toString())
                             .addField("isAlarm", sensorDates.getIsAlarm())
                             .tag("sensorsTypeId", sensorDates.getSensorsTypeId().toString())
                             .addField("isLine", sensorDates.getIsLine())
-                            .addField("reVal", sensorDates.getReVal()==null?null:sensorDates.getReVal())
+                            .addField("reVal", sensorDates.getReVal())
                             .addField("value", sensorDates.getValue())
                             .build());
                 }

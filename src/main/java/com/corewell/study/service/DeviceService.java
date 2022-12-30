@@ -1,5 +1,6 @@
 package com.corewell.study.service;
 
+import com.corewell.study.domain.Device;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
@@ -35,6 +36,47 @@ public interface DeviceService {
      * @return
      */
     ResultMsg insertDevice(DeviceInsertParam deviceInsertParam);
+    /**
+     * 新增被控设备
+     *
+     * @param device
+     * @return
+     */
+    ResultMsg insertControllerDevice(Device device);
+
+    /**
+     * 修改被控设备
+     *
+     * @param device
+     * @return
+     */
+    ResultMsg updateControllerDevice(Device device);
+    /**
+     * 删除被控设备
+     *
+     * @param id
+     *
+     * @return
+     */
+    ResultMsg deleteControllerDevice(Long id);
+    /**
+     * 查询被控设备
+     *
+     * @param device
+     *
+     * @return
+     */
+    ResultMsg selectControllerDevice(Device device);
+    /**
+     * 解绑被控设备控制通道
+     *
+     * @param id
+     *
+     * @return
+     */
+    ResultMsg unbindDeviceNumberBindById(Long id);
+
+
 
     /**
      * 修改设备
@@ -173,4 +215,13 @@ public interface DeviceService {
      * @return
      */
     ResultMsg setFlag(SetSensorFlagReq setFlagReq);
+    /**
+     * 获取单个传感器数据
+     *
+     * @param sensorId
+     * @return
+     */
+    ResultMsg getSingleSensorDatas(Long sensorId);
+
+
 }

@@ -21,7 +21,7 @@ public class SensorParam {
    * 需要修改的传感器Id，可选参数，修改为必选，不传则为新增
    */
   @ApiModelProperty(value = "需要修改的传感器Id，可选参数，修改为必选，不传则为新增", required = false, example = "")
-  private Long sensorId;
+  private String sensorId;
   /**
    * 传感器名称
    */

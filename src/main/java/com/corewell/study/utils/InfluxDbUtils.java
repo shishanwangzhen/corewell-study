@@ -56,7 +56,7 @@ public class InfluxDbUtils {
         } catch (Exception e) {
             logger.error("create influx db failed, error: {}", e.getMessage());
         } finally {
-            influxDB.setRetentionPolicy(retentionPolicy);
+            //influxDB.setRetentionPolicy(retentionPolicy);
         }
         influxDB.setLogLevel(InfluxDB.LogLevel.BASIC);
         return influxDB;

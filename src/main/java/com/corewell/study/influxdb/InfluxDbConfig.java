@@ -29,7 +29,7 @@ public class InfluxDbConfig {
 
     @Bean
     public InfluxDbUtils influxDbUtils() {
-        return new InfluxDbUtils(user, password, url, database, null);
+        return new InfluxDbUtils(user, password, url, database, "default");
     }
 }
 

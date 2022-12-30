@@ -6,13 +6,16 @@ import com.corewell.study.dao.DeviceDao;
 import com.corewell.study.dao.DeviceNumberDao;
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.DeviceNumber;
+import com.corewell.study.domain.Sensor;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
+import com.corewell.study.utils.UUIDUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +55,7 @@ public class DeviceServiceImpl implements DeviceService {
     private static final String TLINK_SETPROTOCOLLABEL_URL = TLINK_URL + "setProtocolLabel";
     private static final String TLINK_GETFLAG_URL = TLINK_URL + "getFlag";
     private static final String TLINK_SETFLAG_URL = TLINK_URL + "setFlag";
+    private static final String TLINK_GETSINGLESENSORDATAS_URL = TLINK_URL + "getSingleSensorDatas";
 
 
     @Autowired
@@ -88,6 +92,7 @@ public class DeviceServiceImpl implements DeviceService {
             Map<String, Object> mapParam = new HashMap<>(16);
             mapParam.put("userId", 77632);
             mapParam.put("deviceId", deviceId);
+            mapParam.put("pageSize", 99);
             System.out.println("deviceNo查询设备ru参：：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_GETSINGLEDEVICEDATAS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
             System.out.println("deviceNo查询设备还参：：" + responseEntity.getBody());
@@ -95,6 +100,14 @@ public class DeviceServiceImpl implements DeviceService {
             String flag = jsonObject.get("flag").toString();
             if ("00".equals(flag)) {
                 DeviceDTO deviceDTO = JSON.parseObject(jsonObject.get("device").toString(), DeviceDTO.class);
+                List<SensorDTO> sensorsList=deviceDTO.getSensorsList();
+                if (sensorsList.size()==1){
+                    Long id=sensorsList.get(0).getId();
+                    if (id==0){
+                        sensorsList.remove(0);
+                    }
+                }
+
                 System.out.println("deviceDTO::::::" + JSON.toJSONString(deviceDTO));
                 return ResultMsg.success(deviceDTO);
             } else {
@@ -162,9 +175,53 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    public ResultMsg insertControllerDevice(Device device) {
+        device.setCreateTime(new Date());
+        int result = deviceDao.insertDevice(device);
+        if (result == 1) {
+            return ResultMsg.success();
+        }
+        return ResultMsg.error();
+    }
+    @Override
+    public ResultMsg updateControllerDevice(Device device) {
+        device.setUpdateTime(new Date());
+        int result = deviceDao.updateControllerDevice(device);
+        if (result == 1) {
+            return ResultMsg.success();
+        }
+        return ResultMsg.error();
+    }
+
+    @Override
+    public ResultMsg deleteControllerDevice(Long id) {
+        int result = deviceDao.deleteDeviceById(id);
+        if (result == 1) {
+            return ResultMsg.success();
+        }
+        return ResultMsg.error();
+    }
+    @Override
+    public ResultMsg selectControllerDevice(Device device) {
+        List<Device> DeviceDOList = deviceDao.selectControllerDevice(device);
+        return ResultMsg.success(DeviceDOList);
+    }
+    @Override
+    public ResultMsg unbindDeviceNumberBindById(Long id) {
+        int result = deviceDao.unbindDeviceNumberBindById(id);
+        if (result == 1) {
+            return ResultMsg.success();
+        }
+        return ResultMsg.error();
+    }
+
+
+
+    @Override
     public ResultMsg updateDevice(DeviceUpdateParam deviceUpdateParam) {
 
         try {
+            System.out.println("deviceUpdateParam:::"+JSONObject.toJSON(deviceUpdateParam));
             Map<String, Object> body = new HashMap<>(16);
             body.put("lat", "22.601376");
             body.put("lng", "113.956591");
@@ -199,6 +256,10 @@ public class DeviceServiceImpl implements DeviceService {
             device.setDeviceName(deviceUpdateParam.getDeviceName());
         }
         device.setUpdateTime(new Date());
+        if (StringUtils.isNotBlank(deviceUpdateParam.getDelSensorIds())) {
+            String delSensorIds=deviceUpdateParam.getDelSensorIds();
+                deviceDao.unbindDeviceNumberBindBySensorId(delSensorIds);
+        }
         deviceDao.updateDevice(device);
         return ResultMsg.success();
     }
@@ -221,6 +282,7 @@ public class DeviceServiceImpl implements DeviceService {
         String flag = jsonObject.get("flag").toString();
         if ("00".equals(flag)) {
             deviceDao.deleteDevice(deviceId);
+            deviceDao.unbindDeviceNumberByDeviceId(deviceId);
             DeviceNumber deviceNumber = new DeviceNumber();
             deviceNumber.setDeviceId(deviceId);
             deviceNumber.setStatus(0);
@@ -594,4 +656,32 @@ public class DeviceServiceImpl implements DeviceService {
             return ResultMsg.error();
         }
     }
+
+    @Override
+    public ResultMsg getSingleSensorDatas(Long sensorId) {
+        ResponseEntity<String> responseEntity = null;
+        String flag = null;
+        JSONObject jsonObject =null;
+        try {
+            Map<String, Object> mapParam = new HashMap<>(16);
+            mapParam.put("userId", 77632L);
+            mapParam.put("sensorId",sensorId);
+
+            System.out.println("获取单个传感器数据：：" + JSON.toJSONString(mapParam));
+            responseEntity = restTemplate.postForEntity(TLINK_GETSINGLESENSORDATAS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+            System.out.println("获取单个传感器数据：：" + responseEntity.getBody());
+            jsonObject = JSONObject.parseObject(responseEntity.getBody());
+            flag = jsonObject.get("flag").toString();
+        } catch (RestClientException e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        if ("00".equals(flag)) {
+            return ResultMsg.success(jsonObject);
+        } else {
+            return ResultMsg.error();
+        }
+    }
+
+
 }
