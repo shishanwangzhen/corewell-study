@@ -28,7 +28,7 @@ public class DeviceSwitcherParam {
      * 发送的开关值。0表示关 1表示开
      */
     @ApiModelProperty(value = "发送的开关值。0表示关 1表示开", required = true, example = "")
-    private Long switcher;
+    private String switcher;
 
     /**
      * 对应的传感器Id
