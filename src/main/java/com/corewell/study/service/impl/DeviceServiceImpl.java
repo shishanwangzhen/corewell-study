@@ -6,16 +6,16 @@ import com.corewell.study.dao.DeviceDao;
 import com.corewell.study.dao.DeviceNumberDao;
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.DeviceNumber;
-import com.corewell.study.domain.Sensor;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
-import com.corewell.study.utils.UUIDUtil;
+import com.corewell.study.utils.InfluxDbUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.influxdb.dto.Query;
+import org.influxdb.dto.QueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Id;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +68,10 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceNumberDao deviceNumberDao;
 
+
+    @Autowired
+    private InfluxDbUtils influxDbUtils;
+
     private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer" + " " + getAccessToken.getAccessToken());
@@ -100,10 +104,10 @@ public class DeviceServiceImpl implements DeviceService {
             String flag = jsonObject.get("flag").toString();
             if ("00".equals(flag)) {
                 DeviceDTO deviceDTO = JSON.parseObject(jsonObject.get("device").toString(), DeviceDTO.class);
-                List<SensorDTO> sensorsList=deviceDTO.getSensorsList();
-                if (sensorsList.size()==1){
-                    Long id=sensorsList.get(0).getId();
-                    if (id==0){
+                List<SensorDTO> sensorsList = deviceDTO.getSensorsList();
+                if (sensorsList.size() == 1) {
+                    Long id = sensorsList.get(0).getId();
+                    if (id == 0) {
                         sensorsList.remove(0);
                     }
                 }
@@ -115,6 +119,9 @@ public class DeviceServiceImpl implements DeviceService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
     }
@@ -166,9 +173,11 @@ public class DeviceServiceImpl implements DeviceService {
                 return ResultMsg.error();
             }
 
-        } catch (RestClientException e) {
-            System.out.println(e.toString());
+        } catch (Exception e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         return ResultMsg.success();
@@ -183,6 +192,7 @@ public class DeviceServiceImpl implements DeviceService {
         }
         return ResultMsg.error();
     }
+
     @Override
     public ResultMsg updateControllerDevice(Device device) {
         device.setUpdateTime(new Date());
@@ -201,11 +211,13 @@ public class DeviceServiceImpl implements DeviceService {
         }
         return ResultMsg.error();
     }
+
     @Override
     public ResultMsg selectControllerDevice(Device device) {
         List<Device> DeviceDOList = deviceDao.selectControllerDevice(device);
         return ResultMsg.success(DeviceDOList);
     }
+
     @Override
     public ResultMsg unbindDeviceNumberBindById(Long id) {
         int result = deviceDao.unbindDeviceNumberBindById(id);
@@ -216,12 +228,11 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
 
-
     @Override
     public ResultMsg updateDevice(DeviceUpdateParam deviceUpdateParam) {
 
         try {
-            System.out.println("deviceUpdateParam:::"+JSONObject.toJSON(deviceUpdateParam));
+            System.out.println("deviceUpdateParam:::" + JSONObject.toJSON(deviceUpdateParam));
             Map<String, Object> body = new HashMap<>(16);
             body.put("lat", "22.601376");
             body.put("lng", "113.956591");
@@ -240,8 +251,11 @@ public class DeviceServiceImpl implements DeviceService {
                 return ResultMsg.error();
             }
 
-        } catch (RestClientException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         Device device = new Device();
@@ -257,8 +271,8 @@ public class DeviceServiceImpl implements DeviceService {
         }
         device.setUpdateTime(new Date());
         if (StringUtils.isNotBlank(deviceUpdateParam.getDelSensorIds())) {
-            String delSensorIds=deviceUpdateParam.getDelSensorIds();
-                deviceDao.unbindDeviceNumberBindBySensorId(delSensorIds);
+            String delSensorIds = deviceUpdateParam.getDelSensorIds();
+            deviceDao.unbindDeviceNumberBindBySensorId(delSensorIds);
         }
         deviceDao.updateDevice(device);
         return ResultMsg.success();
@@ -276,6 +290,9 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("删除设备还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
@@ -327,6 +344,9 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("设备开关下行控制还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
@@ -354,6 +374,9 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("设备数据下行还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
@@ -380,6 +403,9 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("传感器数据上报还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
@@ -391,9 +417,41 @@ public class DeviceServiceImpl implements DeviceService {
         }
     }
 
+
+    private QueryResult query(String command) {
+        return influxDbUtils.getInfluxDB().query(new Query(command, "test"));
+    }
+
     @Override
     public ResultMsg getSensorHistroy(SensorHistoryParam sensorHistoryParam) {
-        ResponseEntity<String> responseEntity = null;
+        System.out.println("查询历史数据入参参：sensorHistoryParam" + JSONObject.toJSON(sensorHistoryParam));
+        StringBuilder command = new StringBuilder();
+        command.append("SELECT time,value FROM CORE_STUDY where 1=1");
+        if (sensorHistoryParam.getSensorId() != null && sensorHistoryParam.getSensorId() != 0) {
+            command.append(" AND sensorsId=");
+            command.append("'");
+            command.append(sensorHistoryParam.getSensorId());
+            command.append("'");
+        }
+        if (StringUtils.isNotBlank(sensorHistoryParam.getStartDate())) {
+            command.append(" AND time>");
+            command.append("'");
+            command.append(sensorHistoryParam.getStartDate());
+            command.append("'");
+        }
+        if (StringUtils.isNotBlank(sensorHistoryParam.getEndDate())) {
+            command.append(" AND time<");
+            command.append("'");
+            command.append(sensorHistoryParam.getEndDate());
+            command.append("'");
+        }
+        //TODO
+        // command.append("GROUP BY *");
+        QueryResult resultMsg = query(command.toString());
+        System.out.println("查询历史数据还参：resultMsg" + JSONObject.toJSON(resultMsg));
+        return ResultMsg.success(resultMsg);
+        //tlink查询历史数据
+      /*  ResponseEntity<String> responseEntity = null;
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
             mapParam.put("userId", 77632L);
@@ -416,7 +474,7 @@ public class DeviceServiceImpl implements DeviceService {
         } catch (Exception e) {
             e.printStackTrace();
             return ResultMsg.error();
-        }
+        }*/
     }
 
     @Override
@@ -432,6 +490,9 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("获取设备参数还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
@@ -461,6 +522,9 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         if ("00".equals(flag)) {
@@ -488,6 +552,9 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         if ("00".equals(flag)) {
@@ -520,6 +587,9 @@ public class DeviceServiceImpl implements DeviceService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
     }
@@ -543,6 +613,9 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         if ("00".equals(flag)) {
@@ -573,6 +646,9 @@ public class DeviceServiceImpl implements DeviceService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
     }
@@ -595,6 +671,9 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         if ("00".equals(flag)) {
@@ -626,6 +705,9 @@ public class DeviceServiceImpl implements DeviceService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
     }
@@ -648,6 +730,9 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         if ("00".equals(flag)) {
@@ -661,11 +746,11 @@ public class DeviceServiceImpl implements DeviceService {
     public ResultMsg getSingleSensorDatas(Long sensorId) {
         ResponseEntity<String> responseEntity = null;
         String flag = null;
-        JSONObject jsonObject =null;
+        JSONObject jsonObject = null;
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
             mapParam.put("userId", 77632L);
-            mapParam.put("sensorId",sensorId);
+            mapParam.put("sensorId", sensorId);
 
             System.out.println("获取单个传感器数据：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_GETSINGLESENSORDATAS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
@@ -674,6 +759,9 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
+            if (e.getMessage().contains("invalid_token")){
+                getAccessToken.getNewAccessToken();
+            }
             return ResultMsg.error();
         }
         if ("00".equals(flag)) {

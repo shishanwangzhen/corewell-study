@@ -60,6 +60,23 @@ public class GetAccessToken {
         return accessToken;
     }
 
+    public String getNewAccessToken() {
+        try {
+            headers.clear();
+            headers.add("authorization", "Basic NjIxZDM1ODYwY2NlNDUxYTg4NmI5MzI5YWZmYjUyYzY6Mzk0MDA5YWI2ZjQxNGMxNGE3ZTYyZjlmZGRmOTM2OWI=");
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(LOGIN_URL, new HttpEntity<Map>(null, headers), String.class);
+            JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+            Long expiresIn = jsonObject.getLong("expires_in");
+            accessToken = jsonObject.get("access_token").toString();
+            stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.ACCESS_TOKEN_KEY, accessToken, expiresIn, TimeUnit.SECONDS);
+            System.out.println("获取tlink的access_token值为：" + stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.ACCESS_TOKEN_KEY));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return accessToken;
+    }
+
+
 }
 
 
