@@ -142,6 +142,7 @@ public class WebSocketServer {
      */
 
     public void sendMessageAllUser(String message) throws Exception {
+        System.out.println("实现服务器的主动推送全部用户: "+JSONObject.toJSON(message));
         for (WebSocketServer webSocketServer:webSocketServerConcurrentHashMap.values()){
             webSocketServer.sendMessage(message);
         }
