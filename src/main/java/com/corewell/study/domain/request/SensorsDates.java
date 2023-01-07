@@ -56,5 +56,17 @@ public class SensorsDates {
     @ApiModelProperty(value = "映射后数值", required = false, example = "10.0")
     private String value;
 
+    /**
+     * 心跳
+     */
+    @ApiModelProperty(value = "心跳", required = false, example = "0")
+    private Long isHeartbeat;
+
+    /**
+     * 开关量数值
+     */
+    @ApiModelProperty(value = "开关量数值", required = false, example = "1")
+    private String switcher;
+
 
 }

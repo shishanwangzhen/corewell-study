@@ -39,16 +39,7 @@ public class RabbitReceiver {
                 System.out.println("sensorDates:  :" + sensorDates);
                 InfluxDB influxDB = influxDbUtils.getInfluxDB();
                 //CORE_STUDY为表名
-                if (StringUtils.isAllBlank(sensorDates.getValue())||StringUtils.isAllBlank(sensorDates.getReVal())){
-                    influxDB.write("test", "", Point.measurement("CORE_STUDY")
-                            .time(System.currentTimeMillis()+8*60*60*1000, TimeUnit.MILLISECONDS)
-                            .tag("deviceId", deviceId)
-                            .tag("sensorsId", sensorDates.getSensorsId().toString())
-                            .addField("isAlarm", sensorDates.getIsAlarm())
-                            .tag("sensorsTypeId", sensorDates.getSensorsTypeId().toString())
-                            .addField("isLine", sensorDates.getIsLine())
-                            .build());
-                }else {
+                if (sensorDates.getSensorsTypeId()==1){
                     influxDB.write("test", "", Point.measurement("CORE_STUDY")
                             .time(System.currentTimeMillis()+8*60*60*1000, TimeUnit.MILLISECONDS)
                             .tag("deviceId", deviceId)
@@ -58,6 +49,16 @@ public class RabbitReceiver {
                             .addField("isLine", sensorDates.getIsLine())
                             .addField("reVal", sensorDates.getReVal())
                             .addField("value", sensorDates.getValue())
+                            .build());
+                }else if (sensorDates.getSensorsTypeId()==2){
+                    influxDB.write("test", "", Point.measurement("CORE_STUDY")
+                            .time(System.currentTimeMillis()+8*60*60*1000, TimeUnit.MILLISECONDS)
+                            .tag("deviceId", deviceId)
+                            .tag("sensorsId", sensorDates.getSensorsId().toString())
+                            .addField("isAlarm", sensorDates.getIsAlarm())
+                            .tag("sensorsTypeId", sensorDates.getSensorsTypeId().toString())
+                            .addField("switcher", sensorDates.getSwitcher())
+                            .addField("isHeartbeat", sensorDates.getIsHeartbeat())
                             .build());
                 }
 
