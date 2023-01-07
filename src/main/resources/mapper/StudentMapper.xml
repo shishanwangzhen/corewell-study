@@ -50,6 +50,9 @@
         <if test="account!=null and account!=''">
             and account=#{account}
         </if>
+        <if test="role!=null and role!=''">
+            and role=#{role}
+        </if>
         <if test="status!=null and status!=''">
             and status=#{status}
         </if>
