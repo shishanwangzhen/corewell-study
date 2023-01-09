@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -119,7 +116,7 @@ public class DeviceServiceImpl implements DeviceService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -175,7 +172,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -253,7 +250,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -290,7 +287,7 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("删除设备还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -344,7 +341,7 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("设备开关下行控制还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -374,7 +371,7 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("设备数据下行还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -403,7 +400,7 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("传感器数据上报还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -490,7 +487,7 @@ public class DeviceServiceImpl implements DeviceService {
             System.out.println("获取设备参数还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -522,7 +519,7 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -540,19 +537,39 @@ public class DeviceServiceImpl implements DeviceService {
         String flag = null;
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
+            List<Modbus> modbusList=modbusReq.getModbusList();
             mapParam.put("userId", 77632L);
             mapParam.put("deviceId", modbusReq.getDeviceId());
             mapParam.put("linktype", modbusReq.getLinktype());
-            mapParam.put("modbusList", modbusReq.getModbusList());
+            mapParam.put("modbusList", modbusList);
 
-            System.out.println("modbus 协议读写指令设置ru参：：" + JSON.toJSONString(mapParam));
-            responseEntity = restTemplate.postForEntity(TLINK_SETMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("modbus 协议读写指令设置还参：：" + responseEntity.getBody());
+
+
+            if (modbusList.size()>0) {
+                System.out.println("modbus 协议读写指令设置ru参：：" + JSON.toJSONString(mapParam));
+                responseEntity = restTemplate.postForEntity(TLINK_SETMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+                System.out.println("modbus 协议读写指令设置还参：：" + responseEntity.getBody());
+                Iterator<Modbus> iterator = modbusList.iterator();
+                while (iterator.hasNext()){
+                    Modbus modbus = iterator.next();
+                    if(modbus.getId()==null||modbus.getId()==0) {
+                        iterator.remove();
+                    }
+                }
+                if (modbusList.size()>0){
+                    mapParam.put("modbusList", modbusList);
+                    System.out.println("modbus 协议读写指令修改ru参：：" + JSON.toJSONString(mapParam));
+                    responseEntity = restTemplate.postForEntity(TLINK_UPDATEMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
+                    System.out.println("modbus 协议读写指令修改还参：：" + responseEntity.getBody());
+                }
+
+            }
+
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -587,7 +604,7 @@ public class DeviceServiceImpl implements DeviceService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -613,7 +630,7 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -646,7 +663,7 @@ public class DeviceServiceImpl implements DeviceService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -671,7 +688,7 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -705,7 +722,7 @@ public class DeviceServiceImpl implements DeviceService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -730,7 +747,7 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -759,7 +776,7 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")){
+            if (e.getMessage().contains("invalid_token")) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
