@@ -26,6 +26,7 @@
         <if test="creatorId!=null and creatorId!=''">
             and p.creator_id=#{creatorId}
         </if>
+        order by p.create_time ASC
 
     </select>
 

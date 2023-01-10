@@ -370,6 +370,8 @@
     <update id="updateBindingByBindingId" parameterType="Long">
         update Device
         set binding=0,
+            binding=0,
+            binding=0,
             update_time=now()
         where binding_id = #{bindingId}
     </update>
@@ -419,7 +421,7 @@
             switch_on=null,
             switch_off=null,
             update_time=now()
-        where id=#{id}
+        where id = #{id}
     </update>
 
 
