@@ -56,26 +56,34 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResultMsg selectStudentGroup(Long groupId) {
-            StudentReq studentReq=new StudentReq();
-            studentReq.setGroupId(groupId);
-            List<Student> studentList = studentDao.findStudent(studentReq);
-            return ResultMsg.success(studentList);
+        StudentReq studentReq = new StudentReq();
+        studentReq.setGroupId(groupId);
+        List<Student> studentList = studentDao.findStudent(studentReq);
+        return ResultMsg.success(studentList);
     }
+
     @Override
     public ResultMsg selectStudentById(Long id) {
         StudentDTO studentDTO = studentDao.selectStudentById(id);
-            return ResultMsg.success(studentDTO);
+        return ResultMsg.success(studentDTO);
 
     }
 
 
     @Override
     public ResultMsg insertStudent(Student student) {
-        StudentReq studentReq = new StudentReq();
-        studentReq.setAccount(student.getAccount());
-        List<Student> studentList = studentDao.findStudent(studentReq);
-        if (studentList.size() > 0) {
-            return new ResultMsg(ResultStatusCode.USER_CODE_ONLY);
+        String account=student.getAccount();
+        Student studentOld = studentDao.findStudentByAccount(account);
+        if (studentOld != null) {
+            String status = studentOld.getStatus();
+            switch (status) {
+                case "0":
+                    return new ResultMsg(ResultStatusCode.USER_TO_EXAMINE);
+                case "1":
+                    return new ResultMsg(ResultStatusCode.USER_ISEXIT);
+                case "2":
+                    studentDao.deleteStudent(account);
+            }
         }
         student.setCreateTime(new Date());
         student.setStatus("0");

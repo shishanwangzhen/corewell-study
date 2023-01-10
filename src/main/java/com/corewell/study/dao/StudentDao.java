@@ -37,6 +37,14 @@ public interface StudentDao {
     /**
      * 查询学生
      *
+     * @param account
+     * @return
+     */
+    Student findStudentByAccount(String account);
+
+    /**
+     * 查询学生
+     *
      * @param id
      * @return
      */
@@ -105,6 +113,14 @@ public interface StudentDao {
      * @return
      */
     int updateProjectStatusByTeacherId(Long creatorId);
+
+    /**
+     * 删除未通过学生账号
+     *
+     * @param account
+     * @return
+     */
+    int deleteStudent(String account);
 
 
 }

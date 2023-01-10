@@ -30,7 +30,12 @@
     </select>
 
     <select id="selectStudentById" parameterType="Long" resultType="StudentDTO">
-        select s.role as role,  s.project_id as projectId,s.teacher_id as teacherId,s.group_id as groupId,p.name as projectName,g.name as groupName
+        select s.role       as role,
+               s.project_id as projectId,
+               s.teacher_id as teacherId,
+               s.group_id   as groupId,
+               p.name       as projectName,
+               g.name       as groupName
         from student s
                  left join project p on s.project_id = p.id
                  left join `group` g on s.group_id = g.id
@@ -258,5 +263,17 @@
             update_time=now()
         where teacher_id = #{teacherId}
     </update>
+
+    <select id="findStudentByAccount" parameterType="String" resultType="Student">
+        select *
+        from student
+        where account = #{account}
+    </select>
+
+    <delete id="deleteStudent" parameterType="String">
+        delete
+        from student
+        where account = #{account}
+    </delete>
 </mapper>
 
