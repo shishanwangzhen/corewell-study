@@ -99,7 +99,7 @@ public interface DeviceDao {
     int unbindDeviceNumberBindById(@Param("id") Long id);
 
     /**
-     * 删除项目
+     * 删除项目解绑设备
      *
      * @param projectId
      * @return
@@ -107,12 +107,28 @@ public interface DeviceDao {
     int updateBindingByProjectId(@Param("projectId") Long projectId);
 
     /**
-     * 删除项目
+     * 一键删除项目解绑设备
      *
      * @param bindingId
      * @return
      */
     int updateBindingByBindingId(Long bindingId);
+    /**
+     * 删除项目组设备移除项目组
+     *
+     * @param groupId
+     * @return
+     */
+    int updateBindingByGroupId(@Param("groupId") Long groupId);
+
+    /**
+     * 设备移除项目组
+     *
+     * @param id
+     * @return
+     */
+    int updateBindingGroupById(@Param("id") Long id);
+
 
     /**
      * 修改设备

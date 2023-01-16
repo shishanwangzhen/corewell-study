@@ -133,6 +133,14 @@ public class DeviceController {
 
     }
 
+    @ApiOperation("设备移除项目组")
+    @PostMapping("/updateBindingGroupById")
+    public ResultMsg updateBindingGroupById(Long id) {
+        ResultMsg resultMsg = DeviceService.updateBindingGroupById(id);
+        return resultMsg;
+    }
+
+
     @ApiOperation("设备开关下行控制")
     @PostMapping("/switcherController")
     public ResultMsg switcherController(@RequestBody DeviceSwitcherParam deviceSwitcherParam) {

@@ -67,6 +67,12 @@ public class DeviceReq {
      */
     @ApiModelProperty(value = "项目id", required = false, example = "")
     private Long projectId;
+
+    /**
+     * 项目组id
+     */
+    @ApiModelProperty(value = "项目组id", required = false, example = "")
+    private Long groupId;
     /**
      * 创建者id
      */

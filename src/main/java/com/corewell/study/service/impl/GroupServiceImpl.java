@@ -1,5 +1,6 @@
 package com.corewell.study.service.impl;
 
+import com.corewell.study.dao.DeviceDao;
 import com.corewell.study.dao.GroupDao;
 import com.corewell.study.dao.StudentDao;
 import com.corewell.study.domain.Group;
@@ -26,6 +27,8 @@ public class GroupServiceImpl implements GroupService {
     private GroupDao groupDao;
     @Autowired
     private StudentDao studentDao;
+    @Autowired
+    private DeviceDao deviceDao;
 
     @Override
     public ResultMsg findGroup(GroupReq projectReq) {
@@ -59,6 +62,7 @@ public class GroupServiceImpl implements GroupService {
     public ResultMsg updateGroupStatus(Long id) {
         int result = groupDao.updateGroupStatus(id);
         studentDao.updateGroupStudentByGroupId(id);
+        deviceDao.updateBindingByGroupId(id);
         if (result == 1) {
             return ResultMsg.success();
         }

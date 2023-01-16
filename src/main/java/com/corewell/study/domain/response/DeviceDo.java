@@ -78,6 +78,11 @@ public class DeviceDo {
     @ApiModelProperty(value = "项目id", required = false, example = "")
     private Long projectId;
     /**
+     * 项目组id
+     */
+    @ApiModelProperty(value = "项目组id", required = false, example = "")
+    private Long groupId;
+    /**
      * 创建者id
      */
     @ApiModelProperty(value = "创建者id", required = true, example = "")
@@ -114,6 +119,12 @@ public class DeviceDo {
      */
     @ApiModelProperty(value = "绑定项目", required = false, example = "")
     private String projectName;
+    /**
+     * 绑定项目组
+     */
+    @ApiModelProperty(value = "绑定项目组", required = false, example = "")
+    private String groupName;
+
 
 
 }

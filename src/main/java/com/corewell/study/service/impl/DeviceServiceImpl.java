@@ -9,6 +9,7 @@ import com.corewell.study.domain.DeviceNumber;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.*;
 import com.corewell.study.domain.result.ResultMsg;
+import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
 import com.corewell.study.utils.InfluxDbUtils;
@@ -787,6 +788,13 @@ public class DeviceServiceImpl implements DeviceService {
             return ResultMsg.error();
         }
     }
-
+    @Override
+    public ResultMsg updateBindingGroupById(Long id) {
+        int result = deviceDao.updateBindingGroupById(id);
+        if (result == 1) {
+            return ResultMsg.success();
+        }
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
+    }
 
 }

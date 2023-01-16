@@ -223,5 +223,13 @@ public interface DeviceService {
      */
     ResultMsg getSingleSensorDatas(Long sensorId);
 
+    /**
+     * 设备移除项目组
+     *
+     * @param id
+     * @return
+     */
+    ResultMsg updateBindingGroupById(Long id);
+
 
 }

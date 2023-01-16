@@ -28,11 +28,7 @@ public class Device {
     @ApiModelProperty(value = "设备id", required = false, example = "")
     private Long deviceId;
 
-    /**
-     * 设备组Id
-     */
-    @ApiModelProperty(value = "设备组Id", required = false, example = "")
-    private Long groupId;
+
     /**
      * 设备名称
      */
@@ -116,6 +112,12 @@ public class Device {
      */
     @ApiModelProperty(value = "项目id", required = false, example = "")
     private Long projectId;
+
+    /**
+     * 项目组Id
+     */
+    @ApiModelProperty(value = "项目组Id", required = false, example = "")
+    private Long groupId;
     /**
      * 创建者id
      */
