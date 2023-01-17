@@ -72,7 +72,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResultMsg insertStudent(Student student) {
-        String account=student.getAccount();
+        String account = student.getAccount();
         Student studentOld = studentDao.findStudentByAccount(account);
         if (studentOld != null) {
             String status = studentOld.getStatus();
@@ -83,6 +83,9 @@ public class StudentServiceImpl implements StudentService {
                     return new ResultMsg(ResultStatusCode.USER_ISEXIT);
                 case "2":
                     studentDao.deleteStudent(account);
+                    break;
+                default:
+                    break;
             }
         }
         student.setCreateTime(new Date());

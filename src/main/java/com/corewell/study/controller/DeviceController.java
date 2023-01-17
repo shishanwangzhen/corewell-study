@@ -31,7 +31,17 @@ public class DeviceController {
     @ApiOperation("查询设备")
     @PostMapping("/findDevice")
     public ResultMsg findDevice(@RequestBody DeviceReq deviceReq) {
+        System.out.println("findDevice入参：：：："+JSON.toJSONString(deviceReq));
         ResultMsg resultMsg = DeviceService.findDevice(deviceReq);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("查询设备绑定项目组")
+    @PostMapping("/findDeviceBindGroup")
+    public ResultMsg findDeviceBindGroup(Long projectId) {
+        System.out.println("findDeviceBindGroup入参：：：："+JSON.toJSONString(projectId));
+        ResultMsg resultMsg = DeviceService.findDeviceBindGroup(projectId);
         return resultMsg;
 
     }
@@ -132,7 +142,14 @@ public class DeviceController {
         return resultMsg;
 
     }
+    @ApiOperation("项目组绑定设备")
+    @PostMapping("/updateDeviceBindingGroup")
+    public ResultMsg updateDeviceBindingGroup(@RequestBody DeviceBindingGroupReq deviceBindingGroupReq) {
+        System.out.println(JSON.toJSON(deviceBindingGroupReq));
+        ResultMsg resultMsg = DeviceService.updateDeviceBindingGroup(deviceBindingGroupReq);
+        return resultMsg;
 
+    }
     @ApiOperation("设备移除项目组")
     @PostMapping("/updateBindingGroupById")
     public ResultMsg updateBindingGroupById(Long id) {

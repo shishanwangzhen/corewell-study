@@ -20,6 +20,14 @@ public interface DeviceService {
      * @return
      */
     ResultMsg findDevice(DeviceReq deviceReq);
+    /**
+     * 查询设备绑定项目组
+     *
+     * @param projectId
+     * @return
+     */
+    ResultMsg findDeviceBindGroup(Long projectId);
+
 
     /**
      * 根据deviceId查询设备详情
@@ -102,12 +110,21 @@ public interface DeviceService {
     ResultMsg updateDeviceBinding(DeviceBindingReq deviceBindingReq);
 
     /**
-     * 删除设备
+     * 项目解绑设备
      *
      * @param id
      * @return
      */
     ResultMsg updateDeviceBindingById(Long id);
+
+    /**
+     * 项目组绑定设备
+     *
+     * @param deviceBindingGroupReq
+     * @return
+     */
+    ResultMsg updateDeviceBindingGroup(DeviceBindingGroupReq deviceBindingGroupReq);
+
 
     /**
      * 设备开关下行控制

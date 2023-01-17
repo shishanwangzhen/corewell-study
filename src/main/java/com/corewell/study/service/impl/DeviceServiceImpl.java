@@ -84,6 +84,13 @@ public class DeviceServiceImpl implements DeviceService {
         List<DeviceDo> DeviceDOList = deviceDao.findDevice(deviceReq);
         return ResultMsg.success(DeviceDOList);
     }
+    @Override
+    public ResultMsg findDeviceBindGroup(Long projectId) {
+        List<Device> DeviceDOList = deviceDao.findDeviceBindGroup(projectId);
+        return ResultMsg.success(DeviceDOList);
+    }
+
+
 
     @Override
     public ResultMsg findDeviceByDeviceId(Long deviceId) {
@@ -326,6 +333,17 @@ public class DeviceServiceImpl implements DeviceService {
         }
         return ResultMsg.error();
     }
+
+    @Override
+    public ResultMsg updateDeviceBindingGroup(DeviceBindingGroupReq deviceBindingGroupReq) {
+        int result = deviceDao.updateDeviceBindingGroup(deviceBindingGroupReq);
+        if (result == 1) {
+            return ResultMsg.success();
+        }
+        return ResultMsg.error();
+    }
+
+
 
     @Override
     public ResultMsg switcherController(DeviceSwitcherParam deviceSwitcherParam) {

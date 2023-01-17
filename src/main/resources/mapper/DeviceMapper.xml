@@ -22,7 +22,6 @@
         <result property="updateTime" column="update_time"/>
         <result property="decoderId" column="decoder_id"/>
 
-
     </resultMap>
 
     <select id="findDevice" parameterType="DeviceReq" resultType="DeviceDo">
@@ -70,6 +69,9 @@
         <if test="creatorId!=null and creatorId!=''">
             and d.creator_id=#{creatorId}
         </if>
+        <if test="bindingId!=null and bindingId!=''">
+            and d.binding_id=#{bindingId}
+        </if>
         <if test="deviceNo!=null and deviceNo!=''">
             and d.deviceNo=#{deviceNo}
         </if>
@@ -81,6 +83,23 @@
         </if>
 
     </select>
+    <select id="findDeviceBindGroup" parameterType="Long" resultType="Device">
+        select id,
+               device_id   as deviceId,
+               device_name as deviceName,
+               deviceNo,
+               link_type   as linkType,
+               timescale,
+               binding,
+               binding_id  as bindingId,
+               project_id  as projectId,
+               group_id    as groupId,
+               creator_id  as creatorId
+        from device
+        where group_id = 0
+          and project_id = #{projectId}
+    </select>
+
 
     <select id="selectControllerDevice" parameterType="Device" resultType="Device">
         select d.id,
@@ -429,6 +448,14 @@
             update_time=now()
         where id = #{id}
     </update>
+
+    <update id="updateDeviceBindingGroup" parameterType="DeviceBindingGroupReq">
+        update Device
+        set group_id=#{groupId},
+            update_time=now()
+        where id = #{id}
+    </update>
+
 
     <update id="unbindDeviceNumberByDeviceId" parameterType="Long">
         update Device

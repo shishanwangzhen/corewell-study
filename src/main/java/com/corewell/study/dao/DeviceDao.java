@@ -1,6 +1,7 @@
 package com.corewell.study.dao;
 
 import com.corewell.study.domain.Device;
+import com.corewell.study.domain.request.DeviceBindingGroupReq;
 import com.corewell.study.domain.request.DeviceBindingReq;
 import com.corewell.study.domain.request.DeviceReq;
 import com.corewell.study.domain.response.DeviceDo;
@@ -25,6 +26,16 @@ public interface DeviceDao {
      * @return
      */
     List<DeviceDo> findDevice(DeviceReq deviceReq);
+
+    /**
+     * 查询设备绑定项目组
+     *
+     * @param projectId
+     * @return
+     */
+    List<Device> findDeviceBindGroup(@Param("projectId") Long projectId);
+
+
 
     /**
      * 新增设备
@@ -146,6 +157,13 @@ public interface DeviceDao {
      */
     int updateDeviceBindingById(@Param("id") Long id);
 
+    /**
+     * 项目组绑定设备
+     *
+     * @param deviceBindingGroupReq
+     * @return
+     */
+    int updateDeviceBindingGroup(DeviceBindingGroupReq deviceBindingGroupReq);
 
 
 }
