@@ -6,6 +6,7 @@ import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,6 +66,15 @@ public class DeviceController {
 
     }
 
+    @ApiOperation("视频设备修改")
+    @PostMapping("/updateVideoDevice")
+    public ResultMsg updateVideoDevice(@RequestBody Device device) {
+        System.out.println(JSON.toJSON(device));
+        ResultMsg resultMsg = DeviceService.updateVideoDevice(device);
+        return resultMsg;
+
+    }
+
     @ApiOperation("设备新增")
     @PostMapping("/insertDevice")
     public ResultMsg insertDevice(@RequestBody DeviceInsertParam deviceInsertParam) {
@@ -73,50 +84,23 @@ public class DeviceController {
 
     }
 
-    @ApiOperation("被控设备新增")
-    @PostMapping("/insertControllerDevice")
-    public ResultMsg insertControllerDevice(@RequestBody Device device) {
+   /* @ApiOperation("视频设备新增")
+    @PostMapping("/insertVideoDevice")
+    public ResultMsg insertVideoDevice(@RequestBody Device device) {
         System.out.println(JSON.toJSON(device));
-        ResultMsg resultMsg = DeviceService.insertControllerDevice(device);
+        ResultMsg resultMsg = DeviceService.insertVideoDevice(device);
         return resultMsg;
 
-    }
+    }*/
 
-    @ApiOperation("被控设备修改")
-    @PostMapping("/updateControllerDevice")
-    public ResultMsg updateControllerDevice(@RequestBody Device device) {
-        System.out.println(JSON.toJSON(device));
-        ResultMsg resultMsg = DeviceService.updateControllerDevice(device);
-        return resultMsg;
-
-    }
-
-    @ApiOperation("被控设备删除")
-    @PostMapping("/deleteControllerDevice")
-    public ResultMsg deleteControllerDevice(Long id) {
+    @ApiOperation("视频设备删除")
+    @PostMapping("/deleteVideoDevice")
+    public ResultMsg deleteVideoDevice(Long id) {
         System.out.println(JSON.toJSON(id));
-        ResultMsg resultMsg = DeviceService.deleteControllerDevice(id);
+        ResultMsg resultMsg = DeviceService.deleteVideoDevice(id);
         return resultMsg;
 
     }
-
-    @ApiOperation("查询被控设备")
-    @PostMapping("/selectControllerDevice")
-    public ResultMsg selectControllerDevice(@RequestBody Device device) {
-        System.out.println(JSON.toJSON(device));
-        ResultMsg resultMsg = DeviceService.selectControllerDevice(device);
-        return resultMsg;
-
-    }
-
-    @ApiOperation("解绑被控设备控制通道")
-    @PostMapping("/unbindDeviceNumberBindById")
-    public ResultMsg unbindDeviceNumberBindById(Long id) {
-        ResultMsg resultMsg = DeviceService.unbindDeviceNumberBindById(id);
-        return resultMsg;
-
-    }
-
 
     @ApiOperation("设备删除")
     @PostMapping("/deleteDevice")
@@ -186,6 +170,14 @@ public class DeviceController {
         ResultMsg resultMsg = DeviceService.getSensorHistroy(sensorHistoryParam);
         return resultMsg;
     }
+
+    @ApiOperation("导出设备传感器历史数据")
+    @PostMapping("/downloadSensorHistory")
+    public ResultMsg downloadSensorHistory(@RequestBody SensorHistoryParam sensorHistoryParam, HttpServletResponse response) {
+        ResultMsg resultMsg = DeviceService.downloadSensorHistory(sensorHistoryParam,response);
+        return resultMsg;
+    }
+
 
 
     @ApiOperation("获取设备参数")
