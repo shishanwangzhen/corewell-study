@@ -133,7 +133,7 @@ public class WebSocketServer {
      */
 
     private void sendMessage(String message) throws Exception {
-        logger.info("用户：" + userId + ",当前在线人数为：" + getOnlineCount() + "  session:::"+"     message::::"+message);
+        System.out.println("用户：" + userId + ",当前在线人数为：" + getOnlineCount() + ", message::"+message);
         this.session.getBasicRemote().sendText(message);
     }
 

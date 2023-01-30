@@ -5,6 +5,8 @@ import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -50,7 +52,7 @@ public interface DeviceService {
      * @param device
      * @return
      */
-    ResultMsg insertControllerDevice(Device device);
+    ResultMsg insertVideoDevice(Device device);
 
     /**
      * 修改被控设备
@@ -58,7 +60,7 @@ public interface DeviceService {
      * @param device
      * @return
      */
-    ResultMsg updateControllerDevice(Device device);
+    ResultMsg updateVideoDevice(Device device);
     /**
      * 删除被控设备
      *
@@ -66,24 +68,7 @@ public interface DeviceService {
      *
      * @return
      */
-    ResultMsg deleteControllerDevice(Long id);
-    /**
-     * 查询被控设备
-     *
-     * @param device
-     *
-     * @return
-     */
-    ResultMsg selectControllerDevice(Device device);
-    /**
-     * 解绑被控设备控制通道
-     *
-     * @param id
-     *
-     * @return
-     */
-    ResultMsg unbindDeviceNumberBindById(Long id);
-
+    ResultMsg deleteVideoDevice(Long id);
 
 
     /**
@@ -158,6 +143,15 @@ public interface DeviceService {
      * @return
      */
     ResultMsg getSensorHistroy(SensorHistoryParam sensorHistoryParam);
+    /**
+     * 获取设备传感器历史数据
+     *
+     * @param sensorHistoryParam
+     * @param response
+     * @return
+     */
+    ResultMsg downloadSensorHistory(SensorHistoryParam sensorHistoryParam, HttpServletResponse response);
+
 
     /**
      * 获取设备参数

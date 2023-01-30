@@ -53,15 +53,6 @@ public interface DeviceDao {
      */
     int updateDevice(Device device);
 
-
-    /**
-     * 修改被控设备
-     *
-     * @param device
-     * @return
-     */
-    int updateControllerDevice(Device device);
-
     /**
      * 删除设备
      *
@@ -77,37 +68,6 @@ public interface DeviceDao {
      * @return
      */
     int deleteDeviceById(@Param("id") Long id);
-
-    /**
-     * 查询被控设备
-     *
-     * @param device
-     * @return
-     */
-    List<Device> selectControllerDevice(Device device);
-
-
-    /**
-     * 解绑被控设备控制器
-     * @param deviceId
-     * @return
-     */
-    int unbindDeviceNumberByDeviceId(@Param("deviceId") Long deviceId);
-
-    /**
-     * 解绑被控设备控制器
-     * @param sensorId
-     * @return
-     */
-    int unbindDeviceNumberBindBySensorId(@Param("sensorId") String sensorId);
-
-    /**
-     * 解绑被控设备控制器
-     * @param id
-     *
-     * @return
-     */
-    int unbindDeviceNumberBindById(@Param("id") Long id);
 
     /**
      * 删除项目解绑设备

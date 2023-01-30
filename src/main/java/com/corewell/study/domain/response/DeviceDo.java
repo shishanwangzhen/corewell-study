@@ -104,11 +104,7 @@ public class DeviceDo {
      */
     @ApiModelProperty(value = "绑定项目负责人", required = false, example = "")
     private String bindingName;
-    /**
-     * 解码器
-     */
-    @ApiModelProperty(value = "解码器", required = false, example = "")
-    private String decoderName;
+
     /**
      * 设备导入人
      */
@@ -124,7 +120,11 @@ public class DeviceDo {
      */
     @ApiModelProperty(value = "绑定项目组", required = false, example = "")
     private String groupName;
-
+    /**
+     * 视频地址
+     */
+    @ApiModelProperty(value = "视频地址", required = false, example = "")
+    private String videoUrl;
 
 
 }

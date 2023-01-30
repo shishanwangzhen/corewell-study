@@ -59,4 +59,10 @@ public class DeviceInsertParam {
     @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = true, example = "")
     private String type;
 
+    /**
+     * 视频地址
+     */
+    @ApiModelProperty(value = "视频地址", required = false, example = "")
+    private String videoUrl;
+
 }

@@ -123,11 +123,6 @@ public class Device {
      */
     @ApiModelProperty(value = "创建者id", required = true, example = "")
     private Long creatorId;
-    /**
-     * 解码器id
-     */
-    @ApiModelProperty(value = "解码器id", required = false, example = "")
-    private Long decoderId;
 
     /**
      * 创建时间
@@ -140,39 +135,12 @@ public class Device {
     @ApiModelProperty(value = "修改时间", required = false, example = "")
     private Date updateTime;
 
-    /**
-     * 控制器id
-     */
-    @ApiModelProperty(value = "控制器id", required = true, example = "")
-    private Long controllerDeviceId;
-    /**
-     * 控制器通道id
-     */
-    @ApiModelProperty(value = "控制器通道id", required = false, example = "")
-    private Long sensorId;
 
     /**
-     * 开启指令
+     * 视频地址
      */
-    @ApiModelProperty(value = "开启指令", required = false, example = "")
-    private String switchOn;
-    /**
-     * 关闭指令
-     */
-    @ApiModelProperty(value = "关闭指令", required = false, example = "")
-    private String switchOff;
-
-    /**
-     * 控制器名称
-     */
-    @ApiModelProperty(value = "控制器名称", required = false, example = "")
-    private String controllerDeviceName;
-
-    /**
-     * 控制器序列号
-     */
-    @ApiModelProperty(value = "控制器序列号", required = false, example = "")
-    private String controllerDeviceNo;
+    @ApiModelProperty(value = "视频地址", required = false, example = "")
+    private String videoUrl;
 
 
 

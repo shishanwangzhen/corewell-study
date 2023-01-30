@@ -20,7 +20,7 @@
         <result property="creatorId" column="creator_id"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
-        <result property="decoderId" column="decoder_id"/>
+        <result property="videoUrl" column="video_url"/>
 
     </resultMap>
 
@@ -100,55 +100,6 @@
           and project_id = #{projectId}
     </select>
 
-
-    <select id="selectControllerDevice" parameterType="Device" resultType="Device">
-        select d.id,
-        d.device_name as deviceName,
-        d.type,
-        d.binding,
-        d.controller_device_id as controllerDeviceId,
-        d.sensor_id as sensorId,
-        d.switch_on as switchOn,
-        d.switch_off as switchOff,
-        d.binding_id as bindingId,
-        d.project_id as projectId,
-        d.creator_id as creatorId,
-        d.create_time as createTime,
-        d.update_time as updateTime,
-        t.name as bindingName,
-        p.name as projectName,
-        d2.device_name as controllerDeviceName,
-        t2.name as creatorName
-        from device d
-        left join device d2 on d.controller_device_id = d2.device_id
-        left join teacher t on d.binding_id = t.id
-        left join teacher t2 on t2.id=d.creator_id
-        left join project p on d.project_id = p.id
-        where 1=1
-        <if test="projectId!=null and projectId!=''">
-            and d.project_id=#{projectId}
-        </if>
-        <if test="binding!=null and binding!=''">
-            and d.binding=#{binding}
-        </if>
-        <if test="id!=null and id!=''">
-            and d.id=#{id}
-        </if>
-        <if test="type!=null and type!=''">
-            and d.type=#{type}
-        </if>
-        <if test="creatorId!=null and creatorId!=''">
-            and d.creator_id=#{creatorId}
-        </if>
-        <if test="controllerDeviceId!=null and controllerDeviceId!=''">
-            and d.controller_device_id=#{controllerDeviceId}
-        </if>
-        <if test="deviceName!=null and deviceName!=''">
-            and d.device_name like CONCAT('%' , #{deviceName ,jdbcType=VARCHAR},'%')
-        </if>
-
-    </select>
-
     <insert id="insertDevice" parameterType="Device">
         insert into device
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -200,8 +151,8 @@
             <if test="updateTime!=null">
                 update_time,
             </if>
-            <if test="decoderId!=null and decoderId!=''">
-                decoder_id,
+            <if test="videoUrl!=null and videoUrl!=''">
+                video_url,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -255,8 +206,8 @@
                 #{updateTime},
             </if>
 
-            <if test="decoderId!=null and decoderId!=''">
-                #{decoderId},
+            <if test="videoUrl!=null and videoUrl!=''">
+                #{videoUrl},
             </if>
         </trim>
     </insert>
@@ -310,79 +261,13 @@
             <if test="updateTime!=null">
                 update_time=#{updateTime},
             </if>
-            <if test="decoderId!=null and decoderId!=''">
-                decoder_id=#{decoderId}
+            <if test="videoUrl!=null and videoUrl!=''">
+                video_url=#{videoUrl}
             </if>
         </set>
         where device_id=#{deviceId}
     </update>
 
-    <update id="updateControllerDevice" parameterType="Device">
-        update device
-        <set>
-            <if test="deviceId!=null and deviceId!=''">
-                device_id=#{deviceId},
-            </if>
-            <if test="deviceName!=null and deviceName!=''">
-                device_name=#{deviceName},
-            </if>
-            <if test="deviceNo!=null and deviceNo!=''">
-                deviceNo=#{deviceNo},
-            </if>
-            <if test="linkType!=null and linkType!=''">
-                link_type= #{linkType},
-            </if>
-            <if test="timescale!=null and timescale!=''">
-                timescale=#{timescale},
-            </if>
-            <if test="iocUrl!=null and iocUrl!=''">
-                ioc_url=#{iocUrl},
-            </if>
-            <if test="isDelete!=null and isDelete!=''">
-                is_delete=#{isDelete},
-            </if>
-            <if test="type!=null and type!=''">
-                type=#{type},
-            </if>
-            <if test="binding!=null and binding!=''">
-                binding=#{binding},
-            </if>
-            <if test="bindingId!=null and bindingId!=''">
-                binding_id=#{bindingId},
-            </if>
-            <if test="projectId!=null and projectId!=''">
-                project_id=#{projectId},
-            </if>
-            <if test="creatorId!=null and creatorId!=''">
-                creator_id=#{creatorId},
-            </if>
-            <if test="createTime!=null">
-                create_time=#{createTime},
-            </if>
-            <if test="updateTime!=null">
-                update_time=#{updateTime},
-            </if>
-            <if test="decoderId!=null and decoderId!=''">
-                decoder_id=#{decoderId},
-            </if>
-            <if test="controllerDeviceId!=null and controllerDeviceId!=''">
-                controller_device_id=#{controllerDeviceId},
-            </if>
-            <if test="sensorId!=null and sensorId!=''">
-                sensor_id=#{sensorId},
-            </if>
-            <if test="controllerDeviceNo!=null and controllerDeviceNo!=''">
-                controller_deviceNo=#{controllerDeviceNo},
-            </if>
-            <if test="switchOn!=null and switchOn!=''">
-                switch_on=#{switchOn},
-            </if>
-            <if test="switchOff!=null and switchOff!=''">
-                switch_off=#{switchOff}
-            </if>
-        </set>
-        where id=#{id}
-    </update>
 
     <delete id="deleteDevice" parameterType="Long">
         delete
@@ -452,37 +337,6 @@
     <update id="updateDeviceBindingGroup" parameterType="DeviceBindingGroupReq">
         update Device
         set group_id=#{groupId},
-            update_time=now()
-        where id = #{id}
-    </update>
-
-
-    <update id="unbindDeviceNumberByDeviceId" parameterType="Long">
-        update Device
-        set controller_device_id=null,
-            sensor_id=null,
-            switch_on=null,
-            switch_off=null,
-            update_time=now()
-        where controller_device_id = #{deviceId}
-    </update>
-
-    <update id="unbindDeviceNumberBindBySensorId" parameterType="String">
-        update Device
-        set controller_device_id=null,
-            sensor_id=null,
-            switch_on=null,
-            switch_off=null,
-            update_time=now()
-        where sensor_id in (#{sensorId})
-    </update>
-
-    <update id="unbindDeviceNumberBindById" parameterType="Long">
-        update Device
-        set controller_device_id=null,
-            sensor_id=null,
-            switch_on=null,
-            switch_off=null,
             update_time=now()
         where id = #{id}
     </update>

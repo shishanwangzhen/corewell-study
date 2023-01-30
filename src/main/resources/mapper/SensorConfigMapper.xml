@@ -21,8 +21,7 @@
 
     <select id="findSensorConfig" parameterType="SensorConfigReq" resultType="SensorConfig">
         select id, number,Chinese_name as ChineseName,English_name as EnglishName,system_name as systemName,
-        unity, creator_id as creatorId, create_time as createTime, update_time as updateTime,
-               Device_id as DeviceId
+        unity, creator_id as creatorId, create_time as createTime, update_time as updateTime
         from sensor_config
         where delete_flag=1
         <if test="id!=null and id!=''">

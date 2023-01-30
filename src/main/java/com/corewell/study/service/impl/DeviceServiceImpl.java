@@ -10,8 +10,10 @@ import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
+import com.corewell.study.domain.template.SensorTemplate;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
+import com.corewell.study.utils.ExcelUtil;
 import com.corewell.study.utils.InfluxDbUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.influxdb.dto.Query;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -84,12 +87,12 @@ public class DeviceServiceImpl implements DeviceService {
         List<DeviceDo> DeviceDOList = deviceDao.findDevice(deviceReq);
         return ResultMsg.success(DeviceDOList);
     }
+
     @Override
     public ResultMsg findDeviceBindGroup(Long projectId) {
         List<Device> DeviceDOList = deviceDao.findDeviceBindGroup(projectId);
         return ResultMsg.success(DeviceDOList);
     }
-
 
 
     @Override
@@ -133,7 +136,18 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg insertDevice(DeviceInsertParam deviceInsertParam) {
-
+        if ("4".equals(deviceInsertParam.getType())) {
+            Device device = new Device();
+            device.setDeviceName(deviceInsertParam.getDeviceName());
+            device.setType(deviceInsertParam.getType());
+            device.setCreatorId(deviceInsertParam.getCreatorId());
+            device.setCreateTime(new Date());
+            int result = deviceDao.insertDevice(device);
+            if (result == 1) {
+                return ResultMsg.success();
+            }
+            return ResultMsg.error();
+        }
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
             mapParam.put("deviceNo", deviceInsertParam.getDeviceNo());
@@ -189,7 +203,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public ResultMsg insertControllerDevice(Device device) {
+    public ResultMsg insertVideoDevice(Device device) {
         device.setCreateTime(new Date());
         int result = deviceDao.insertDevice(device);
         if (result == 1) {
@@ -199,9 +213,9 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public ResultMsg updateControllerDevice(Device device) {
+    public ResultMsg updateVideoDevice(Device device) {
         device.setUpdateTime(new Date());
-        int result = deviceDao.updateControllerDevice(device);
+        int result = deviceDao.updateDevice(device);
         if (result == 1) {
             return ResultMsg.success();
         }
@@ -209,23 +223,8 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public ResultMsg deleteControllerDevice(Long id) {
+    public ResultMsg deleteVideoDevice(Long id) {
         int result = deviceDao.deleteDeviceById(id);
-        if (result == 1) {
-            return ResultMsg.success();
-        }
-        return ResultMsg.error();
-    }
-
-    @Override
-    public ResultMsg selectControllerDevice(Device device) {
-        List<Device> DeviceDOList = deviceDao.selectControllerDevice(device);
-        return ResultMsg.success(DeviceDOList);
-    }
-
-    @Override
-    public ResultMsg unbindDeviceNumberBindById(Long id) {
-        int result = deviceDao.unbindDeviceNumberBindById(id);
         if (result == 1) {
             return ResultMsg.success();
         }
@@ -275,10 +274,6 @@ public class DeviceServiceImpl implements DeviceService {
             device.setDeviceName(deviceUpdateParam.getDeviceName());
         }
         device.setUpdateTime(new Date());
-        if (StringUtils.isNotBlank(deviceUpdateParam.getDelSensorIds())) {
-            String delSensorIds = deviceUpdateParam.getDelSensorIds();
-            deviceDao.unbindDeviceNumberBindBySensorId(delSensorIds);
-        }
         deviceDao.updateDevice(device);
         return ResultMsg.success();
     }
@@ -304,7 +299,6 @@ public class DeviceServiceImpl implements DeviceService {
         String flag = jsonObject.get("flag").toString();
         if ("00".equals(flag)) {
             deviceDao.deleteDevice(deviceId);
-            deviceDao.unbindDeviceNumberByDeviceId(deviceId);
             DeviceNumber deviceNumber = new DeviceNumber();
             deviceNumber.setDeviceId(deviceId);
             deviceNumber.setStatus(0);
@@ -342,7 +336,6 @@ public class DeviceServiceImpl implements DeviceService {
         }
         return ResultMsg.error();
     }
-
 
 
     @Override
@@ -494,6 +487,46 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    public ResultMsg downloadSensorHistory(SensorHistoryParam sensorHistoryParam, HttpServletResponse response) {
+        String fileName = "人员列表";
+        String sheetName = "人员列表";
+        System.out.println("查询历史数据入参参：sensorHistoryParam" + JSONObject.toJSON(sensorHistoryParam));
+        StringBuilder command = new StringBuilder();
+        command.append("SELECT time,value FROM CORE_STUDY where 1=1");
+        if (sensorHistoryParam.getSensorId() != null && sensorHistoryParam.getSensorId() != 0) {
+            command.append(" AND sensorsId=");
+            command.append("'");
+            command.append(sensorHistoryParam.getSensorId());
+            command.append("'");
+        }
+        if (StringUtils.isNotBlank(sensorHistoryParam.getStartDate())) {
+            command.append(" AND time>");
+            command.append("'");
+            command.append(sensorHistoryParam.getStartDate());
+            command.append("'");
+        }
+        if (StringUtils.isNotBlank(sensorHistoryParam.getEndDate())) {
+            command.append(" AND time<");
+            command.append("'");
+            command.append(sensorHistoryParam.getEndDate());
+            command.append("'");
+        }
+        //TODO
+        // command.append("GROUP BY *");
+        QueryResult resultMsg = query(command.toString());
+        System.out.println("查询历史数据还参：resultMsg" + JSONObject.toJSON(resultMsg));
+        String list=JSONObject.parseObject(JSONObject.parseArray(JSONObject.parseObject(JSONObject.parseArray(resultMsg.toString()).get(0).toString()).get("series").toString()).get(0).toString()).get("value").toString();
+//        setReverseLevel(userTemplates);
+        try {
+            ExcelUtil.writeExcel(response, sensorTemplates, fileName, sheetName, SensorTemplate.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResultMsg.success();
+    }
+
+
+    @Override
     public ResultMsg getParams(Long deviceId) {
         ResponseEntity<String> responseEntity = null;
         try {
@@ -556,26 +589,25 @@ public class DeviceServiceImpl implements DeviceService {
         String flag = null;
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
-            List<Modbus> modbusList=modbusReq.getModbusList();
+            List<Modbus> modbusList = modbusReq.getModbusList();
             mapParam.put("userId", 77632L);
             mapParam.put("deviceId", modbusReq.getDeviceId());
             mapParam.put("linktype", modbusReq.getLinktype());
             mapParam.put("modbusList", modbusList);
 
 
-
-            if (modbusList.size()>0) {
+            if (modbusList.size() > 0) {
                 System.out.println("modbus 协议读写指令设置ru参：：" + JSON.toJSONString(mapParam));
                 responseEntity = restTemplate.postForEntity(TLINK_SETMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
                 System.out.println("modbus 协议读写指令设置还参：：" + responseEntity.getBody());
                 Iterator<Modbus> iterator = modbusList.iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     Modbus modbus = iterator.next();
-                    if(modbus.getId()==null||modbus.getId()==0) {
+                    if (modbus.getId() == null || modbus.getId() == 0) {
                         iterator.remove();
                     }
                 }
-                if (modbusList.size()>0){
+                if (modbusList.size() > 0) {
                     mapParam.put("modbusList", modbusList);
                     System.out.println("modbus 协议读写指令修改ru参：：" + JSON.toJSONString(mapParam));
                     responseEntity = restTemplate.postForEntity(TLINK_UPDATEMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
@@ -806,6 +838,7 @@ public class DeviceServiceImpl implements DeviceService {
             return ResultMsg.error();
         }
     }
+
     @Override
     public ResultMsg updateBindingGroupById(Long id) {
         int result = deviceDao.updateBindingGroupById(id);
