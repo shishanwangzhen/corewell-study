@@ -41,6 +41,7 @@
         d.creator_id as creatorId,
         d.create_time as createTime,
         d.update_time as updateTime,
+        d.video_url as videoUrl,
         t.name as bindingName,
         p.name as projectName,
         g.name as groupName,
@@ -266,6 +267,45 @@
             </if>
         </set>
         where device_id=#{deviceId}
+    </update>
+    <update id="updateVideoDevice" parameterType="Device">
+        update device
+        <set>
+            <if test="deviceName!=null and deviceName!=''">
+                device_name=#{deviceName},
+            </if>
+            <if test="deviceNo!=null and deviceNo!=''">
+                deviceNo=#{deviceNo},
+            </if>
+            <if test="type!=null and type!=''">
+                type=#{type},
+            </if>
+            <if test="binding!=null and binding!=''">
+                binding=#{binding},
+            </if>
+            <if test="bindingId!=null and bindingId!=''">
+                binding_id=#{bindingId},
+            </if>
+            <if test="projectId!=null and projectId!=''">
+                project_id=#{projectId},
+            </if>
+            <if test="groupId!=null and groupId!=''">
+                group_id=#{groupId},
+            </if>
+            <if test="creatorId!=null and creatorId!=''">
+                creator_id=#{creatorId},
+            </if>
+            <if test="createTime!=null">
+                create_time=#{createTime},
+            </if>
+            <if test="updateTime!=null">
+                update_time=#{updateTime},
+            </if>
+            <if test="videoUrl!=null and videoUrl!=''">
+                video_url=#{videoUrl}
+            </if>
+        </set>
+        where id=#{id}
     </update>
 
 

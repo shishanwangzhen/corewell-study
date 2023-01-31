@@ -54,6 +54,14 @@ public interface DeviceDao {
     int updateDevice(Device device);
 
     /**
+     * 修改设备
+     *
+     * @param device
+     * @return
+     */
+    int updateVideoDevice(Device device);
+
+    /**
      * 删除设备
      *
      * @param deviceId

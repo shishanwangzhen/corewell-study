@@ -143,15 +143,15 @@ public interface DeviceService {
      * @return
      */
     ResultMsg getSensorHistroy(SensorHistoryParam sensorHistoryParam);
-    /**
+  /*  *//**
      * 获取设备传感器历史数据
      *
      * @param sensorHistoryParam
      * @param response
      * @return
-     */
+     *//*
     ResultMsg downloadSensorHistory(SensorHistoryParam sensorHistoryParam, HttpServletResponse response);
-
+*/
 
     /**
      * 获取设备参数

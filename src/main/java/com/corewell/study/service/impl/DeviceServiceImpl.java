@@ -10,10 +10,8 @@ import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
-import com.corewell.study.domain.template.SensorTemplate;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
-import com.corewell.study.utils.ExcelUtil;
 import com.corewell.study.utils.InfluxDbUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.influxdb.dto.Query;
@@ -26,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
@@ -215,7 +212,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public ResultMsg updateVideoDevice(Device device) {
         device.setUpdateTime(new Date());
-        int result = deviceDao.updateDevice(device);
+        int result = deviceDao.updateVideoDevice(device);
         if (result == 1) {
             return ResultMsg.success();
         }
@@ -486,44 +483,21 @@ public class DeviceServiceImpl implements DeviceService {
         }*/
     }
 
-    @Override
+  /*  @Override
     public ResultMsg downloadSensorHistory(SensorHistoryParam sensorHistoryParam, HttpServletResponse response) {
         String fileName = "人员列表";
         String sheetName = "人员列表";
         System.out.println("查询历史数据入参参：sensorHistoryParam" + JSONObject.toJSON(sensorHistoryParam));
-        StringBuilder command = new StringBuilder();
-        command.append("SELECT time,value FROM CORE_STUDY where 1=1");
-        if (sensorHistoryParam.getSensorId() != null && sensorHistoryParam.getSensorId() != 0) {
-            command.append(" AND sensorsId=");
-            command.append("'");
-            command.append(sensorHistoryParam.getSensorId());
-            command.append("'");
-        }
-        if (StringUtils.isNotBlank(sensorHistoryParam.getStartDate())) {
-            command.append(" AND time>");
-            command.append("'");
-            command.append(sensorHistoryParam.getStartDate());
-            command.append("'");
-        }
-        if (StringUtils.isNotBlank(sensorHistoryParam.getEndDate())) {
-            command.append(" AND time<");
-            command.append("'");
-            command.append(sensorHistoryParam.getEndDate());
-            command.append("'");
-        }
-        //TODO
-        // command.append("GROUP BY *");
-        QueryResult resultMsg = query(command.toString());
-        System.out.println("查询历史数据还参：resultMsg" + JSONObject.toJSON(resultMsg));
-        String list=JSONObject.parseObject(JSONObject.parseArray(JSONObject.parseObject(JSONObject.parseArray(resultMsg.toString()).get(0).toString()).get("series").toString()).get(0).toString()).get("value").toString();
-//        setReverseLevel(userTemplates);
+
+        //        setReverseLevel(userTemplates);
+
         try {
             ExcelUtil.writeExcel(response, sensorTemplates, fileName, sheetName, SensorTemplate.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ResultMsg.success();
-    }
+    }*/
 
 
     @Override
