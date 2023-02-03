@@ -6,7 +6,6 @@ import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,8 +31,17 @@ public class DeviceController {
     @ApiOperation("查询设备")
     @PostMapping("/findDevice")
     public ResultMsg findDevice(@RequestBody DeviceReq deviceReq) {
-        System.out.println("findDevice入参：：：："+JSON.toJSONString(deviceReq));
+        System.out.println("findDevice入参：：：：" + JSON.toJSONString(deviceReq));
         ResultMsg resultMsg = DeviceService.findDevice(deviceReq);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("查询采集控制设备")
+    @PostMapping("/findControllerAndCollectionDevice")
+    public ResultMsg findControllerAndCollectionDevice(@RequestBody ControllerAndCollectionDeviceReq controllerAndCollectionDeviceReq) {
+        System.out.println("findControllerAndCollectionDevice入参：：：：" + JSON.toJSONString(controllerAndCollectionDeviceReq));
+        ResultMsg resultMsg = DeviceService.findControllerAndCollectionDevice(controllerAndCollectionDeviceReq);
         return resultMsg;
 
     }
@@ -42,7 +49,7 @@ public class DeviceController {
     @ApiOperation("查询设备绑定项目组")
     @PostMapping("/findDeviceBindGroup")
     public ResultMsg findDeviceBindGroup(Long projectId) {
-        System.out.println("findDeviceBindGroup入参：：：："+JSON.toJSONString(projectId));
+        System.out.println("findDeviceBindGroup入参：：：：" + JSON.toJSONString(projectId));
         ResultMsg resultMsg = DeviceService.findDeviceBindGroup(projectId);
         return resultMsg;
 
@@ -126,6 +133,7 @@ public class DeviceController {
         return resultMsg;
 
     }
+
     @ApiOperation("项目组绑定设备")
     @PostMapping("/updateDeviceBindingGroup")
     public ResultMsg updateDeviceBindingGroup(@RequestBody DeviceBindingGroupReq deviceBindingGroupReq) {
@@ -134,6 +142,7 @@ public class DeviceController {
         return resultMsg;
 
     }
+
     @ApiOperation("设备移除项目组")
     @PostMapping("/updateBindingGroupById")
     public ResultMsg updateBindingGroupById(Long id) {
@@ -179,7 +188,6 @@ public class DeviceController {
         return resultMsg;
     }
 */
-
 
 
     @ApiOperation("获取设备参数")

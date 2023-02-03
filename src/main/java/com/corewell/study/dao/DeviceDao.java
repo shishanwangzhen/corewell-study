@@ -1,6 +1,7 @@
 package com.corewell.study.dao;
 
 import com.corewell.study.domain.Device;
+import com.corewell.study.domain.request.ControllerAndCollectionDeviceReq;
 import com.corewell.study.domain.request.DeviceBindingGroupReq;
 import com.corewell.study.domain.request.DeviceBindingReq;
 import com.corewell.study.domain.request.DeviceReq;
@@ -26,6 +27,15 @@ public interface DeviceDao {
      * @return
      */
     List<DeviceDo> findDevice(DeviceReq deviceReq);
+    /**
+     * 查询采集控制设备
+     *
+     * @param controllerAndCollectionDeviceReq
+     * @return
+     */
+    List<Device> findControllerAndCollectionDevice(ControllerAndCollectionDeviceReq controllerAndCollectionDeviceReq);
+
+
 
     /**
      * 查询设备绑定项目组

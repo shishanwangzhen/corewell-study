@@ -23,6 +23,14 @@ public interface DeviceService {
      */
     ResultMsg findDevice(DeviceReq deviceReq);
     /**
+     * 查询采集控制设备
+     *
+     * @param controllerAndCollectionDeviceReq
+     * @return
+     */
+    ResultMsg findControllerAndCollectionDevice(ControllerAndCollectionDeviceReq controllerAndCollectionDeviceReq);
+
+    /**
      * 查询设备绑定项目组
      *
      * @param projectId
@@ -143,15 +151,6 @@ public interface DeviceService {
      * @return
      */
     ResultMsg getSensorHistroy(SensorHistoryParam sensorHistoryParam);
-  /*  *//**
-     * 获取设备传感器历史数据
-     *
-     * @param sensorHistoryParam
-     * @param response
-     * @return
-     *//*
-    ResultMsg downloadSensorHistory(SensorHistoryParam sensorHistoryParam, HttpServletResponse response);
-*/
 
     /**
      * 获取设备参数

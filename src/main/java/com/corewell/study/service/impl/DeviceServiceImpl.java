@@ -86,9 +86,15 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    public ResultMsg findControllerAndCollectionDevice(ControllerAndCollectionDeviceReq controllerAndCollectionDeviceReq) {
+        List<Device> DeviceList = deviceDao.findControllerAndCollectionDevice(controllerAndCollectionDeviceReq);
+        return ResultMsg.success(DeviceList);
+    }
+
+    @Override
     public ResultMsg findDeviceBindGroup(Long projectId) {
-        List<Device> DeviceDOList = deviceDao.findDeviceBindGroup(projectId);
-        return ResultMsg.success(DeviceDOList);
+        List<Device> DeviceList = deviceDao.findDeviceBindGroup(projectId);
+        return ResultMsg.success(DeviceList);
     }
 
 

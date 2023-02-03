@@ -84,6 +84,28 @@
         </if>
 
     </select>
+    <select id="findControllerAndCollectionDevice" parameterType="ControllerAndCollectionDeviceReq" resultType="Device">
+        select id,
+               device_id   as deviceId,
+               device_name as deviceName,
+               deviceNo,
+               link_type   as linkType,
+               timescale,
+               binding,
+               binding_id  as bindingId,
+               project_id  as projectId,
+               group_id    as groupId,
+               creator_id  as creatorId
+        from device
+        where type in (1,2)
+        <if test="projectId!=null and projectId!=''">
+            and project_id=#{projectId}
+        </if>
+        <if test="groupId!=null and groupId!=''">
+            and group_id=#{groupId}
+        </if>
+    </select>
+
     <select id="findDeviceBindGroup" parameterType="Long" resultType="Device">
         select id,
                device_id   as deviceId,
