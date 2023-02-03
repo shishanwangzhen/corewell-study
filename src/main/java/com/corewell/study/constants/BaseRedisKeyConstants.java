@@ -11,12 +11,17 @@ public class BaseRedisKeyConstants {
     /**
      * Redis普通键前缀
      * */
-    public static final String REDIS_KEY_PRE="core:study:access:";
+    public static final String REDIS_KEY_PRE="core:study:";
 
     /**
      * 键
      * */
-    public static final String ACCESS_TOKEN_KEY=REDIS_KEY_PRE+"ACCESS_TOKEN";
+    public static final String ACCESS_TOKEN_KEY=REDIS_KEY_PRE+"access:"+"ACCESS_TOKEN";
+
+    /**
+     * 键
+     * */
+    public static final String SENSOR_KEY=REDIS_KEY_PRE+"sensor:";
 
 
 }
