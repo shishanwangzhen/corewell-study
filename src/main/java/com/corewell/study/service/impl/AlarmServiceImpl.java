@@ -2,6 +2,7 @@ package com.corewell.study.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.corewell.study.constants.BaseConstants;
 import com.corewell.study.constants.BaseRedisKeyConstants;
 import com.corewell.study.domain.Alarm;
 import com.corewell.study.domain.request.AlarmActiveParam;
@@ -19,9 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -80,12 +79,12 @@ public class AlarmServiceImpl implements AlarmService {
             System.out.println("新增触发器还参：：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
-            if (!"00".equals(flag)) {
+            if (!BaseConstants.SUCCESS_00.equals(flag)) {
                 return ResultMsg.error();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")) {
+            if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -117,12 +116,12 @@ public class AlarmServiceImpl implements AlarmService {
             System.out.println("修改触发器还参：：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
-            if (!"00".equals(flag)) {
+            if (!BaseConstants.SUCCESS_00.equals(flag)) {
                 return ResultMsg.error();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")) {
+            if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -142,12 +141,12 @@ public class AlarmServiceImpl implements AlarmService {
             System.out.println("删除触发器还参：：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
-            if (!"00".equals(flag)) {
+            if (!BaseConstants.SUCCESS_00.equals(flag)) {
                 return ResultMsg.error();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")) {
+            if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -170,8 +169,10 @@ public class AlarmServiceImpl implements AlarmService {
             System.out.println("查询触发器还参：：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
-            if ("00".equals(flag)) {
+            if (BaseConstants.SUCCESS_00.equals(flag)) {
                 List<Alarm> alarmList = JSONObject.parseArray(jsonObject.get("dataList").toString(), Alarm.class);
+                //alarmList.sort(Comparator.comparing(Alarm::getSensorId));
+                Set<String> set = new HashSet<>();
                 Map<String, Object> mapParam1 = new HashMap<>(16);
                 mapParam1.put("userId", 77632L);
                 String sensorName = null;
@@ -179,25 +180,41 @@ public class AlarmServiceImpl implements AlarmService {
                 for (Alarm alarm : alarmList) {
                     sensorId = alarm.getSensorId();
                     if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.SENSOR_KEY + sensorId)) {
-                        alarm.setSensorName(stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.SENSOR_KEY + sensorId));
+                        sensorName = stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.SENSOR_KEY + sensorId);
+                        alarm.setSensorName(sensorName);
+                        set.add(sensorName);
                     } else {
                         mapParam1.put("sensorId", alarm.getSensorId());
-
                         responseEntity = restTemplate.postForEntity(TLINK_GETSINGLESENSORDATAS_URL, new HttpEntity<Map>(mapParam1, getHeaders()), String.class);
-                        jsonObject = JSONObject.parseObject(responseEntity.getBody());
-                        sensorName = jsonObject.get("sensorName").toString();
-                        alarm.setSensorName(sensorName);
-                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + sensorId, sensorName, 7 * 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
-                    }
+                        if (BaseConstants.SUCCESS_00.equals(flag)){
+                            jsonObject = JSONObject.parseObject(responseEntity.getBody());
+                            sensorName = jsonObject.get("sensorName").toString();
+                            alarm.setSensorName(sensorName);
+                            set.add(sensorName);
+                            stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + sensorId, sensorName, 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+                        }
 
+                    }
                 }
-                return ResultMsg.success(alarmList);
+                Map<String, List> map = new HashMap<>(16);
+                for (String sensorName1 : set) {
+                    List<Alarm> alarms = new ArrayList<>();
+                    for (Alarm alarm : alarmList) {
+                        if (sensorName1.equals(alarm.getSensorName())) {
+                            alarms.add(alarm);
+                        }
+                    }
+                    map.put(sensorName1, alarms);
+                }
+                return ResultMsg.success(map);
+            } else if (BaseConstants.SUCCESS_01.equals(flag)) {
+                return ResultMsg.success();
             } else {
                 return ResultMsg.error();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")) {
+            if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
@@ -217,12 +234,12 @@ public class AlarmServiceImpl implements AlarmService {
             System.out.println("启动/停止触发器还参：：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
-            if (!"00".equals(flag)) {
+            if (!BaseConstants.SUCCESS_00.equals(flag)) {
                 return ResultMsg.error();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (e.getMessage().contains("invalid_token")) {
+            if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();

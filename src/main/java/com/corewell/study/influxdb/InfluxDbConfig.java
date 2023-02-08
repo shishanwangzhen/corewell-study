@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class InfluxDbConfig {
 
-    @Value("${spring.influx.url:http://192.168.0.96:8083}")
+    @Value("${spring.influx.url:http://127.0.0.1:8083}")
     private String url;
     @Value("${spring.influx.user:root}")
     private String user;

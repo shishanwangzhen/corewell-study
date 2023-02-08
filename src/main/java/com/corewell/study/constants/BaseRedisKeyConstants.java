@@ -14,12 +14,12 @@ public class BaseRedisKeyConstants {
     public static final String REDIS_KEY_PRE="core:study:";
 
     /**
-     * 键
+     * token键
      * */
     public static final String ACCESS_TOKEN_KEY=REDIS_KEY_PRE+"access:"+"ACCESS_TOKEN";
 
     /**
-     * 键
+     * 传感器名称键
      * */
     public static final String SENSOR_KEY=REDIS_KEY_PRE+"sensor:";
 

@@ -81,10 +81,8 @@ public class StudentServiceImpl implements StudentService {
                     return new ResultMsg(ResultStatusCode.USER_TO_EXAMINE);
                 case "1":
                     return new ResultMsg(ResultStatusCode.USER_ISEXIT);
-                case "2":
-                    studentDao.deleteStudent(account);
-                    break;
                 default:
+                    studentDao.deleteStudent(account);
                     break;
             }
         }

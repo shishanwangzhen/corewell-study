@@ -38,7 +38,7 @@ public class TeacherServiceImpl implements TeacherService {
             return new ResultMsg(ResultStatusCode.LOGIN_ERR);
         }
         //准备存放在IWT中的自定义数据
-        Map<String, Object> info = new HashMap<>();
+        Map<String, Object> info = new HashMap<>(16);
         info.put("account", account);
         //生成JWT字符串
         String token = JwtUtil.sign(account, info);

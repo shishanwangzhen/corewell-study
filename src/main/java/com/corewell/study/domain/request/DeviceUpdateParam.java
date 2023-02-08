@@ -49,7 +49,7 @@ public class DeviceUpdateParam {
     /**
      * 传感器集合
      */
-    @ApiModelProperty(value = "删除的传感器Id，多个Id之间用英文逗号分隔 ，可选参数，没有需要删除的传感器则不用传", required = true, example = "")
+    @ApiModelProperty(value = "传感器集合", required = true, example = "")
     private List<SensorParam> sensorList;
 
 }
