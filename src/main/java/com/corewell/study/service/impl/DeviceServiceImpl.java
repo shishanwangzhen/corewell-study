@@ -14,7 +14,6 @@ import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
-import com.corewell.study.service.AlarmService;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
 import com.corewell.study.utils.InfluxDbUtils;
@@ -312,7 +311,7 @@ public class DeviceServiceImpl implements DeviceService {
         if (StringUtils.isNotBlank(deviceUpdateParam.getDeviceName())) {
             device.setDeviceName(deviceUpdateParam.getDeviceName());
         }
-        String type=deviceUpdateParam.getType();
+        String type = deviceUpdateParam.getType();
         device.setType(type);
         device.setUpdateTime(new Date());
         deviceDao.updateDevice(device);

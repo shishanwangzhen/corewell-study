@@ -10,23 +10,23 @@ package com.corewell.study.constants;
 public class BaseRedisKeyConstants {
     /**
      * Redis普通键前缀
-     * */
-    public static final String REDIS_KEY_PRE="core:study:";
+     */
+    public static final String REDIS_KEY_PRE = "core:study:";
 
     /**
      * token键
-     * */
-    public static final String ACCESS_TOKEN_KEY=REDIS_KEY_PRE+"access:"+"ACCESS_TOKEN";
+     */
+    public static final String ACCESS_TOKEN_KEY = REDIS_KEY_PRE + "access:" + "ACCESS_TOKEN";
 
     /**
      * 传感器名称键
-     * */
-    public static final String SENSOR_KEY=REDIS_KEY_PRE+"sensor:";
+     */
+    public static final String SENSOR_KEY = REDIS_KEY_PRE + "sensor:";
 
     /**
      * 设备名称键
-     * */
-    public static final String DEVICE_KEY=REDIS_KEY_PRE+"device:";
+     */
+    public static final String DEVICE_KEY = REDIS_KEY_PRE + "device:";
 
 
 }

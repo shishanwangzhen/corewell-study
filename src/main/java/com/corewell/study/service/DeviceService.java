@@ -3,9 +3,6 @@ package com.corewell.study.service;
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
-import org.apache.ibatis.annotations.Mapper;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +19,7 @@ public interface DeviceService {
      * @return
      */
     ResultMsg findDevice(DeviceReq deviceReq);
+
     /**
      * 查询采集控制设备
      *
@@ -54,6 +52,7 @@ public interface DeviceService {
      * @return
      */
     ResultMsg insertDevice(DeviceInsertParam deviceInsertParam);
+
     /**
      * 新增被控设备
      *
@@ -69,11 +68,11 @@ public interface DeviceService {
      * @return
      */
     ResultMsg updateVideoDevice(Device device);
+
     /**
      * 删除被控设备
      *
      * @param id
-     *
      * @return
      */
     ResultMsg deleteVideoDevice(Long id);
@@ -94,6 +93,7 @@ public interface DeviceService {
      * @return
      */
     ResultMsg deleteDevice(Long deviceId);
+
     /**
      * 设备绑定项目
      *
@@ -225,6 +225,7 @@ public interface DeviceService {
      * @return
      */
     ResultMsg setFlag(SetSensorFlagReq setFlagReq);
+
     /**
      * 获取单个传感器数据
      *

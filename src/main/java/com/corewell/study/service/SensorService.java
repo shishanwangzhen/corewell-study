@@ -4,7 +4,6 @@ import com.corewell.study.domain.Sensor;
 import com.corewell.study.domain.request.SensorReq;
 import com.corewell.study.domain.request.SensorUpdateReq;
 import com.corewell.study.domain.result.ResultMsg;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -23,7 +22,6 @@ public interface SensorService {
      */
     ResultMsg findSensor(SensorReq sensorReq);
 
-
     /**
      * 传感器设置量程
      *
@@ -31,6 +29,7 @@ public interface SensorService {
      * @return
      */
     ResultMsg updateSensorRange(SensorUpdateReq sensorUpdateReq);
+
     /**
      * 新增设备
      *
