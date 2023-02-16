@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("传感器")
+@ApiModel("传感器参数")
 public class SensorParam {
   /**
    * 需要修改的传感器Id，可选参数，修改为必选，不传则为新增

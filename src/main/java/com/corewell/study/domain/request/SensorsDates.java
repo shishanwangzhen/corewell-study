@@ -28,10 +28,16 @@ public class SensorsDates {
     private Long sensorsId;
 
     /**
-     * 是否报警
+     * 是否报警（0.否，1.是）
      */
-    @ApiModelProperty(value = "是否报警", required = false, example = "")
+    @ApiModelProperty(value = "是否报警（0.否，1.是）", required = false, example = "")
     private String isAlarm;
+    /**
+     * 是否异常（0.否，1.是）
+     */
+    @ApiModelProperty(value = "是否异常（0.否，1.是）", required = false, example = "")
+    private Long isAbnormal;
+
     /**
      * 传感器类型
      */

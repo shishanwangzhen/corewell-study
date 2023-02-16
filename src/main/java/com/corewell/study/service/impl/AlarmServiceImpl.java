@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.corewell.study.constants.BaseConstants;
 import com.corewell.study.constants.BaseRedisKeyConstants;
+import com.corewell.study.dao.SensorDao;
 import com.corewell.study.domain.Alarm;
+import com.corewell.study.domain.Sensor;
 import com.corewell.study.domain.request.AlarmActiveParam;
 import com.corewell.study.domain.request.AlarmAddParam;
 import com.corewell.study.domain.request.AlarmReq;
@@ -38,14 +40,15 @@ public class AlarmServiceImpl implements AlarmService {
     private static final String TLINK_DELETEALARMS_URL = TLINK_URL + "deleteAlarms";
     private static final String TLINK_GETALARMS_URL = TLINK_URL + "getAlarms";
     private static final String TLINK_ACTIVEALARMS_URL = TLINK_URL + "activeAlarms";
-
-    private static final String TLINK_GETSINGLESENSORDATAS_URL = "https://app.dtuip.com/api/device/getSingleSensorDatas";
     @Autowired
     private GetAccessToken getAccessToken;
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private SensorDao sensorDao;
 
     private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
@@ -156,9 +159,10 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public ResultMsg getAlarms(AlarmReq alarmReq) {
+        Long deviceId= alarmReq.getDeviceId();
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
-            mapParam.put("deviceId", alarmReq.getDeviceId());
+            mapParam.put("deviceId", deviceId);
             mapParam.put("sensorId", alarmReq.getSensorId());
             mapParam.put("currPage", 1);
             mapParam.put("pageSize", 99);
@@ -171,29 +175,22 @@ public class AlarmServiceImpl implements AlarmService {
             String flag = jsonObject.get("flag").toString();
             if (BaseConstants.SUCCESS_00.equals(flag)) {
                 List<Alarm> alarmList = JSONObject.parseArray(jsonObject.get("dataList").toString(), Alarm.class);
-                //alarmList.sort(Comparator.comparing(Alarm::getSensorId));
                 Set<String> set = new HashSet<>();
-                Map<String, Object> mapParam1 = new HashMap<>(16);
-                mapParam1.put("userId", 77632L);
                 String sensorName = null;
                 Long sensorId = null;
                 for (Alarm alarm : alarmList) {
-                    sensorId = alarm.getSensorId();
-                    if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.SENSOR_KEY + sensorId)) {
-                        sensorName = stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.SENSOR_KEY + sensorId);
+                     sensorId = alarm.getSensorId();
+                    if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.SENSOR_KEY  +deviceId+":"+ sensorId)) {
+                      String  sensor = stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.SENSOR_KEY +deviceId+":"+ sensorId);
+                        sensorName=JSONObject.parseObject(sensor).getString("sensorName");
                         alarm.setSensorName(sensorName);
                         set.add(sensorName);
                     } else {
-                        mapParam1.put("sensorId", alarm.getSensorId());
-                        responseEntity = restTemplate.postForEntity(TLINK_GETSINGLESENSORDATAS_URL, new HttpEntity<Map>(mapParam1, getHeaders()), String.class);
-                        if (BaseConstants.SUCCESS_00.equals(flag)){
-                            jsonObject = JSONObject.parseObject(responseEntity.getBody());
-                            sensorName = jsonObject.get("sensorName").toString();
-                            alarm.setSensorName(sensorName);
-                            set.add(sensorName);
-                            stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + sensorId, sensorName, 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
-                        }
-
+                        Sensor sensor=sensorDao.findSensorBySensorId(sensorId);
+                        sensorName=sensor.getSensorName();
+                        alarm.setSensorName(sensorName);
+                        set.add(sensorName);
+                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY +deviceId+":"+ sensorId, JSON.toJSONString(sensor), 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
                     }
                 }
                 Map<String, List> map = new HashMap<>(16);

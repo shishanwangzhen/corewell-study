@@ -16,6 +16,12 @@ import lombok.NoArgsConstructor;
 public class ControllerAndCollectionDeviceReq {
 
     /**
+     * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
+     */
+    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = false, example = "")
+    private String type;
+
+    /**
      * 项目id
      */
     @ApiModelProperty(value = "项目id", required = false, example = "")

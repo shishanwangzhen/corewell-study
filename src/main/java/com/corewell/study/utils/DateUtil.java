@@ -1,5 +1,10 @@
 package com.corewell.study.utils;
 
+import com.alibaba.fastjson.JSONObject;
+import org.influxdb.dto.Query;
+import org.influxdb.dto.QueryResult;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -60,10 +65,6 @@ public class DateUtil {
         return date;
     }
 
-    public static void main(String[] args) {
-        System.out.println(dateStr(getDayDate(), "yyyy-MM-dd"));
-
-    }
 
     public static Date getNextDay(Date date) {
         Calendar c = Calendar.getInstance();
@@ -300,5 +301,27 @@ public class DateUtil {
         cal.setTime(date);
         String s = cal.get(Calendar.DATE) + "";
         return s;
+    }
+
+
+    /**
+     * 返回的字符串形式是形如：2013-10-20 20:58
+     * */
+    public static String formatTimeInMillis(long timeInMillis) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timeInMillis);
+        Date date = cal.getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss");
+        String fmt = dateFormat.format(date);
+
+        return fmt;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("RRRR11111::::"+System.currentTimeMillis());
+        String s = DateUtil.formatTimeInMillis(1676442724070L);
+        System.out.println("RRRR22222::::"+s);
+
     }
 }

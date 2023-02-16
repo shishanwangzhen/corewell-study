@@ -6,12 +6,15 @@ import com.corewell.study.constants.BaseConstants;
 import com.corewell.study.constants.BaseRedisKeyConstants;
 import com.corewell.study.dao.DeviceDao;
 import com.corewell.study.dao.DeviceNumberDao;
+import com.corewell.study.dao.SensorDao;
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.DeviceNumber;
+import com.corewell.study.domain.Sensor;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
+import com.corewell.study.service.AlarmService;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
 import com.corewell.study.utils.InfluxDbUtils;
@@ -69,6 +72,8 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Autowired
     private DeviceNumberDao deviceNumberDao;
+    @Autowired
+    private SensorDao sensorDao;
 
 
     @Autowired
@@ -174,6 +179,7 @@ public class DeviceServiceImpl implements DeviceService {
             if (!JSON.parseObject(responseEntity.getBody()).containsKey("deviceId")) {
                 return ResultMsg.error();
             }
+            mapParam.put("pageSize", 99);
             ResponseEntity<String> responseEntity1 = restTemplate.postForEntity(TLINK_GETSINGLEDEVICEDATAS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
             System.out.println("deviceNo查询设备还参：：" + responseEntity1.getBody());
             JSONObject jsonObject = JSON.parseObject(responseEntity1.getBody());
@@ -183,8 +189,10 @@ public class DeviceServiceImpl implements DeviceService {
                 System.out.println("deviceDTO::::::" + JSON.toJSONString(deviceDTO));
                 String deviceNo = deviceDTO.getDeviceNo();
                 Device device = new Device();
-                device.setDeviceId(deviceDTO.getId());
-                device.setDeviceName(deviceInsertParam.getDeviceName());
+                Long deviceId = deviceDTO.getId();
+                String deviceName = deviceDTO.getDeviceName();
+                device.setDeviceId(deviceId);
+                device.setDeviceName(deviceName);
                 device.setDeviceNo(deviceNo);
                 device.setBinding("0");
                 device.setLinkType(deviceDTO.getLinktype());
@@ -197,6 +205,27 @@ public class DeviceServiceImpl implements DeviceService {
                 deviceNumber.setDeviceNo(deviceNo);
                 deviceNumber.setDeviceId(deviceDTO.getId());
                 deviceNumberDao.updateDeviceNumberBind(deviceNumber);
+                if ("1".equals(deviceInsertParam.getType())) {
+                    List<SensorDTO> sensorDTOS = deviceDTO.getSensorsList();
+                    for (SensorDTO sensorDTO : sensorDTOS) {
+                        Sensor sensor = new Sensor();
+                        sensor.setDeviceId(deviceId);
+                        sensor.setDeviceName(deviceName);
+                        Long sensorId = sensorDTO.getId();
+                        sensor.setSensorId(sensorId);
+                        sensor.setSensorName(sensorDTO.getSensorName());
+                        sensor.setUnit(sensorDTO.getUnit());
+                        sensor.setSensorType(sensorDTO.getSensorTypeId());
+                        sensor.setDecimalPlacse(sensorDTO.getDecimalPlacse());
+                        System.out.println("去去去去去去：" + JSON.toJSONString(sensor));
+                        sensor.setMinimum(0D);
+                        sensor.setMaximum(100D);
+                        sensor.setCreateTime(new Date());
+                        sensorDao.insertSensor(sensor);
+                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId, JSON.toJSONString(sensor), 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_KEY + deviceId, JSON.toJSONString(device));
+                    }
+                }
             } else {
                 return ResultMsg.error();
             }
@@ -244,9 +273,10 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public ResultMsg updateDevice(DeviceUpdateParam deviceUpdateParam) {
         List<SensorParam> sensorList = deviceUpdateParam.getSensorList();
+        HttpHeaders headers = getHeaders();
+        Map<String, Object> body = new HashMap<>(16);
         try {
             System.out.println("deviceUpdateParam:::" + JSONObject.toJSON(deviceUpdateParam));
-            Map<String, Object> body = new HashMap<>(16);
             body.put("lat", "22.601376");
             body.put("lng", "113.956591");
             body.put("userId", 77632L);
@@ -257,7 +287,7 @@ public class DeviceServiceImpl implements DeviceService {
             body.put("deviceId", deviceUpdateParam.getDeviceId());
             body.put("delSensorIds", deviceUpdateParam.getDelSensorIds());
             System.out.println("修改设备ru参：：" + JSON.toJSONString(body));
-            HttpEntity<Map> mapHttpEntity = new HttpEntity<Map>(body, getHeaders());
+            HttpEntity<Map> mapHttpEntity = new HttpEntity<Map>(body, headers);
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_UPDATEDEVICE_URL, mapHttpEntity, String.class);
             System.out.println("修改设备还参：：" + responseEntity.getBody());
             if (!BaseConstants.SUCCESS_00.equals(JSON.parseObject(responseEntity.getBody()).get("flag").toString())) {
@@ -282,18 +312,61 @@ public class DeviceServiceImpl implements DeviceService {
         if (StringUtils.isNotBlank(deviceUpdateParam.getDeviceName())) {
             device.setDeviceName(deviceUpdateParam.getDeviceName());
         }
-        //将修改的传感器名称同步到缓存用于查询触发器
-        try {
-            for (SensorParam sensorParam : sensorList) {
-                if (StringUtils.isNotBlank(sensorParam.getSensorId())) {
-                    stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + sensorParam.getSensorId(), sensorParam.getSensorName(), 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String type=deviceUpdateParam.getType();
+        device.setType(type);
         device.setUpdateTime(new Date());
         deviceDao.updateDevice(device);
+        if ("1".equals(type)) {
+            if (deviceUpdateParam.getDelSensorIds() != "" && deviceUpdateParam.getDelSensorIds() != null) {
+                //批量删除
+                String[] ids = deviceUpdateParam.getDelSensorIds().split(",");
+                sensorDao.deleteSensorByIds(ids);
+            }
+            body.put("pageSize", 99);
+            ResponseEntity<String> responseEntity1 = restTemplate.postForEntity(TLINK_GETSINGLEDEVICEDATAS_URL, new HttpEntity<Map>(body, headers), String.class);
+            System.out.println("deviceNo查询设备还参：：" + responseEntity1.getBody());
+            JSONObject jsonObject = JSON.parseObject(responseEntity1.getBody());
+            String flag = jsonObject.get("flag").toString();
+            if (BaseConstants.SUCCESS_00.equals(flag)) {
+                DeviceDTO deviceDTO = JSON.parseObject(jsonObject.get("device").toString(), DeviceDTO.class);
+                System.out.println("deviceDTO::::::" + JSON.toJSONString(deviceDTO));
+                Long deviceId = deviceDTO.getId();
+                String deviceName = deviceDTO.getDeviceName();
+                List<SensorDTO> sensorDTOS = deviceDTO.getSensorsList();
+                for (SensorDTO sensorDTO : sensorDTOS) {
+                    //Sensor sensor = JSON.parseObject(sensorDTO.toString(), Sensor.class);
+                    Sensor sensor = new Sensor();
+                    sensor.setDeviceId(deviceId);
+                    sensor.setDeviceName(deviceName);
+
+                    Long sensorId = sensorDTO.getId();
+                    sensor.setSensorId(sensorId);
+                    sensor.setSensorName(sensorDTO.getSensorName());
+                    sensor.setUnit(sensorDTO.getUnit());
+                    sensor.setSensorType(sensorDTO.getSensorTypeId());
+                    sensor.setDecimalPlacse(sensorDTO.getDecimalPlacse());
+                    System.out.println("去去去去去去：" + JSON.toJSONString(sensor));
+                    Sensor sensorOld = sensorDao.findSensorBySensorId(sensorId);
+                    if (sensorOld == null) {
+                        sensor.setCreateTime(new Date());
+                        sensor.setMinimum(0D);
+                        sensor.setMaximum(100D);
+                        sensorDao.insertSensor(sensor);
+                    } else {
+                        sensor.setId(sensorOld.getId());
+                        sensor.setMinimum(sensorOld.getMinimum());
+                        sensor.setMaximum(sensorOld.getMaximum());
+                        sensor.setUpdateTime(new Date());
+                        sensorDao.updateSensor(sensor);
+                    }
+                    stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId, JSON.toJSONString(sensor), 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+                    stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_KEY + deviceId, JSON.toJSONString(device));
+
+                }
+
+            }
+
+        }
         return ResultMsg.success();
     }
 
@@ -322,6 +395,8 @@ public class DeviceServiceImpl implements DeviceService {
             deviceNumber.setDeviceId(deviceId);
             deviceNumber.setStatus(0);
             deviceNumberDao.updateDeviceNumber(deviceId);
+            sensorDao.deleteSensorByDeviceId(deviceId);
+            stringRedisTemplate.delete(BaseRedisKeyConstants.DEVICE_KEY + deviceId);
         } else {
             return ResultMsg.error();
         }

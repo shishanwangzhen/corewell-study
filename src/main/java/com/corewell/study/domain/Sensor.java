@@ -22,6 +22,11 @@ public class Sensor {
   @ApiModelProperty(value = "主键id", required = false, example = "")
   private Long id;
   /**
+   * 传感器sensorId
+   */
+  @ApiModelProperty(value = "传感器id", required = false, example = "")
+  private Long sensorId;
+  /**
    * 传感器名称
    */
   @ApiModelProperty(value = "传感器名称", required = true, example = "")
@@ -45,7 +50,7 @@ public class Sensor {
    * 小数位传感器类型为1（值类型时必填，其它可选）
    */
   @ApiModelProperty(value = "小数位传感器类型为1（值类型时必填，其它可选）", required = false, example = "")
-  private Long decimal;
+  private String decimalPlacse;
   /**
    * 设备id
    */
@@ -63,6 +68,17 @@ public class Sensor {
   private Long creatorId;
 
   /**
+   * 最大值
+   */
+  @ApiModelProperty(value = "最大值", required = false, example = "")
+  private Double maximum;
+  /**
+   * 最小值
+   */
+  @ApiModelProperty(value = "最小值", required = false, example = "")
+  private Double minimum;
+
+  /**
    * 创建时间
    */
   @ApiModelProperty(value = "创建时间", required = false, example = "")
@@ -72,10 +88,6 @@ public class Sensor {
    */
   @ApiModelProperty(value = "修改时间", required = false, example = "")
   private Date updateTime;
-  /**
-   * 状态（0.删除，1.正常）
-   */
-  @ApiModelProperty(value = "状态（0.删除，1.正常）", required = false, example = "")
-  private String deleteFlag;
+
 
 }

@@ -23,5 +23,10 @@ public class BaseRedisKeyConstants {
      * */
     public static final String SENSOR_KEY=REDIS_KEY_PRE+"sensor:";
 
+    /**
+     * 设备名称键
+     * */
+    public static final String DEVICE_KEY=REDIS_KEY_PRE+"device:";
+
 
 }

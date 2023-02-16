@@ -52,4 +52,10 @@ public class DeviceUpdateParam {
     @ApiModelProperty(value = "传感器集合", required = true, example = "")
     private List<SensorParam> sensorList;
 
+    /**
+     * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
+     */
+    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = true, example = "")
+    private String type;
+
 }
