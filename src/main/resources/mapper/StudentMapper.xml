@@ -291,5 +291,11 @@
         from student
         where account = #{account}
     </delete>
+    <delete id="deleteStudentById" parameterType="Long">
+        delete
+        from student
+        where id = #{id}
+    </delete>
+
 </mapper>
 

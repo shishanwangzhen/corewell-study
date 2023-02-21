@@ -107,6 +107,15 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public ResultMsg deleteStudentById(Long id) {
+        int result = studentDao.deleteStudentById(id);
+        if (result == 1) {
+            return ResultMsg.success();
+        }
+        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
+    }
+
+    @Override
     public ResultMsg updateStudentStatus(StudentStatusReqParam studentStatusReqParam) {
         List<StudentStatusReq> studentStatusReqs=studentStatusReqParam.getStudentStatusReqs();
         try {

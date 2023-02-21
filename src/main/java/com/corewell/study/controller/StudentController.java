@@ -60,6 +60,13 @@ public class StudentController {
         return resultMsg;
 
     }
+    @ApiOperation("删除学生信息")
+    @PostMapping("/deleteStudentById")
+    public ResultMsg deleteStudentById(Long id) {
+        ResultMsg resultMsg = studentService.deleteStudentById(id);
+        return resultMsg;
+
+    }
 
     @ApiOperation("批量修改学生状态")
     @PostMapping("/updateStudentStatus")

@@ -77,6 +77,14 @@ public interface StudentDao {
     int updateStudent(Student student);
 
     /**
+     * 删除学生信息
+     *
+     * @param id
+     * @return
+     */
+    int deleteStudentById(@Param("id") Long id);
+
+    /**
      * 审核学生注册申请
      *
      * @param studentStatusReq
