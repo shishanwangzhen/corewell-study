@@ -1,10 +1,12 @@
 package com.corewell.study.controller;
 
+import com.corewell.study.domain.request.DeviceNumberReq;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceNumberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,8 +28,8 @@ public class DeviceNumberController {
 
     @ApiOperation("查询设备序列号")
     @PostMapping("/findDeviceNumber")
-    public ResultMsg findDeviceNumber() {
-        ResultMsg resultMsg = deviceNumberService.findDeviceNumber();
+    public ResultMsg findDeviceNumber(@RequestBody DeviceNumberReq deviceNumberReq) {
+        ResultMsg resultMsg = deviceNumberService.findDeviceNumber(deviceNumberReq);
         return resultMsg;
 
     }

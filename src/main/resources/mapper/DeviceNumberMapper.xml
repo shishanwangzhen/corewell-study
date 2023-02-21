@@ -11,10 +11,13 @@
 
     </resultMap>
 
-    <select id="findDeviceNumber" resultType="String">
-        select deviceNo
+    <select id="findDeviceNumber" parameterType="DeviceNumberReq" resultType="DeviceNumber">
+        select *
         from device_number
         where status = 0
+        <if test="type!=null and type!=''">
+            and type=#{type}
+        </if>
     </select>
 
     <update id="updateDeviceNumberBind" parameterType="DeviceNumber">

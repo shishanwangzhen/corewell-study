@@ -1,6 +1,7 @@
 package com.corewell.study.dao;
 
 import com.corewell.study.domain.DeviceNumber;
+import com.corewell.study.domain.request.DeviceNumberReq;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,10 +18,10 @@ import java.util.List;
 public interface DeviceNumberDao {
     /**
      * 查询可用设备序列号
-     *
+     * @param deviceNumberReq
      * @return
      */
-    List<String> findDeviceNumber();
+    List<DeviceNumber> findDeviceNumber(DeviceNumberReq deviceNumberReq);
     /**
      * 解绑设备序列号
      * @param deviceId

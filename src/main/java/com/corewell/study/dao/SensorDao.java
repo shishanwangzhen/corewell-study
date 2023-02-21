@@ -75,10 +75,10 @@ public interface SensorDao {
     /**
      * 批量删除传感器
      *
-     * @param ids
+     * @param sensorId
      * @return
      */
-    int deleteSensorByIds(@Param("ids") String[] ids);
+    int deleteSensorById(@Param("sensorId") Long sensorId);
 
     /**
      * 通过deviceId删除传感器

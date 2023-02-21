@@ -19,6 +19,20 @@ public interface DeviceService {
      * @return
      */
     ResultMsg findDevice(DeviceReq deviceReq);
+    /**
+     * 查询设备和状态
+     *
+     * @param deviceReq
+     * @return
+     */
+    ResultMsg findDeviceAndIsLine(DeviceReq deviceReq);
+    /**
+     * 定时任务查询设备状态
+     *
+     * @param deviceId
+     * @return
+     */
+    ResultMsg findDeviceIsLine(Long deviceId);
 
     /**
      * 查询采集控制设备

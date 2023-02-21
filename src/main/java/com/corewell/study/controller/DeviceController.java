@@ -36,6 +36,21 @@ public class DeviceController {
         return resultMsg;
 
     }
+    @ApiOperation("查询设备和状态")
+    @PostMapping("/findDeviceAndIsLine")
+    public ResultMsg findDeviceAndIsLine(@RequestBody DeviceReq deviceReq) {
+        ResultMsg resultMsg = DeviceService.findDeviceAndIsLine(deviceReq);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("定时任务查询设备状态")
+    @PostMapping("/findDeviceIsLine")
+    public ResultMsg findDeviceIsLine(Long deviceId) {
+        ResultMsg resultMsg = DeviceService.findDeviceIsLine(deviceId);
+        return resultMsg;
+
+    }
 
     @ApiOperation("查询采集控制设备")
     @PostMapping("/findControllerAndCollectionDevice")

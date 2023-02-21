@@ -1,4 +1,4 @@
-package com.corewell.study.domain;
+package com.corewell.study.domain.request;
 
 
 import io.swagger.annotations.ApiModel;
@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("设备序列号")
-public class DeviceNumber {
+@ApiModel("设备序列号查询条件")
+public class DeviceNumberReq {
     /**
      * 主键id
      */
@@ -26,22 +26,12 @@ public class DeviceNumber {
      */
     @ApiModelProperty(value = "设备序列号", required = false, example = "")
     private String deviceNo;
-    /**
-     * 设备id
-     */
-    @ApiModelProperty(value = "设备id", required = false, example = "")
-    private Long deviceId;
+
     /**
      * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）
      */
-    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = false, example = "")
+    @ApiModelProperty(value = "设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）", required = true, example = "")
     private String type;
-    /**
-     * 序列号使用状态（0.未绑定，1.已绑定设备）
-     */
-    @ApiModelProperty(value = "序列号使用状态（0.未绑定，1.已绑定设备）", required = false, example = "")
-    private long status;
-
 
 
 }

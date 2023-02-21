@@ -2,16 +2,16 @@ package com.corewell.study.controller;
 
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
+import com.corewell.study.domain.request.StudentStatusReq;
+import com.corewell.study.domain.request.StudentStatusReqParam;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.StudentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,6 +57,14 @@ public class StudentController {
     @PostMapping("/updateStudent")
     public ResultMsg updateStudent(@RequestBody Student student) {
         ResultMsg resultMsg = studentService.updateStudent(student);
+        return resultMsg;
+
+    }
+
+    @ApiOperation("批量修改学生状态")
+    @PostMapping("/updateStudentStatus")
+    public ResultMsg updateStudentStatus(@RequestBody StudentStatusReqParam studentStatusReqParam) {
+        ResultMsg resultMsg = studentService.updateStudentStatus(studentStatusReqParam);
         return resultMsg;
 
     }

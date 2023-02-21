@@ -47,6 +47,7 @@ public class PushDataServiceImpl implements PushDataService {
             return;
         }
         Long deviceId = pushData.getDeviceId();
+        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_IS_LINE_KEY +deviceId,"1",  3*60 * 1000, TimeUnit.MILLISECONDS);
         if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.DEVICE_KEY + deviceId)) {
             pushData.setType("1");
             List<SensorsDates> sensorsDatesList = pushData.getSensorsDates();
@@ -59,7 +60,7 @@ public class PushDataServiceImpl implements PushDataService {
                     sensor = JSONObject.parseObject(sensorStr, Sensor.class);
                 } else {
                     sensor = sensorDao.findSensorBySensorId(sensorId);
-                    stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY +deviceId+":"+ sensorId, JSON.toJSONString(sensor), 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+                    stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY +deviceId+":"+ sensorId, JSON.toJSONString(sensor), 7*24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
                 }
                 Double reVal = Double.valueOf(sensorsDates.getReVal());
                 sensorsDates.setIsAbnormal(0L);
@@ -73,7 +74,7 @@ public class PushDataServiceImpl implements PushDataService {
                     command.append(" order by time desc limit 3");
                     QueryResult resultMsg =influxDbUtils.getInfluxDB().query(new Query(command.toString(), "test"));
                     System.out.println("查询历史数据还参：resultMsg" + JSONObject.toJSON(resultMsg));
-                    if (resultMsg!=null&&resultMsg.getResults()!=null&&resultMsg.getResults().get(0)!=null&&resultMsg.getResults().get(0).getSeries().get(0).getValues()!=null){
+                    if (resultMsg!=null&&resultMsg.toString().contains("values")){
                         List<List<Object>> strings= resultMsg.getResults().get(0).getSeries().get(0).getValues();
                         Double avg=0D;
                         for (List<Object> objectList:strings){

@@ -1,6 +1,8 @@
 package com.corewell.study.service.impl;
 
 import com.corewell.study.dao.DeviceNumberDao;
+import com.corewell.study.domain.DeviceNumber;
+import com.corewell.study.domain.request.DeviceNumberReq;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,8 @@ public class DeviceNumberServiceImpl implements DeviceNumberService {
     private DeviceNumberDao deviceNumberDao;
 
     @Override
-    public ResultMsg findDeviceNumber() {
-        List<String> deviceNumberList = deviceNumberDao.findDeviceNumber();
-        return ResultMsg.success(deviceNumberList);
+    public ResultMsg findDeviceNumber(DeviceNumberReq deviceNumberReq) {
+        List<DeviceNumber> deviceNumber = deviceNumberDao.findDeviceNumber(deviceNumberReq);
+        return ResultMsg.success(deviceNumber);
     }
 }

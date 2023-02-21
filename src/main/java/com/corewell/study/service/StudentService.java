@@ -2,8 +2,10 @@ package com.corewell.study.service;
 
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
-import com.corewell.study.domain.request.StudentStatusReq;
+import com.corewell.study.domain.request.StudentStatusReqParam;
 import com.corewell.study.domain.result.ResultMsg;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,9 +68,18 @@ public interface StudentService {
     /**
      * 审核学生注册申请
      *
-     * @param studentStatusReq
+     * @param studentStatusReqParam
      * @return
      */
-    ResultMsg updateStudentStatus(StudentStatusReq studentStatusReq);
+    ResultMsg updateStudentStatus(StudentStatusReqParam studentStatusReqParam);
+
+    /**
+     * 批量审核学生注册申请
+     *
+     * @param ids
+     * @return
+     */
+    ResultMsg updateStudentStatusByIds(List<Long> ids);
+
 
 }

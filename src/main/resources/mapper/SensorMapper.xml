@@ -216,11 +216,8 @@
     </update>
 
 
-    <delete id="deleteSensorByIds" parameterType="String">
-        delete from sensor where id in
-        <foreach collection="array" item="id" open="(" separator="," close=")">
-            #{id}
-        </foreach>
+    <delete id="deleteSensorById" parameterType="Long">
+        delete from sensor where sensor_id = #{sensorId}
     </delete>
     <delete id="deleteSensorByDeviceId" parameterType="Long">
         delete

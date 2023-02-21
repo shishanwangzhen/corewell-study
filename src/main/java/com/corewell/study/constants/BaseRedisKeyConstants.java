@@ -28,5 +28,11 @@ public class BaseRedisKeyConstants {
      */
     public static final String DEVICE_KEY = REDIS_KEY_PRE + "device:";
 
+    /**
+     * 设备在线名称键
+     */
+    public static final String DEVICE_IS_LINE_KEY = REDIS_KEY_PRE + "device:"+ "isLine:";
+
+
 
 }

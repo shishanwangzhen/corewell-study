@@ -229,6 +229,22 @@
             update_time=now()
         where id = #{id}
     </update>
+    <update id="updateStudentStatusById" parameterType="Long">
+        update student
+        set status=1,
+            update_time=now()
+        where id = #{id}
+    </update>
+
+
+    <delete id="updateStudentStatusByIds" parameterType="Long">
+        update student
+        set status=1,
+        update_time=now() where id in
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 
     <update id="updateGroupStudent" parameterType="Long">
         update student

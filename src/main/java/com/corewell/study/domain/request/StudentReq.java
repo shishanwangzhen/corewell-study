@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 
 /**
  * @author Administrator
@@ -25,18 +24,9 @@ public class StudentReq {
     /**
      * 姓名
      */
-    @ApiModelProperty(value = "主键id", required = false, example = "")
+    @ApiModelProperty(value = "姓名", required = false, example = "")
     private String name;
-    /**
-     * 学校
-     */
-    @ApiModelProperty(value = "学校", required = false, example = "")
-    private String school;
-    /**
-     * 专业
-     */
-    @ApiModelProperty(value = "专业", required = false, example = "")
-    private String major;
+
     /**
      * 账号
      */
@@ -47,26 +37,7 @@ public class StudentReq {
      */
     @ApiModelProperty(value = "联系方式", required = false, example = "")
     private String phone;
-    /**
-     * 邮箱
-     */
-    @ApiModelProperty(value = "邮箱", required = false, example = "")
-    private String email;
-    /**
-     * 密码
-     */
-    @ApiModelProperty(value = "密码", required = false, example = "123456")
-    private String password;
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value = "创建时间", required = false, example = "")
-    private Date createTime;
-    /**
-     * 更新时间
-     */
-    @ApiModelProperty(value = "更新时间", required = false, example = "")
-    private Date updateTime;
+
     /**
      * 角色
      */

@@ -190,7 +190,7 @@ public class AlarmServiceImpl implements AlarmService {
                         sensorName=sensor.getSensorName();
                         alarm.setSensorName(sensorName);
                         set.add(sensorName);
-                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY +deviceId+":"+ sensorId, JSON.toJSONString(sensor), 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY +deviceId+":"+ sensorId, JSON.toJSONString(sensor), 7*24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
                     }
                 }
                 Map<String, List> map = new HashMap<>(16);

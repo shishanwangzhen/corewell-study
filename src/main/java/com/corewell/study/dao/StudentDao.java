@@ -5,7 +5,9 @@ import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.domain.response.StudentDTO;
+import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -81,6 +83,20 @@ public interface StudentDao {
      * @return
      */
     int updateStudentStatus(StudentStatusReq studentStatusReq);
+    /**
+     * 审核学生注册申请
+     *
+     * @param id
+     * @return
+     */
+    int updateStudentStatusById(@Param("id") Long id);
+    /**
+     * 批量审核学生注册申请
+     *
+     * @param ids
+     * @return
+     */
+    int updateStudentStatusByIds(@Param("ids") List<Long> ids);
 
     /**
      * 删除学生项目组

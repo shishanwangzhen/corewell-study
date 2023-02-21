@@ -4,6 +4,7 @@ import com.corewell.study.dao.StudentDao;
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReq;
+import com.corewell.study.domain.request.StudentStatusReqParam;
 import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.domain.response.StudentDTO;
 import com.corewell.study.domain.result.ResultMsg;
@@ -106,11 +107,30 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public ResultMsg updateStudentStatus(StudentStatusReq studentStatusReq) {
-        int result = studentDao.updateStudentStatus(studentStatusReq);
-        if (result == 1) {
-            return ResultMsg.success();
+    public ResultMsg updateStudentStatus(StudentStatusReqParam studentStatusReqParam) {
+        List<StudentStatusReq> studentStatusReqs=studentStatusReqParam.getStudentStatusReqs();
+        try {
+            for (StudentStatusReq studentStatusReq : studentStatusReqs) {
+                studentDao.updateStudentStatus(studentStatusReq);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMsg.error();
         }
-        return new ResultMsg(ResultStatusCode.DELETE_FAILED);
+        return ResultMsg.success();
+    }
+
+
+    @Override
+    public ResultMsg updateStudentStatusByIds(List<Long> ids) {
+        try {
+            for (Long id : ids) {
+                studentDao.updateStudentStatusById(id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultMsg.error();
+        }
+        return ResultMsg.success();
     }
 }

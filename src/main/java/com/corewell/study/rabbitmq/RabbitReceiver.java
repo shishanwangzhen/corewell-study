@@ -1,14 +1,12 @@
 package com.corewell.study.rabbitmq;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.corewell.study.domain.request.PushDataParam;
 import com.corewell.study.domain.request.SensorsDates;
 import com.corewell.study.utils.InfluxDbUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.influxdb.InfluxDB;
 import org.influxdb.dto.Point;
-import org.influxdb.dto.Query;
-import org.influxdb.dto.QueryResult;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,7 @@ public class RabbitReceiver {
         PushDataParam pushData = JSON.parseObject(msg, PushDataParam.class);
         List<SensorsDates> sensorsDates = pushData.getSensorsDates();
         String deviceId = pushData.getDeviceId().toString();
-        if ("1".equals(pushData.getType())&&sensorsDates.size() > 0) {
+        if ("1".equals(pushData.getType()) && sensorsDates.size() > 0) {
             for (SensorsDates sensorDates : sensorsDates) {
                 System.out.println("sensorDates:  :" + sensorDates);
                 InfluxDB influxDB = influxDbUtils.getInfluxDB();
@@ -52,7 +50,14 @@ public class RabbitReceiver {
                         .addField("value", sensorDates.getValue())
                         .addField("isAbnormal", sensorDates.getIsAbnormal())
                         .build());
-        /*        if (sensorDates.getSensorsTypeId()==1){
+            }
+        }
+       // TODO 测试数据库存储量保存控制器数据，生产环境部署时去掉
+        else if (StringUtils.isAllBlank(pushData.getType())&&sensorsDates.size() > 0) {
+            for (SensorsDates sensorDates : sensorsDates) {
+                System.out.println("sensorDates:  :" + sensorDates);
+                InfluxDB influxDB = influxDbUtils.getInfluxDB();
+                if (sensorDates.getSensorsTypeId() == 1) {
                     influxDB.write("test", "", Point.measurement("CORE_STUDY")
                             .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                             .tag("deviceId", deviceId)
@@ -63,9 +68,9 @@ public class RabbitReceiver {
                             .addField("reVal", sensorDates.getReVal())
                             .addField("value", sensorDates.getValue())
                             .build());
-                }else if (sensorDates.getSensorsTypeId()==2){
+                } else if (sensorDates.getSensorsTypeId() == 2) {
                     influxDB.write("test", "", Point.measurement("CORE_STUDY")
-                            .time(System.currentTimeMillis()+8*60*60*1000, TimeUnit.MILLISECONDS)
+                            .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                             .tag("deviceId", deviceId)
                             .tag("sensorsId", sensorDates.getSensorsId().toString())
                             .addField("isAlarm", sensorDates.getIsAlarm())
@@ -73,8 +78,7 @@ public class RabbitReceiver {
                             .addField("switcher", sensorDates.getSwitcher())
                             .addField("isHeartbeat", sensorDates.getIsHeartbeat())
                             .build());
-                }*/
-
+                }
             }
         }
     }

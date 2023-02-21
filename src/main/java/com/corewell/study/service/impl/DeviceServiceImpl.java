@@ -96,6 +96,27 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    public ResultMsg findDeviceAndIsLine(DeviceReq deviceReq) {
+        List<DeviceDo> DeviceDOList = deviceDao.findDevice(deviceReq);
+        for (DeviceDo deviceDo : DeviceDOList) {
+            deviceDo.setIsLine(0L);
+            if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.DEVICE_IS_LINE_KEY + deviceDo.getDeviceId())) {
+                deviceDo.setIsLine(1L);
+            }
+        }
+        return ResultMsg.success(DeviceDOList);
+    }
+
+    @Override
+    public ResultMsg findDeviceIsLine(Long deviceId) {
+        if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.DEVICE_IS_LINE_KEY + deviceId)) {
+            return ResultMsg.success(1);
+        }
+        return ResultMsg.success(0);
+    }
+
+
+    @Override
     public ResultMsg findControllerAndCollectionDevice(ControllerAndCollectionDeviceReq controllerAndCollectionDeviceReq) {
         List<Device> DeviceList = deviceDao.findControllerAndCollectionDevice(controllerAndCollectionDeviceReq);
         return ResultMsg.success(DeviceList);
@@ -118,7 +139,6 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("userId", 77632);
             mapParam.put("deviceId", deviceId);
             mapParam.put("pageSize", 99);
-            System.out.println("deviceNo查询设备ru参：：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_GETSINGLEDEVICEDATAS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
             System.out.println("deviceNo查询设备还参：：" + responseEntity.getBody());
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
@@ -132,7 +152,6 @@ public class DeviceServiceImpl implements DeviceService {
                         sensorsList.remove(0);
                     }
                 }
-
                 System.out.println("deviceDTO::::::" + JSON.toJSONString(deviceDTO));
                 return ResultMsg.success(deviceDTO);
             } else {
@@ -205,25 +224,29 @@ public class DeviceServiceImpl implements DeviceService {
                 deviceNumber.setDeviceId(deviceDTO.getId());
                 deviceNumberDao.updateDeviceNumberBind(deviceNumber);
                 if ("1".equals(deviceInsertParam.getType())) {
-                    List<SensorDTO> sensorDTOS = deviceDTO.getSensorsList();
-                    for (SensorDTO sensorDTO : sensorDTOS) {
-                        Sensor sensor = new Sensor();
-                        sensor.setDeviceId(deviceId);
-                        sensor.setDeviceName(deviceName);
-                        Long sensorId = sensorDTO.getId();
-                        sensor.setSensorId(sensorId);
-                        sensor.setSensorName(sensorDTO.getSensorName());
-                        sensor.setUnit(sensorDTO.getUnit());
-                        sensor.setSensorType(sensorDTO.getSensorTypeId());
-                        sensor.setDecimalPlacse(sensorDTO.getDecimalPlacse());
-                        System.out.println("去去去去去去：" + JSON.toJSONString(sensor));
-                        sensor.setMinimum(0D);
-                        sensor.setMaximum(100D);
-                        sensor.setCreateTime(new Date());
-                        sensorDao.insertSensor(sensor);
-                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId, JSON.toJSONString(sensor), 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
-                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_KEY + deviceId, JSON.toJSONString(device));
+                    List<SensorDTO> sensorsList = deviceDTO.getSensorsList();
+                    if (sensorsList.size() == 1&&sensorsList.get(0).getId()==0) {
+                            sensorsList.remove(0);
+                    }else {
+                        for (SensorDTO sensorDTO : sensorsList) {
+                            Sensor sensor = new Sensor();
+                            sensor.setDeviceId(deviceId);
+                            sensor.setDeviceName(deviceName);
+                            Long sensorId = sensorDTO.getId();
+                            sensor.setSensorId(sensorId);
+                            sensor.setSensorName(sensorDTO.getSensorName());
+                            sensor.setUnit(sensorDTO.getUnit());
+                            sensor.setSensorType(sensorDTO.getSensorTypeId());
+                            sensor.setDecimalPlacse(sensorDTO.getDecimalPlacse());
+                            System.out.println("去去去去去去：" + JSON.toJSONString(sensor));
+                            sensor.setMinimum(0D);
+                            sensor.setMaximum(100D);
+                            sensor.setCreateTime(new Date());
+                            sensorDao.insertSensor(sensor);
+                            stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId, JSON.toJSONString(sensor), 7*24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+                        }
                     }
+                    stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_KEY + deviceId, JSON.toJSONString(device));
                 }
             } else {
                 return ResultMsg.error();
@@ -318,8 +341,8 @@ public class DeviceServiceImpl implements DeviceService {
         if ("1".equals(type)) {
             if (deviceUpdateParam.getDelSensorIds() != "" && deviceUpdateParam.getDelSensorIds() != null) {
                 //批量删除
-                String[] ids = deviceUpdateParam.getDelSensorIds().split(",");
-                sensorDao.deleteSensorByIds(ids);
+                sensorDao.deleteSensorById(Long.valueOf(deviceUpdateParam.getDelSensorIds()));
+                stringRedisTemplate.delete(BaseRedisKeyConstants.SENSOR_KEY + deviceUpdateParam.getDeviceId() + ":" + deviceUpdateParam.getDelSensorIds());
             }
             body.put("pageSize", 99);
             ResponseEntity<String> responseEntity1 = restTemplate.postForEntity(TLINK_GETSINGLEDEVICEDATAS_URL, new HttpEntity<Map>(body, headers), String.class);
@@ -331,38 +354,41 @@ public class DeviceServiceImpl implements DeviceService {
                 System.out.println("deviceDTO::::::" + JSON.toJSONString(deviceDTO));
                 Long deviceId = deviceDTO.getId();
                 String deviceName = deviceDTO.getDeviceName();
-                List<SensorDTO> sensorDTOS = deviceDTO.getSensorsList();
-                for (SensorDTO sensorDTO : sensorDTOS) {
-                    //Sensor sensor = JSON.parseObject(sensorDTO.toString(), Sensor.class);
-                    Sensor sensor = new Sensor();
-                    sensor.setDeviceId(deviceId);
-                    sensor.setDeviceName(deviceName);
+                List<SensorDTO> sensorsList = deviceDTO.getSensorsList();
+                if (sensorsList.size() == 1&&sensorsList.get(0).getId()==0) {
+                    sensorsList.remove(0);
+                }else {
+                    for (SensorDTO sensorDTO : sensorsList) {
+                        //Sensor sensor = JSON.parseObject(sensorDTO.toString(), Sensor.class);
+                        Sensor sensor = new Sensor();
+                        sensor.setDeviceId(deviceId);
+                        sensor.setDeviceName(deviceName);
 
-                    Long sensorId = sensorDTO.getId();
-                    sensor.setSensorId(sensorId);
-                    sensor.setSensorName(sensorDTO.getSensorName());
-                    sensor.setUnit(sensorDTO.getUnit());
-                    sensor.setSensorType(sensorDTO.getSensorTypeId());
-                    sensor.setDecimalPlacse(sensorDTO.getDecimalPlacse());
-                    System.out.println("去去去去去去：" + JSON.toJSONString(sensor));
-                    Sensor sensorOld = sensorDao.findSensorBySensorId(sensorId);
-                    if (sensorOld == null) {
-                        sensor.setCreateTime(new Date());
-                        sensor.setMinimum(0D);
-                        sensor.setMaximum(100D);
-                        sensorDao.insertSensor(sensor);
-                    } else {
-                        sensor.setId(sensorOld.getId());
-                        sensor.setMinimum(sensorOld.getMinimum());
-                        sensor.setMaximum(sensorOld.getMaximum());
-                        sensor.setUpdateTime(new Date());
-                        sensorDao.updateSensor(sensor);
+                        Long sensorId = sensorDTO.getId();
+                        sensor.setSensorId(sensorId);
+                        sensor.setSensorName(sensorDTO.getSensorName());
+                        sensor.setUnit(sensorDTO.getUnit());
+                        sensor.setSensorType(sensorDTO.getSensorTypeId());
+                        sensor.setDecimalPlacse(sensorDTO.getDecimalPlacse());
+                        System.out.println("去去去去去去：" + JSON.toJSONString(sensor));
+                        Sensor sensorOld = sensorDao.findSensorBySensorId(sensorId);
+                        if (sensorOld == null) {
+                            sensor.setCreateTime(new Date());
+                            sensor.setMinimum(0D);
+                            sensor.setMaximum(100D);
+                            sensorDao.insertSensor(sensor);
+                        } else {
+                            sensor.setId(sensorOld.getId());
+                            sensor.setMinimum(sensorOld.getMinimum());
+                            sensor.setMaximum(sensorOld.getMaximum());
+                            sensor.setUpdateTime(new Date());
+                            sensorDao.updateSensor(sensor);
+                        }
+                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId, JSON.toJSONString(sensor), 7 * 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+
                     }
-                    stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId, JSON.toJSONString(sensor), 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
-                    stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_KEY + deviceId, JSON.toJSONString(device));
-
                 }
-
+                stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_KEY + deviceId, JSON.toJSONString(device));
             }
 
         }
