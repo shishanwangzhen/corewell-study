@@ -83,7 +83,7 @@ public class StudentServiceImpl implements StudentService {
                 case "1":
                     return new ResultMsg(ResultStatusCode.USER_ISEXIT);
                 default:
-                    studentDao.deleteStudent(account);
+                    studentDao.deleteStudentById(studentOld.getId());
                     break;
             }
         }
@@ -130,16 +130,4 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    @Override
-    public ResultMsg updateStudentStatusByIds(List<Long> ids) {
-        try {
-            for (Long id : ids) {
-                studentDao.updateStudentStatusById(id);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultMsg.error();
-        }
-        return ResultMsg.success();
-    }
 }

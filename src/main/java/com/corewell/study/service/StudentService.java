@@ -63,6 +63,14 @@ public interface StudentService {
      * @return
      */
     ResultMsg updateStudent(Student student);
+    /**
+     * 删除学生
+     *
+     * @param id
+     * @return
+     */
+    ResultMsg deleteStudentById(Long id);
+
 
 
     /**
@@ -72,14 +80,6 @@ public interface StudentService {
      * @return
      */
     ResultMsg updateStudentStatus(StudentStatusReqParam studentStatusReqParam);
-
-    /**
-     * 批量审核学生注册申请
-     *
-     * @param ids
-     * @return
-     */
-    ResultMsg updateStudentStatusByIds(List<Long> ids);
 
 
 }

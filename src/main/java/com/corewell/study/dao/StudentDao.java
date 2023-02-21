@@ -45,14 +45,6 @@ public interface StudentDao {
     Student findStudentByAccount(String account);
 
     /**
-     * 查询学生
-     *
-     * @param id
-     * @return
-     */
-    Long findStudentGroupIdById(Long id);
-
-    /**
      * 查询学生信息
      *
      * @param id
@@ -92,21 +84,6 @@ public interface StudentDao {
      */
     int updateStudentStatus(StudentStatusReq studentStatusReq);
     /**
-     * 审核学生注册申请
-     *
-     * @param id
-     * @return
-     */
-    int updateStudentStatusById(@Param("id") Long id);
-    /**
-     * 批量审核学生注册申请
-     *
-     * @param ids
-     * @return
-     */
-    int updateStudentStatusByIds(@Param("ids") List<Long> ids);
-
-    /**
      * 删除学生项目组
      *
      * @param id
@@ -138,13 +115,6 @@ public interface StudentDao {
      */
     int updateProjectStatusByTeacherId(Long creatorId);
 
-    /**
-     * 删除未通过学生账号
-     *
-     * @param account
-     * @return
-     */
-    int deleteStudent(String account);
 
 
 }
