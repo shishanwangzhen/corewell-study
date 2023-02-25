@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 
@@ -46,8 +47,9 @@ public class SensorController {
 
     }
 
-    @ApiOperation("传感器修改")
+/*    @ApiOperation("传感器修改")
     @PostMapping("/updateSensor")
+    @ApiIgnore
     public ResultMsg updateSensor(@RequestBody Sensor sensor) {
         System.out.println(JSON.toJSON(sensor));
         ResultMsg resultMsg = SensorService.updateSensor(sensor);
@@ -57,6 +59,7 @@ public class SensorController {
 
     @ApiOperation("传感器新增")
     @PostMapping("/insertSensor")
+    @ApiIgnore
     public ResultMsg insertSensor(@RequestBody Sensor sensor) {
         System.out.println(JSON.toJSON(sensor));
         ResultMsg resultMsg = SensorService.insertSensor(sensor);
@@ -66,10 +69,11 @@ public class SensorController {
 
     @ApiOperation("传感器删除")
     @PostMapping("/updateSensorStatus")
+    @ApiIgnore
     public ResultMsg updateSensorStatus(Long id) {
         ResultMsg resultMsg = SensorService.updateSensorStatus(id);
         return resultMsg;
 
-    }
+    }*/
 
 }

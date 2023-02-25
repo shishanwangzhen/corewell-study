@@ -66,7 +66,7 @@ public class PushDataServiceImpl implements PushDataService {
                 sensorsDates.setIsAbnormal(0L);
                 if (sensor.getMinimum().compareTo(reVal)>0 || sensor.getMaximum().compareTo(reVal)<0) {
                     sensorsDates.setIsAbnormal(1L);
-                    StringBuilder command = new StringBuilder();
+               /*     StringBuilder command = new StringBuilder();
                     command.append("SELECT reVal FROM CORE_STUDY where sensorsId=");
                     command.append("'");
                     command.append(sensorsDates.getSensorsId());
@@ -82,7 +82,7 @@ public class PushDataServiceImpl implements PushDataService {
                         }
                         avg=avg/3;
                         sensorsDates.setReVal(avg.toString());
-                    }
+                    }*/
                 }
             }
         }

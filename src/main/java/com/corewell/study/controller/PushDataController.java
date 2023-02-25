@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author 863586395
@@ -16,12 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/data")
 @Api(tags = "订阅数据")
+@ApiIgnore
 public class PushDataController {
     @Autowired
     private PushDataService pushDataService;
+
     @ApiOperation("订阅实时数据")
     @PostMapping("/getPushData")
-    public void getPushData(@RequestBody PushDataParam pushData){
+    public void getPushData(@RequestBody PushDataParam pushData) {
         pushDataService.getPushData(pushData);
 
     }
