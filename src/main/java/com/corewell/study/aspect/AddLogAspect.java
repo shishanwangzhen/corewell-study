@@ -67,7 +67,7 @@ public class AddLogAspect {
         log.setInterfaceType(Long.valueOf(interfaceType.toString()));
         log.setInterfaceName(interfaceName.toString());
         log.setInterfaceInfo(interfaceInfo.toString());
-        log.setDeviceId(Long.valueOf(deviceId.toString()));
+        log.setDataId(Long.valueOf(deviceId.toString()));
         logService.insertLog(log);
         return null;
     }
