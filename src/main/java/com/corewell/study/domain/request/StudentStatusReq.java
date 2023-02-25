@@ -25,10 +25,9 @@ public class StudentStatusReq {
     private Long id;
 
     /**
-     * 状态（0.待审核，1.审核通过，2.审核未通过）
+     * 状态（0.待审核，1.审核通过，2.审核未通过,3.已删除）
      */
-    @ApiModelProperty(value = "状态（0.待审核，1.审核通过，2.审核未通过）", required = true, example = "0")
-    @NotNull(message = "状态不能为空")
+    @ApiModelProperty(value = "状态（0.待审核，1.审核通过，2.审核未通过,3.已删除）", required = false, example = "0")
     private String status;
 
 }

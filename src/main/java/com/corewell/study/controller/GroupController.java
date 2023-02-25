@@ -28,7 +28,7 @@ public class GroupController {
     @Resource
     private GroupService groupService;
 
-    @ApiOperation("查询项目")
+    @ApiOperation("查询项目组")
     @PostMapping("/findGroup")
     public ResultMsg findGroup(@RequestBody GroupReq groupReq) {
         ResultMsg resultMsg = groupService.findGroup(groupReq);
@@ -36,7 +36,7 @@ public class GroupController {
 
     }
 
-    @ApiOperation("项目信息修改")
+    @ApiOperation("项目组信息修改")
     @PostMapping("/updateGroup")
     public ResultMsg updateGroup(@RequestBody Group group) {
         System.out.println(JSON.toJSON(group));
@@ -45,7 +45,7 @@ public class GroupController {
 
     }
 
-    @ApiOperation("项目信息新增")
+    @ApiOperation("项目组信息新增")
     @PostMapping("/insertGroup")
     public ResultMsg insertGroup(@RequestBody Group group) {
         System.out.println(JSON.toJSON(group));
@@ -54,7 +54,7 @@ public class GroupController {
 
     }
 
-    @ApiOperation("项目删除")
+    @ApiOperation("项目组删除")
     @PostMapping("/updateGroupStatus")
     public ResultMsg updateGroupStatus(Long id) {
         ResultMsg resultMsg = groupService.updateGroupStatus(id);

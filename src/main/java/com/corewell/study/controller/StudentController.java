@@ -1,8 +1,9 @@
 package com.corewell.study.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.corewell.study.config.UserRequest;
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
-import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.request.StudentStatusReqParam;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.StudentService;
@@ -11,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +30,6 @@ public class StudentController {
     @ApiOperation("查询学生")
     @PostMapping("/selectStudent")
     public ResultMsg selectStudent(@RequestBody StudentReq studentReq) {
-
         ResultMsg resultMsg = studentService.findStudent(studentReq);
         return resultMsg;
 

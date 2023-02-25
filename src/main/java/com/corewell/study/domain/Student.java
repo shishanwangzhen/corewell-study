@@ -77,9 +77,9 @@ public class Student implements Serializable {
     @ApiModelProperty(value = "角色", required = false, example = "0")
     private String role;
     /**
-     * 状态（0.待审核，1.审核通过，2.审核未通过）
+     * 状态（0.待审核，1.审核通过，2.审核未通过,3.已删除）
      */
-    @ApiModelProperty(value = "状态（0.待审核，1.审核通过，2.审核未通过）", required = false, example = "0")
+    @ApiModelProperty(value = "状态（0.待审核，1.审核通过，2.审核未通过,3.已删除）", required = false, example = "0")
     private String status;
     /**
      * 项目id

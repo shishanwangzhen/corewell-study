@@ -46,7 +46,7 @@ public class StudentReq {
     /**
      * 状态（0.待审核，1.审核通过，2.审核未通过）
      */
-    @ApiModelProperty(value = "状态（0.待审核，1.审核通过，2.审核未通过）", required = false, example = "0")
+    @ApiModelProperty(value = "状态（0.待审核，1.审核通过，2.审核未通过,3.已删除）", required = false, example = "0")
     private String status;
     /**
      * 项目id

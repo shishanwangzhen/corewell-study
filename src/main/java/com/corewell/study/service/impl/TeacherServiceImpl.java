@@ -39,7 +39,9 @@ public class TeacherServiceImpl implements TeacherService {
         }
         //准备存放在IWT中的自定义数据
         Map<String, Object> info = new HashMap<>(16);
+        info.put("id", accountDo.getId());
         info.put("account", account);
+        info.put("password", accountDo.getPassword());
         //生成JWT字符串
         String token = JwtUtil.sign(account, info);
         accountDo.setToken(token);

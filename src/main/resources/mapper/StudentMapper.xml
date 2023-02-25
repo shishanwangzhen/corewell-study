@@ -48,7 +48,7 @@
         create_time as createTime, update_time as updateTime, role,
         project_id as projectId, group_id as groupId, teacher_id as teacherId, status
         from student
-        where 1=1
+        where status!=3
         <if test="id!=null and id!=''">
             and id=#{id}
         </if>
@@ -71,8 +71,30 @@
             and teacher_id=#{teacherId}
         </if>
 
-
     </select>
+
+
+    <select id="findStudentByGroupId" parameterType="Long" resultType="Student">
+        select id,
+               account,
+               password,
+               name,
+               school,
+               major,
+               phone,
+               email,
+               create_time as createTime,
+               update_time as updateTime,
+               role,
+               project_id  as projectId,
+               group_id    as groupId,
+               teacher_id  as teacherId,
+               status
+        from student
+        where status = 1
+          and group_id = #{groupId}
+    </select>
+
 
     <insert id="insertStudent" parameterType="Student">
         insert into student
@@ -287,13 +309,21 @@
     </select>
 
     <delete id="deleteStudent" parameterType="String">
-        delete
-        from student
+        update student
+        set status=3,
+            group_id=0,
+            project_id=0,
+            role=0,
+            update_time=now()
         where account = #{account}
     </delete>
     <delete id="deleteStudentById" parameterType="Long">
-        delete
-        from student
+        update student
+        set status=3,
+            group_id=0,
+            project_id=0,
+            role=0,
+            update_time=now()
         where id = #{id}
     </delete>
 

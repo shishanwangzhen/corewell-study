@@ -19,7 +19,6 @@ public class AccountDo {
     /**
      * 主键id
      */
-    @ApiModelProperty(value = "主键id", required = true, example = "")
     private Long id;
     /**
      * 账号

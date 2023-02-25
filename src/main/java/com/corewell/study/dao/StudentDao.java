@@ -39,6 +39,14 @@ public interface StudentDao {
     /**
      * 查询学生
      *
+     * @param groupId
+     * @return
+     */
+    List<Student> findStudentByGroupId(Long groupId);
+
+    /**
+     * 查询学生
+     *
      * @param account
      * @return
      */

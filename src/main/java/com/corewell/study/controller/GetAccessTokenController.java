@@ -1,15 +1,13 @@
 package com.corewell.study.controller;
 
-import com.corewell.study.domain.request.AgreementReq;
 import com.corewell.study.domain.result.ResultMsg;
-import com.corewell.study.service.AgreementService;
 import com.corewell.study.service.GetAccessTokenService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 
@@ -22,6 +20,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/core/token")
+@ApiIgnore//隐藏接口
 @Api(tags = "手动更新token")
 public class GetAccessTokenController {
     @Resource

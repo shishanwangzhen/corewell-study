@@ -195,14 +195,6 @@ public class DeviceController {
         return resultMsg;
     }
 
-/*
-    @ApiOperation("导出设备传感器历史数据")
-    @PostMapping("/downloadSensorHistory")
-    public ResultMsg downloadSensorHistory(@RequestBody SensorHistoryParam sensorHistoryParam, HttpServletResponse response) {
-        ResultMsg resultMsg = DeviceService.downloadSensorHistory(sensorHistoryParam,response);
-        return resultMsg;
-    }
-*/
 
 
     @ApiOperation("获取设备参数")
