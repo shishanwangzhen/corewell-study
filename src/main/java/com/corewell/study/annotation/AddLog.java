@@ -14,7 +14,10 @@ import java.lang.annotation.*;
 @Documented
 public @interface AddLog {
     String interfaceType() default "";
+
     String interfaceInfo() default "";
+
     String interfaceName() default "";
 
+    String dataId() default "";
 }

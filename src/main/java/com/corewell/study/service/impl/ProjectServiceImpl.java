@@ -1,5 +1,6 @@
 package com.corewell.study.service.impl;
 
+import com.corewell.study.annotation.AddLog;
 import com.corewell.study.dao.DeviceDao;
 import com.corewell.study.dao.GroupDao;
 import com.corewell.study.dao.ProjectDao;
@@ -52,6 +53,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @AddLog(interfaceType = "2", interfaceInfo = "项目信息修改", interfaceName = "updateProject", dataId = "#{project.id}")
     public ResultMsg updateProject(Project project) {
         project.setUpdateTime(new Date());
         int result = projectDao.updateProject(project);
@@ -62,6 +64,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @AddLog(interfaceType = "1", interfaceInfo = "项目删除", interfaceName = "updateProjectStatus", dataId = "#{id}")
     public ResultMsg updateProjectStatus(Long id) {
         int result = projectDao.updateProjectStatus(id);
         studentDao.updateProjectStudentByProjectId(id);
@@ -74,13 +77,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @AddLog(interfaceType = "1", interfaceInfo = "项目一键删除", interfaceName = "updateProjectStatusByCreatorId", dataId = "#{creatorId}")
     public ResultMsg updateProjectStatusByCreatorId(Long creatorId) {
         int result = projectDao.updateProjectStatusByCreatorId(creatorId);
         studentDao.updateProjectStatusByTeacherId(creatorId);
         groupDao.updateGroupStatusByCreatorId(creatorId);
         deviceDao.updateBindingByBindingId(creatorId);
-        System.out.println("删除数目：：：：："+result);
-        if (result >0) {
+        System.out.println("删除数目：：：：：" + result);
+        if (result >= 0) {
             return ResultMsg.success();
         }
         return new ResultMsg(ResultStatusCode.DELETE_FAILED);

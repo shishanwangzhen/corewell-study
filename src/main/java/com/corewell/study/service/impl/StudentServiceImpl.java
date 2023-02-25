@@ -1,5 +1,9 @@
 package com.corewell.study.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.corewell.study.annotation.AddLog;
+import com.corewell.study.config.UserRequest;
 import com.corewell.study.dao.StudentDao;
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
@@ -10,6 +14,7 @@ import com.corewell.study.domain.response.StudentDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.StudentService;
+import com.corewell.study.utils.BeanMapUtils;
 import com.corewell.study.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +47,9 @@ public class StudentServiceImpl implements StudentService {
         }
         //准备存放在IWT中的自定义数据
         Map<String, Object> info = new HashMap<>();
+        info.put("id", accountDo.getId());
         info.put("account", account);
+        info.put("password", accountDo.getPassword());
         //生成JWT字符串
         String token = JwtUtil.sign(account, info);
         accountDo.setToken(token);
@@ -57,9 +64,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResultMsg selectStudentGroup(Long groupId) {
-        StudentReq studentReq = new StudentReq();
-        studentReq.setGroupId(groupId);
-        List<Student> studentList = studentDao.findStudent(studentReq);
+        List<Student> studentList = studentDao.findStudentByGroupId(groupId);
         return ResultMsg.success(studentList);
     }
 
@@ -97,6 +102,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @AddLog(interfaceType = "2", interfaceInfo = "学生信息修改", interfaceName = "updateStudent", dataId = "#{student.id}")
     public ResultMsg updateStudent(Student student) {
         student.setUpdateTime(new Date());
         int result = studentDao.updateStudent(student);
@@ -107,6 +113,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @AddLog(interfaceType = "1", interfaceInfo = "删除学生信息", interfaceName = "deleteStudentById", dataId = "#{id}")
     public ResultMsg deleteStudentById(Long id) {
         int result = studentDao.deleteStudentById(id);
         if (result == 1) {
@@ -116,8 +123,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @AddLog(interfaceType = "2", interfaceInfo = "批量修改学生状态", interfaceName = "updateStudentStatus")
     public ResultMsg updateStudentStatus(StudentStatusReqParam studentStatusReqParam) {
-        List<StudentStatusReq> studentStatusReqs=studentStatusReqParam.getStudentStatusReqs();
+        List<StudentStatusReq> studentStatusReqs = studentStatusReqParam.getStudentStatusReqs();
         try {
             for (StudentStatusReq studentStatusReq : studentStatusReqs) {
                 studentDao.updateStudentStatus(studentStatusReq);
@@ -128,6 +136,5 @@ public class StudentServiceImpl implements StudentService {
         }
         return ResultMsg.success();
     }
-
 
 }

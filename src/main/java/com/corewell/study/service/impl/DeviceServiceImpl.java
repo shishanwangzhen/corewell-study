@@ -2,6 +2,7 @@ package com.corewell.study.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.corewell.study.annotation.AddLog;
 import com.corewell.study.constants.BaseConstants;
 import com.corewell.study.constants.BaseRedisKeyConstants;
 import com.corewell.study.dao.DeviceDao;
@@ -273,6 +274,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @AddLog( interfaceType="2",interfaceInfo="修改视频设备",interfaceName="updateVideoDevice",dataId="#{device.id}")
     public ResultMsg updateVideoDevice(Device device) {
         device.setUpdateTime(new Date());
         int result = deviceDao.updateVideoDevice(device);
@@ -283,6 +285,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @AddLog( interfaceType="1",interfaceInfo="删除视频设备",interfaceName="deleteVideoDevice",dataId="#{id}")
     public ResultMsg deleteVideoDevice(Long id) {
         int result = deviceDao.deleteDeviceById(id);
         if (result == 1) {
@@ -291,8 +294,8 @@ public class DeviceServiceImpl implements DeviceService {
         return ResultMsg.error();
     }
 
-
     @Override
+    @AddLog( interfaceType="2",interfaceInfo="修改设备",interfaceName="updateDevice",dataId="#{deviceUpdateParam.deviceId}")
     public ResultMsg updateDevice(DeviceUpdateParam deviceUpdateParam) {
         List<SensorParam> sensorList = deviceUpdateParam.getSensorList();
         HttpHeaders headers = getHeaders();
@@ -396,6 +399,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @AddLog( interfaceType="1",interfaceInfo="删除设备",interfaceName="deleteDevice",dataId="#{deviceId}")
     public ResultMsg deleteDevice(Long deviceId) {
         ResponseEntity<String> responseEntity = null;
         try {
@@ -416,9 +420,6 @@ public class DeviceServiceImpl implements DeviceService {
         String flag = jsonObject.get("flag").toString();
         if (BaseConstants.SUCCESS_00.equals(flag)) {
             deviceDao.deleteDevice(deviceId);
-            DeviceNumber deviceNumber = new DeviceNumber();
-            deviceNumber.setDeviceId(deviceId);
-            deviceNumber.setStatus(0);
             deviceNumberDao.updateDeviceNumber(deviceId);
             sensorDao.deleteSensorByDeviceId(deviceId);
             stringRedisTemplate.delete(BaseRedisKeyConstants.DEVICE_KEY + deviceId);
