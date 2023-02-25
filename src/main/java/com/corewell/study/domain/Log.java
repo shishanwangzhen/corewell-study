@@ -22,10 +22,10 @@ public class Log {
   @ApiModelProperty(value = "主键id", required = false, example = "")
   private Long id;
   /**
-   * 设备id
+   * 数据id
    */
-  @ApiModelProperty(value = "设备id", required = false, example = "")
-  private Long deviceId;
+  @ApiModelProperty(value = "数据id", required = false, example = "")
+  private Long dataId;
   /**
    * 用户账号id
    */
