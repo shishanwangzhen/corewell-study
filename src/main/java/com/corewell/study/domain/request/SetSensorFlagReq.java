@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("设置mqtt/tp500/coap协议读写标识")
+@ApiModel("设置mqtt/tp500/coap协议读写标识入参")
 public class SetSensorFlagReq {
     /**
      * 设备id

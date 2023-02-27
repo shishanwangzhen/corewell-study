@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 
@@ -46,6 +47,7 @@ public class DeviceController {
 
     @ApiOperation("定时任务查询设备状态")
     @PostMapping("/findDeviceIsLine")
+    @ApiIgnore
     public ResultMsg findDeviceIsLine(Long deviceId) {
         ResultMsg resultMsg = DeviceService.findDeviceIsLine(deviceId);
         return resultMsg;
@@ -55,7 +57,6 @@ public class DeviceController {
     @ApiOperation("查询采集控制设备")
     @PostMapping("/findControllerAndCollectionDevice")
     public ResultMsg findControllerAndCollectionDevice(@RequestBody ControllerAndCollectionDeviceReq controllerAndCollectionDeviceReq) {
-        System.out.println("findControllerAndCollectionDevice入参：：：：" + JSON.toJSONString(controllerAndCollectionDeviceReq));
         ResultMsg resultMsg = DeviceService.findControllerAndCollectionDevice(controllerAndCollectionDeviceReq);
         return resultMsg;
 
@@ -64,7 +65,6 @@ public class DeviceController {
     @ApiOperation("查询设备绑定项目组")
     @PostMapping("/findDeviceBindGroup")
     public ResultMsg findDeviceBindGroup(Long projectId) {
-        System.out.println("findDeviceBindGroup入参：：：：" + JSON.toJSONString(projectId));
         ResultMsg resultMsg = DeviceService.findDeviceBindGroup(projectId);
         return resultMsg;
 
@@ -106,14 +106,6 @@ public class DeviceController {
 
     }
 
-   /* @ApiOperation("视频设备新增")
-    @PostMapping("/insertVideoDevice")
-    public ResultMsg insertVideoDevice(@RequestBody Device device) {
-        System.out.println(JSON.toJSON(device));
-        ResultMsg resultMsg = DeviceService.insertVideoDevice(device);
-        return resultMsg;
-
-    }*/
 
     @ApiOperation("视频设备删除")
     @PostMapping("/deleteVideoDevice")
@@ -183,6 +175,7 @@ public class DeviceController {
 
     @ApiOperation("传感器数据上报")
     @PostMapping("/sendDataPoint")
+    @ApiIgnore
     public ResultMsg sendDataPoint(@RequestBody SendDataPointParam sendDataPointParam) {
         ResultMsg resultMsg = DeviceService.sendDataPoint(sendDataPointParam);
         return resultMsg;

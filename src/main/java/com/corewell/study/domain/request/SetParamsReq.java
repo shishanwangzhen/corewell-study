@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("设置参数")
+@ApiModel("设置参数入参")
 public class SetParamsReq {
     /**
      * 设备Id

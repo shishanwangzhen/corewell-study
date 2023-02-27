@@ -51,7 +51,7 @@
         left join teacher t2 on t2.id=d.creator_id
         left join project p on d.project_id = p.id
         left join `group` g on d.group_id = g.id
-        where 1=1
+        where d.is_delete=0
         <if test="projectId!=null and projectId!=''">
             and d.project_id=#{projectId}
         </if>
@@ -97,7 +97,7 @@
         group_id as groupId,
         creator_id as creatorId
         from device
-        where 1=1
+        where is_delete=0
         <if test="type!=null and type!=''">
             and type=#{type}
         </if>
@@ -122,16 +122,13 @@
                group_id    as groupId,
                creator_id  as creatorId
         from device
-        where group_id = 0
+        where is_delete=0 and group_id = 0
           and project_id = #{projectId}
     </select>
 
     <insert id="insertDevice" parameterType="Device">
         insert into device
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id!=null and id!=''">
-                id,
-            </if>
             <if test="deviceId!=null and deviceId!=''">
                 device_id,
             </if>
@@ -182,9 +179,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id!=null and id!=''">
-                #{id},
-            </if>
             <if test="deviceId!=null and deviceId!=''">
                 #{deviceId},
             </if>
@@ -231,7 +225,6 @@
             <if test="updateTime!=null">
                 #{updateTime},
             </if>
-
             <if test="videoUrl!=null and videoUrl!=''">
                 #{videoUrl},
             </if>
@@ -335,14 +328,14 @@
 
 
     <delete id="deleteDevice" parameterType="Long">
-        delete
-        from Device
+        update device
+        set is_delete=1
         where device_id = #{deviceId}
     </delete>
 
     <delete id="deleteDeviceById" parameterType="Long">
-        delete
-        from Device
+        update device
+        set is_delete=1
         where id = #{id}
     </delete>
 
@@ -390,7 +383,7 @@
     </update>
 
     <update id="updateDeviceBindingById" parameterType="Long">
-        update Device
+        update device
         set binding=0,
             project_id=0,
             group_id=0,
@@ -400,7 +393,7 @@
     </update>
 
     <update id="updateDeviceBindingGroup" parameterType="DeviceBindingGroupReq">
-        update Device
+        update device
         set group_id=#{groupId},
             update_time=now()
         where id = #{id}

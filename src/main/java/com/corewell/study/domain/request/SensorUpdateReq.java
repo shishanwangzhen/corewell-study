@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("传感器批量更新量程")
+@ApiModel("传感器批量更新量程参数")
 public class SensorUpdateReq {
 
     /**

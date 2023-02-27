@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("项目组绑定设备")
+@ApiModel("项目组绑定设备入参")
 public class DeviceBindingGroupReq {
 
     /**
-     * 主键id
+     * 设备主键id
      */
-    @ApiModelProperty(value = "主键id", required = true, example = "")
+    @ApiModelProperty(value = "设备主键id", required = true, example = "")
     private Long id;
 
     /**

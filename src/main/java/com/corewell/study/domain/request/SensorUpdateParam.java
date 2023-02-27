@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("传感器量程")
+@ApiModel("传感器量程入参")
 public class SensorUpdateParam {
   /**
    * 主键id

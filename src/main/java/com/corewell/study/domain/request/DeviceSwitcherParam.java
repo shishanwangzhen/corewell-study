@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("设备开关下行控制")
+@ApiModel("设备开关下行控制入参")
 public class DeviceSwitcherParam {
 
     /**

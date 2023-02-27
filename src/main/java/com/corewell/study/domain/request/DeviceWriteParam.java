@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("设备数据下行")
+@ApiModel("设备数据下行入参")
 public class DeviceWriteParam {
 
     /**

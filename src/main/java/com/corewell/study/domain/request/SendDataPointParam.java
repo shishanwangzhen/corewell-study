@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("传感器数据上报")
+@ApiModel("传感器数据上报参数")
 public class SendDataPointParam {
 
     /**

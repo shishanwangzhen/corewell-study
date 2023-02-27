@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("modbus")
+@ApiModel("modbus协议读写指令")
 public class Modbus {
 
     /**

@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("modbus协议读写指令设置")
+@ApiModel("modbus协议读写指令设置入参")
 public class ModbusReq {
     /**
      * 设备id
@@ -30,7 +30,7 @@ public class ModbusReq {
     /**
      * 需要设置的读写指令集合
      */
-    @ApiModelProperty(value = "设备名称", required = true, example = "")
+    @ApiModelProperty(value = "需要设置的读写指令集合", required = true, example = "")
     private List<Modbus> modbusList;
 
 }

@@ -25,6 +25,10 @@ public class AccountDo {
      */
     private String account;
     /**
+     * 账号
+     */
+    private String name;
+    /**
      * 密码
      */
     private String password;

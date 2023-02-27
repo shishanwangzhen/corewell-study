@@ -39,12 +39,6 @@ public class DeviceReq {
     @ApiModelProperty(value = "设备序列号", required = false, example = "")
     private String deviceNo;
 
-    /**
-     * 是否删除 0 否 1 是 2禁用
-     */
-    @ApiModelProperty(value = "是否删除 0 否 1 是 2禁用", required = false, example = "")
-    private Long isDelete;
-
 
     /**
      * 设备类型（1.采集设备，2.控制设备，3.被控设备，4.视频设备，5.虚拟设备）

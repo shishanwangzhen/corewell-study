@@ -25,12 +25,12 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/core/sensor")
-@Api(tags = "传感器")
+@Api(tags = "传感器控制器")
 public class SensorController {
     @Resource
     private SensorService SensorService;
 
-    @ApiOperation("查询传感器")
+    @ApiOperation(value = "传感器查询",response =Sensor.class )
     @PostMapping("/findSensor")
     public ResultMsg findSensor(@RequestBody SensorReq sensorReq) {
         ResultMsg resultMsg = SensorService.findSensor(sensorReq);
@@ -41,7 +41,6 @@ public class SensorController {
     @ApiOperation("传感器设置量程")
     @PostMapping("/updateSensorRange")
     public ResultMsg updateSensorRange(@RequestBody SensorUpdateReq sensorUpdateReq) {
-        System.out.println(JSON.toJSON(sensorUpdateReq));
         ResultMsg resultMsg = SensorService.updateSensorRange(sensorUpdateReq);
         return resultMsg;
 

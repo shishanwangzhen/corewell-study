@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("设备新增")
+@ApiModel("设备新增入参")
 public class DeviceInsertParam {
 
     /**

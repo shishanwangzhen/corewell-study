@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("设备更新")
+@ApiModel("设备更新入参")
 public class DeviceUpdateParam {
 
     /**

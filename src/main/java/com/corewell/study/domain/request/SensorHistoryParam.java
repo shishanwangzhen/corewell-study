@@ -33,16 +33,4 @@ public class SensorHistoryParam {
   @ApiModelProperty(value = "结束时间", required = false, example = "")
   private String endDate;
 
-  /**
-   * 下一页参数 为空表示首页
-   */
-  @ApiModelProperty(value = "下一页参数 为空表示首页", required = false, example = "")
-  private String pagingState;
-  /**
-   * 返回的数据条数
-   */
-  @ApiModelProperty(value = "返回的数据条数", required = false, example = "")
-  private Long pageSize;
-
-
 }

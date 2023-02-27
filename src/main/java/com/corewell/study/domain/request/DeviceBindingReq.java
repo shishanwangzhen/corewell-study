@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("项目配置设备")
+@ApiModel("项目配置设备入参")
 public class DeviceBindingReq {
     public List<Long> getIds() {
         return ids;
@@ -26,9 +26,9 @@ public class DeviceBindingReq {
     }
 
     /**
-     * 主键id集合
+     * 设备主键id集合
      */
-    @ApiModelProperty(value = "主键id集合", required = true, example = "")
+    @ApiModelProperty(value = "设备主键id集合", required = true, example = "")
     private List<Long> ids;
 
 

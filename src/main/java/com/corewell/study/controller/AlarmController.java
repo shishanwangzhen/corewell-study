@@ -28,7 +28,7 @@ public class AlarmController {
     @Autowired
     private AlarmService alarmService;
 
-    @ApiOperation("添加触发器")
+    @ApiOperation(value = "添加触发器" )
     @PostMapping("addAlarms")
     public ResultMsg addAlarms(@RequestBody AlarmAddParam alarmAddParam) {
         ResultMsg resultMsg = alarmService.addAlarms(alarmAddParam);

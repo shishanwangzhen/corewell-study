@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * @author Administrator
  */
 @Data
-@ApiModel("用户登录")
+@ApiModel("用户登录参数")
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountReq {

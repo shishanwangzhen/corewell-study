@@ -526,10 +526,7 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("deviceNo", sendDataPointParam.getDeviceNo());
             mapParam.put("addTime", sendDataPointParam.getAddTime());
             mapParam.put("sensorDatas", sendDataPointParam.getSensorDatas());
-
-            System.out.println("传感器数据上报ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_SENDDATAPOINT_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("传感器数据上报还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {

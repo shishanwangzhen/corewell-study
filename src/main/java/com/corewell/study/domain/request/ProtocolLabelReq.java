@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("ProtocolLabelReq")
+@ApiModel("设置tcp/udp协议标签参数")
 public class ProtocolLabelReq{
 
     /**
