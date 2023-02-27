@@ -5,9 +5,11 @@ import com.corewell.study.config.UserRequest;
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReqParam;
+import com.corewell.study.domain.response.StudentDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.StudentService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +29,7 @@ public class StudentController {
     @Resource
     private StudentService studentService;
 
-    @ApiOperation("查询学生")
+    @ApiOperation(value = "查询学生",response = Student.class)
     @PostMapping("/selectStudent")
     public ResultMsg selectStudent(@RequestBody StudentReq studentReq) {
         ResultMsg resultMsg = studentService.findStudent(studentReq);
@@ -35,8 +37,9 @@ public class StudentController {
 
     }
 
-    @ApiOperation("查询组成员")
+    @ApiOperation(value = "查询组成员",response =  Student.class)
     @PostMapping("/selectStudentGroup")
+    @ApiImplicitParam(value = "项目组主键id",name = "12",required = true)
     public ResultMsg selectStudentGroup(Long id) {
         System.out.println("查询组成员 id");
         ResultMsg resultMsg = studentService.selectStudentGroup(id);
@@ -44,8 +47,9 @@ public class StudentController {
 
     }
 
-    @ApiOperation("查询学生信息")
+    @ApiOperation(value = "查询学生信息",response = StudentDTO.class)
     @PostMapping("/selectStudentById")
+    @ApiImplicitParam(value = "学生主键id",name = "12",required = true)
     public ResultMsg selectStudentById(Long id) {
         ResultMsg resultMsg = studentService.selectStudentById(id);
         return resultMsg;
@@ -61,7 +65,7 @@ public class StudentController {
     }
     @ApiOperation("删除学生信息")
     @PostMapping("/deleteStudentById")
-    public ResultMsg deleteStudentById(Long id) {
+    public ResultMsg deleteStudentById(@RequestParam(value = "主键id") Long id) {
         ResultMsg resultMsg = studentService.deleteStudentById(id);
         return resultMsg;
 
