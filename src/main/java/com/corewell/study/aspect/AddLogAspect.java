@@ -50,7 +50,7 @@ public class AddLogAspect {
         Object interfaceType = AnnotationResolver.newInstance().resolver(point, addLog.interfaceType());
         Object interfaceName = AnnotationResolver.newInstance().resolver(point, addLog.interfaceName());
         Object interfaceInfo = AnnotationResolver.newInstance().resolver(point, addLog.interfaceInfo());
-        Object deviceId = AnnotationResolver.newInstance().resolver(point, addLog.dataId());
+        Object dataId = AnnotationResolver.newInstance().resolver(point, addLog.dataId());
 
         System.out.println("h航少看点火开关00000" + JSON.toJSONString(interfaceInfo) + "索拉卡复合弓：" + JSON.toJSONString(interfaceName) + "索拉卡复合弓：" + JSON.toJSONString(interfaceType));
         String token = UserRequest.getCurrentToken();
@@ -63,11 +63,12 @@ public class AddLogAspect {
         Log log = new Log();
         log.setAccount(account);
         log.setAccountId(Long.valueOf(map.get("id").toString()));
+        log.setAccountName(map.get("name").toString());
         log.setCreateTime(new Date());
         log.setInterfaceType(Long.valueOf(interfaceType.toString()));
         log.setInterfaceName(interfaceName.toString());
         log.setInterfaceInfo(interfaceInfo.toString());
-        log.setDataId(Long.valueOf(deviceId.toString()));
+        log.setDataId(Long.valueOf(dataId.toString()));
         logService.insertLog(log);
         return null;
     }
