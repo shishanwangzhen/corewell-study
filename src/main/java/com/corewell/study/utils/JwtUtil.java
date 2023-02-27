@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.corewell.study.domain.result.ResultStatusCode;
 
 import java.util.Date;
 import java.util.Map;
@@ -93,7 +94,7 @@ public class JwtUtil {
             verifier.verify(token);
             return true;
         } catch (JWTVerificationException e) {
-            throw new RuntimeException("token 无效，请重新获取");
+            throw new RuntimeException(ResultStatusCode.INVALID_TOKEN.getErrmsg());
         }
     }
 }

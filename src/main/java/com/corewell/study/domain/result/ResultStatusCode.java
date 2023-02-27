@@ -15,7 +15,7 @@ public enum ResultStatusCode {
     LOGIN_ERR(10002, "用户名或密码不正确"),
     INVALID_CLIENTID(10003, "无效的客户端"),
     INVALID_PASSWORD(10004, "用户名或密码不正确"),
-    INVALID_CAPTCHA(10005, "无效的验证码或验证码过期"),
+    TOKEN_IS_NULL(10005, "token为空"),
     INVALID_TOKEN(10006, "无效的Token"),
     INVALID_INPUT(10007, "无效输入"),
     USERNAME_PASSWORD_NULL(10008, "用户名或密码不能为空"),
