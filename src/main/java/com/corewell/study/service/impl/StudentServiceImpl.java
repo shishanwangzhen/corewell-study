@@ -50,6 +50,7 @@ public class StudentServiceImpl implements StudentService {
         info.put("id", accountDo.getId());
         info.put("account", account);
         info.put("password", accountDo.getPassword());
+        info.put("name", accountDo.getName());
         //生成JWT字符串
         String token = JwtUtil.sign(account, info);
         accountDo.setToken(token);
