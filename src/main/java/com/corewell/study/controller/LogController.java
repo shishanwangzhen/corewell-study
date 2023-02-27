@@ -1,5 +1,6 @@
 package com.corewell.study.controller;
 
+import com.corewell.study.domain.Log;
 import com.corewell.study.domain.request.LogReq;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.LogService;
@@ -26,7 +27,7 @@ public class LogController {
     @Resource
     private LogService logService;
 
-    @ApiOperation("查询传感器")
+    @ApiOperation(value = "查询日志",response = Log.class)
     @PostMapping("/findLog")
     public ResultMsg findSensor(@RequestBody LogReq logReq) {
         ResultMsg resultMsg = logService.findLog(logReq);

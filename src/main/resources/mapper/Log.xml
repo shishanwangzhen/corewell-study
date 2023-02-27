@@ -3,10 +3,11 @@
         PUBLIC "-//www.mybatis.org//DTD Mapper 3.0//EN"
         "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.corewell.study.dao.LogDao">
-    <resultMap id="ProjectMap" type="com.corewell.study.domain.Log">
+    <resultMap id="LogMap" type="com.corewell.study.domain.Log">
         <id property="id" column="id"/>
         <result property="accountId" column="account_id"/>
         <result property="account" column="account"/>
+        <result property="accountName" column="account_name"/>
         <result property="interfaceType" column="interface_type"/>
         <result property="interfaceInfo" column="interface_info"/>
         <result property="interfaceName" column="interface_name"/>
@@ -16,16 +17,24 @@
     </resultMap>
 
     <select id="findLog" parameterType="LogReq" resultType="Log">
-        select *
+        select id,
+        account as account,
+        account_id as accountId,
+        account_name as accountName,
+        interface_type as interfaceType,
+        interface_name as interfaceName,
+        interface_info as interfaceInfo,
+        data_id as dataId,
+        create_time as createTime
         from log
         where 1=1
         <if test="interfaceType!=null and interfaceType!=''">
             and interface_type=#{interfaceType}
         </if>
-        <if test="startBorrowTime != null">
+        <if test="startTime != null">
             and create_time >=#{startTime}
         </if>
-        <if test="endBorrowTime != null">
+        <if test="endTime != null">
             and <![CDATA[create_time <=#{endTime}]]>
         </if>
         order by create_time ASC
@@ -41,6 +50,9 @@
             </if>
             <if test="account!=null and account!=''">
                 account,
+            </if>
+            <if test="accountName!=null and accountName!=''">
+                account_name,
             </if>
             <if test="interfaceType!=null and interfaceType!=''">
                 interface_type,
@@ -65,6 +77,9 @@
             </if>
             <if test="account!=null and account!=''">
                 #{account},
+            </if>
+            <if test="accountName!=null and accountName!=''">
+                #{accountName},
             </if>
             <if test="interfaceType!=null and interfaceType!=''">
                 #{interfaceType},

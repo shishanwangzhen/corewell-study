@@ -12,9 +12,9 @@ import java.util.Date;
  * @author Administrator
  */
 @Data
+@ApiModel("日志还参")
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("日志")
 public class Log {
   /**
    * 主键id
@@ -36,6 +36,11 @@ public class Log {
    */
   @ApiModelProperty(value = "用户账号", required = false, example = "")
   private String account;
+  /**
+   * 用户姓名
+   */
+  @ApiModelProperty(value = "用户姓名", required = false, example = "")
+  private String accountName;
   /**
    * 接口类型（1.删除，2.修改）
    */
