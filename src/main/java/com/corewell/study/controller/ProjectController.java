@@ -3,11 +3,16 @@ package com.corewell.study.controller;
 import com.alibaba.fastjson.JSON;
 import com.corewell.study.domain.Project;
 import com.corewell.study.domain.request.ProjectReq;
+import com.corewell.study.domain.response.ProjectDo;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.ProjectService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -25,7 +30,7 @@ public class ProjectController {
     @Resource
     private ProjectService projectService;
 
-    @ApiOperation("查询项目")
+    @ApiOperation(value = "查询项目", response = ProjectDo.class)
     @PostMapping("/findProject")
     public ResultMsg findProject(@RequestBody ProjectReq projectReq) {
         ResultMsg resultMsg = projectService.findProject(projectReq);
@@ -53,6 +58,7 @@ public class ProjectController {
 
     @ApiOperation("项目删除")
     @PostMapping("/updateProjectStatus")
+    @ApiImplicitParam(value = "主键id", name = "1", required = true)
     public ResultMsg updateProjectStatus(Long id) {
         ResultMsg resultMsg = projectService.updateProjectStatus(id);
         return resultMsg;
@@ -61,6 +67,7 @@ public class ProjectController {
 
     @ApiOperation("项目一键删除")
     @PostMapping("/updateProjectStatusByCreatorId")
+    @ApiImplicitParam(value = "实验创建者id", name = "1", required = true)
     public ResultMsg updateProjectStatusByCreatorId(Long creatorId) {
         ResultMsg resultMsg = projectService.updateProjectStatusByCreatorId(creatorId);
         return resultMsg;

@@ -3,10 +3,13 @@ package com.corewell.study.controller;
 import com.alibaba.fastjson.JSON;
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.request.*;
+import com.corewell.study.domain.response.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.influxdb.dto.QueryResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +32,7 @@ public class DeviceController {
     @Resource
     private DeviceService DeviceService;
 
-    @ApiOperation("查询设备")
+    @ApiOperation(value = "查询设备", response = DeviceDo.class)
     @PostMapping("/findDevice")
     public ResultMsg findDevice(@RequestBody DeviceReq deviceReq) {
         System.out.println("findDevice入参：：：：" + JSON.toJSONString(deviceReq));
@@ -37,7 +40,8 @@ public class DeviceController {
         return resultMsg;
 
     }
-    @ApiOperation("查询设备和状态")
+
+    @ApiOperation(value = "查询设备和状态", response = DeviceDo.class)
     @PostMapping("/findDeviceAndIsLine")
     public ResultMsg findDeviceAndIsLine(@RequestBody DeviceReq deviceReq) {
         ResultMsg resultMsg = DeviceService.findDeviceAndIsLine(deviceReq);
@@ -54,7 +58,7 @@ public class DeviceController {
 
     }
 
-    @ApiOperation("查询采集控制设备")
+    @ApiOperation(value = "查询采集控制设备", response = Device.class)
     @PostMapping("/findControllerAndCollectionDevice")
     public ResultMsg findControllerAndCollectionDevice(@RequestBody ControllerAndCollectionDeviceReq controllerAndCollectionDeviceReq) {
         ResultMsg resultMsg = DeviceService.findControllerAndCollectionDevice(controllerAndCollectionDeviceReq);
@@ -62,16 +66,18 @@ public class DeviceController {
 
     }
 
-    @ApiOperation("查询设备绑定项目组")
+    @ApiOperation(value = "查询设备绑定项目组", response = Device.class)
     @PostMapping("/findDeviceBindGroup")
+    @ApiImplicitParam(value = "项目id", name = "1", required = true)
     public ResultMsg findDeviceBindGroup(Long projectId) {
         ResultMsg resultMsg = DeviceService.findDeviceBindGroup(projectId);
         return resultMsg;
 
     }
 
-    @ApiOperation("根据deviceId查询设备详情")
+    @ApiOperation(value = "根据deviceId查询设备详情", response = DeviceDTO.class)
     @PostMapping("/findDeviceByDeviceId")
+    @ApiImplicitParam(value = "设备id deviceId", name = "1", required = true)
     public ResultMsg findDeviceByDeviceId(Long deviceId) {
         ResultMsg resultMsg = DeviceService.findDeviceByDeviceId(deviceId);
         return resultMsg;
@@ -109,6 +115,7 @@ public class DeviceController {
 
     @ApiOperation("视频设备删除")
     @PostMapping("/deleteVideoDevice")
+    @ApiImplicitParam(value = "主键id", name = "1", required = true)
     public ResultMsg deleteVideoDevice(Long id) {
         System.out.println(JSON.toJSON(id));
         ResultMsg resultMsg = DeviceService.deleteVideoDevice(id);
@@ -118,6 +125,7 @@ public class DeviceController {
 
     @ApiOperation("设备删除")
     @PostMapping("/deleteDevice")
+    @ApiImplicitParam(value = "设备id deviceId", name = "1", required = true)
     public ResultMsg deleteDevice(Long deviceId) {
         ResultMsg resultMsg = DeviceService.deleteDevice(deviceId);
         return resultMsg;
@@ -135,6 +143,7 @@ public class DeviceController {
 
     @ApiOperation("项目解绑设备")
     @PostMapping("/updateDeviceBindingById")
+    @ApiImplicitParam(value = "主键id", name = "1", required = true)
     public ResultMsg updateDeviceBindingById(Long id) {
         ResultMsg resultMsg = DeviceService.updateDeviceBindingById(id);
         return resultMsg;
@@ -152,6 +161,7 @@ public class DeviceController {
 
     @ApiOperation("设备移除项目组")
     @PostMapping("/updateBindingGroupById")
+    @ApiImplicitParam(value = "主键id", name = "1", required = true)
     public ResultMsg updateBindingGroupById(Long id) {
         ResultMsg resultMsg = DeviceService.updateBindingGroupById(id);
         return resultMsg;
@@ -181,7 +191,7 @@ public class DeviceController {
         return resultMsg;
     }
 
-    @ApiOperation("获取设备传感器历史数据")
+    @ApiOperation(value = "获取设备传感器历史数据", response = QueryResult.class)
     @PostMapping("/getSensorHistroy")
     public ResultMsg getSensorHistroy(@RequestBody SensorHistoryParam sensorHistoryParam) {
         ResultMsg resultMsg = DeviceService.getSensorHistroy(sensorHistoryParam);
@@ -189,9 +199,9 @@ public class DeviceController {
     }
 
 
-
-    @ApiOperation("获取设备参数")
+    @ApiOperation(value = "获取设备参数", response = ParamsDTO.class)
     @PostMapping("/getParams")
+    @ApiImplicitParam(value = "设备id deviceId", name = "1", required = true)
     public ResultMsg getParams(Long deviceId) {
         ResultMsg resultMsg = DeviceService.getParams(deviceId);
         return resultMsg;
@@ -212,29 +222,31 @@ public class DeviceController {
     }
 
 
-    @ApiOperation("获取modbus读写指令")
+    @ApiOperation(value = "获取modbus读写指令", response = ModbusDTO.class)
     @PostMapping("/getModbus")
-    public ResultMsg getModbus(@RequestBody ModbusReq modbusReq) {
-        ResultMsg resultMsg = DeviceService.getModbus(modbusReq);
+    public ResultMsg getModbus(@RequestBody ModbusGetReq modbusGetReq) {
+        ResultMsg resultMsg = DeviceService.getModbus(modbusGetReq);
         return resultMsg;
     }
 
 
     @ApiOperation("modbus读写指令修改")
     @PostMapping("/updateModbus")
+    @ApiIgnore
     public ResultMsg updateModbus(@RequestBody ModbusReq modbusReq) {
         ResultMsg resultMsg = DeviceService.updateModbus(modbusReq);
         return resultMsg;
     }
 
-    @ApiOperation("获取tcp/udp协议标签")
+    @ApiOperation(value = "获取tcp/udp协议标签", response = ProtocolLabelDTO.class)
     @PostMapping("/getProtocolLabel")
+    @ApiImplicitParam(value = "设备id deviceId", name = "1", required = true)
     public ResultMsg getProtocolLabel(Long deviceId) {
         ResultMsg resultMsg = DeviceService.getProtocolLabel(deviceId);
         return resultMsg;
     }
 
-    @ApiOperation("获取mqtt/tp500/coap协议读写标识")
+    @ApiOperation(value = "获取mqtt/tp500/coap协议读写标识", response = GetFlagDTO.class)
     @PostMapping("/getFlag")
     public ResultMsg getFlag(@RequestBody GetSensorFlagReq getSensorFlagReq) {
         ResultMsg resultMsg = DeviceService.getFlag(getSensorFlagReq);
@@ -259,6 +271,8 @@ public class DeviceController {
 
     @ApiOperation("获取单个传感器数据")
     @PostMapping("/getSingleSensorDatas")
+    @ApiImplicitParam(value = "传感器id：sensorId", name = "1", required = true)
+    @ApiIgnore
     public ResultMsg getSingleSensorDatas(Long sensorId) {
         ResultMsg resultMsg = DeviceService.getSingleSensorDatas(sensorId);
         return resultMsg;

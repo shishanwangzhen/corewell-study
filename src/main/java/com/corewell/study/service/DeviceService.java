@@ -19,6 +19,7 @@ public interface DeviceService {
      * @return
      */
     ResultMsg findDevice(DeviceReq deviceReq);
+
     /**
      * 查询设备和状态
      *
@@ -26,6 +27,7 @@ public interface DeviceService {
      * @return
      */
     ResultMsg findDeviceAndIsLine(DeviceReq deviceReq);
+
     /**
      * 定时任务查询设备状态
      *
@@ -194,10 +196,10 @@ public interface DeviceService {
     /**
      * 获取modbus读写指令
      *
-     * @param modbusReq
+     * @param modbusGetReq
      * @return
      */
-    ResultMsg getModbus(ModbusReq modbusReq);
+    ResultMsg getModbus(ModbusGetReq modbusGetReq);
 
     /**
      * modbus读写指令修改

@@ -1,14 +1,12 @@
 package com.corewell.study.service.impl;
 
 import com.corewell.study.dao.TeacherDao;
-import com.corewell.study.domain.Student;
-import com.corewell.study.domain.Teacher;
 import com.corewell.study.domain.response.AccountDo;
+import com.corewell.study.domain.response.TeacherDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.TeacherService;
 import com.corewell.study.utils.JwtUtil;
-import com.corewell.study.utils.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +50,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public ResultMsg findTeacher() {
-        List<Teacher> teacherList = teacherDao.findTeacher();
+        List<TeacherDTO> teacherList = teacherDao.findTeacher();
         return ResultMsg.success(teacherList);
     }
 }

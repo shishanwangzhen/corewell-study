@@ -34,9 +34,4 @@ public class DeviceWriteParam {
     @ApiModelProperty(value = "对应的传感器Id", required = true, example = "")
     private Long sensorId;
 
-    /**
-     * /用户Id
-     */
-    @ApiModelProperty(value = "/用户Id", required = true, example = "")
-    private Long userId;
 }

@@ -122,7 +122,8 @@
                group_id    as groupId,
                creator_id  as creatorId
         from device
-        where is_delete=0 and group_id = 0
+        where is_delete = 0
+          and group_id = 0
           and project_id = #{projectId}
     </select>
 
@@ -335,7 +336,8 @@
 
     <delete id="deleteDeviceById" parameterType="Long">
         update device
-        set is_delete=1
+        set is_delete=1,
+            update_time=now()
         where id = #{id}
     </delete>
 

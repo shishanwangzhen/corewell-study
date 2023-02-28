@@ -2,12 +2,16 @@ package com.corewell.study.config;
 
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.net.ssl.*;
-import java.security.*;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
@@ -20,15 +24,15 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class OkHttpConfiguration {
 
-    private final static Integer connectTimeout=30;
+    private final static Integer connectTimeout = 30;
 
-    private  final static Integer readTimeout=30;
+    private final static Integer readTimeout = 30;
 
-    private  final static Integer writeTimeout=30;
+    private final static Integer writeTimeout = 30;
 
-    private  final static Integer maxIdleConnections=200;
+    private final static Integer maxIdleConnections = 200;
 
-    private  final static Long keepAliveDuration=300L;
+    private final static Long keepAliveDuration = 300L;
 
     @Bean
     public OkHttpClient okHttpClient() {
@@ -39,7 +43,7 @@ public class OkHttpConfiguration {
                 .connectionPool(pool())
                 .connectTimeout(connectTimeout, TimeUnit.SECONDS)
                 .readTimeout(readTimeout, TimeUnit.SECONDS)
-                .writeTimeout(writeTimeout,TimeUnit.SECONDS)
+                .writeTimeout(writeTimeout, TimeUnit.SECONDS)
                 .hostnameVerifier((hostname, session) -> true)
                 // 设置代理
 //            	.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)))
@@ -55,10 +59,12 @@ public class OkHttpConfiguration {
             public void checkClientTrusted(X509Certificate[] chain, String authType)
                     throws CertificateException {
             }
+
             @Override
             public void checkServerTrusted(X509Certificate[] chain, String authType)
                     throws CertificateException {
             }
+
             @Override
             public X509Certificate[] getAcceptedIssuers() {
                 return new X509Certificate[0];

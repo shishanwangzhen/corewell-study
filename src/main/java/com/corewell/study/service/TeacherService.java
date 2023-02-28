@@ -1,9 +1,6 @@
 package com.corewell.study.service;
 
-import com.corewell.study.domain.Teacher;
 import com.corewell.study.domain.result.ResultMsg;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

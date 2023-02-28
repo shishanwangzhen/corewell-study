@@ -226,9 +226,9 @@ public class DeviceServiceImpl implements DeviceService {
                 deviceNumberDao.updateDeviceNumberBind(deviceNumber);
                 if ("1".equals(deviceInsertParam.getType())) {
                     List<SensorDTO> sensorsList = deviceDTO.getSensorsList();
-                    if (sensorsList.size() == 1&&sensorsList.get(0).getId()==0) {
-                            sensorsList.remove(0);
-                    }else {
+                    if (sensorsList.size() == 1 && sensorsList.get(0).getId() == 0) {
+                        sensorsList.remove(0);
+                    } else {
                         for (SensorDTO sensorDTO : sensorsList) {
                             Sensor sensor = new Sensor();
                             sensor.setDeviceId(deviceId);
@@ -244,7 +244,7 @@ public class DeviceServiceImpl implements DeviceService {
                             sensor.setMaximum(100D);
                             sensor.setCreateTime(new Date());
                             sensorDao.insertSensor(sensor);
-                            stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId, JSON.toJSONString(sensor), 7*24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+                            stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId, JSON.toJSONString(sensor), 7 * 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
                         }
                     }
                     stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_KEY + deviceId, JSON.toJSONString(device));
@@ -274,7 +274,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    @AddLog( interfaceType="2",interfaceInfo="修改视频设备",interfaceName="updateVideoDevice",dataId="#{device.id}")
+    @AddLog(interfaceType = "2", interfaceInfo = "修改视频设备", interfaceName = "updateVideoDevice", dataId = "#{device.id}")
     public ResultMsg updateVideoDevice(Device device) {
         device.setUpdateTime(new Date());
         int result = deviceDao.updateVideoDevice(device);
@@ -285,7 +285,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    @AddLog( interfaceType="1",interfaceInfo="删除视频设备",interfaceName="deleteVideoDevice",dataId="#{id}")
+    @AddLog(interfaceType = "1", interfaceInfo = "删除视频设备", interfaceName = "deleteVideoDevice", dataId = "#{id}")
     public ResultMsg deleteVideoDevice(Long id) {
         int result = deviceDao.deleteDeviceById(id);
         if (result == 1) {
@@ -295,7 +295,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    @AddLog( interfaceType="2",interfaceInfo="修改设备",interfaceName="updateDevice",dataId="#{deviceUpdateParam.deviceId}")
+    @AddLog(interfaceType = "2", interfaceInfo = "修改设备", interfaceName = "updateDevice", dataId = "#{deviceUpdateParam.deviceId}")
     public ResultMsg updateDevice(DeviceUpdateParam deviceUpdateParam) {
         List<SensorParam> sensorList = deviceUpdateParam.getSensorList();
         HttpHeaders headers = getHeaders();
@@ -358,9 +358,9 @@ public class DeviceServiceImpl implements DeviceService {
                 Long deviceId = deviceDTO.getId();
                 String deviceName = deviceDTO.getDeviceName();
                 List<SensorDTO> sensorsList = deviceDTO.getSensorsList();
-                if (sensorsList.size() == 1&&sensorsList.get(0).getId()==0) {
+                if (sensorsList.size() == 1 && sensorsList.get(0).getId() == 0) {
                     sensorsList.remove(0);
-                }else {
+                } else {
                     for (SensorDTO sensorDTO : sensorsList) {
                         //Sensor sensor = JSON.parseObject(sensorDTO.toString(), Sensor.class);
                         Sensor sensor = new Sensor();
@@ -399,7 +399,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    @AddLog( interfaceType="1",interfaceInfo="删除设备",interfaceName="deleteDevice",dataId="#{deviceId}")
+    @AddLog(interfaceType = "1", interfaceInfo = "删除设备", interfaceName = "deleteDevice", dataId = "#{deviceId}")
     public ResultMsg deleteDevice(Long deviceId) {
         ResponseEntity<String> responseEntity = null;
         try {
@@ -641,7 +641,8 @@ public class DeviceServiceImpl implements DeviceService {
         JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
         String flag = jsonObject.get("flag").toString();
         if (BaseConstants.SUCCESS_00.equals(flag) && jsonObject.containsKey("params")) {
-            return ResultMsg.success(jsonObject.get("params"));
+            ParamsDTO paramsDTO = JSON.parseObject(jsonObject.get("params").toString(), ParamsDTO.class);
+            return ResultMsg.success(paramsDTO);
         } else {
             return ResultMsg.error();
         }
@@ -658,9 +659,7 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("params", setParamsReq.getParams());
             mapParam.put("isWrite", setParamsReq.getIsWrite());
 
-            System.out.println("设置参数ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_SETPARAMS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("设置参数还参：：" + responseEntity.getBody());
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
@@ -691,7 +690,6 @@ public class DeviceServiceImpl implements DeviceService {
 
 
             if (modbusList.size() > 0) {
-                System.out.println("modbus 协议读写指令设置ru参：：" + JSON.toJSONString(mapParam));
                 responseEntity = restTemplate.postForEntity(TLINK_SETMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
                 System.out.println("modbus 协议读写指令设置还参：：" + responseEntity.getBody());
                 Iterator<Modbus> iterator = modbusList.iterator();
@@ -728,16 +726,14 @@ public class DeviceServiceImpl implements DeviceService {
 
 
     @Override
-    public ResultMsg getModbus(ModbusReq modbusReq) {
+    public ResultMsg getModbus(ModbusGetReq modbusGetReq) {
         ResponseEntity<String> responseEntity = null;
         String flag = null;
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
             mapParam.put("userId", 77632L);
-            mapParam.put("deviceId", modbusReq.getDeviceId());
-            mapParam.put("linktype", modbusReq.getLinktype());
-
-            System.out.println("获取modbus读写指令ru参：：" + JSON.toJSONString(mapParam));
+            mapParam.put("deviceId", modbusGetReq.getDeviceId());
+            mapParam.put("linktype", modbusGetReq.getLinktype());
             responseEntity = restTemplate.postForEntity(TLINK_GETMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
             System.out.println("获取modbus读写指令还参：：" + responseEntity.getBody());
             ModbusDTO modbusDTO = JSON.parseObject(responseEntity.getBody(), ModbusDTO.class);

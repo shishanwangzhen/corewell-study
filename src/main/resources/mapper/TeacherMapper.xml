@@ -5,12 +5,12 @@
 <mapper namespace="com.corewell.study.dao.TeacherDao">
 
     <select id="selectTeacher" parameterType="String" resultType="AccountDo">
-        select id, account, password,name
+        select id, account, password, name
         from teacher
         where account = #{account}
     </select>
 
-    <select id="findTeacher" resultType="Teacher">
+    <select id="findTeacher" resultType="TeacherDTO">
         select id, name
         from teacher
     </select>

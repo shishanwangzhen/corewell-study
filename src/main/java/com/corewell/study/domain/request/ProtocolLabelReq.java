@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("设置tcp/udp协议标签参数")
-public class ProtocolLabelReq{
+@ApiModel("设置tcp,udp协议标签参数")
+public class ProtocolLabelReq {
 
     /**
-     * 协议类型 取值范围 tcp/udp 必选项
+     * 协议类型 取值范围 tcp,udp 必选项
      */
-    @ApiModelProperty(value = "协议类型 取值范围 tcp/udp 必选项", required = true, example = "tcp")
+    @ApiModelProperty(value = "协议类型 取值范围 tcp,udp 必选项", required = true, example = "tcp")
     private String linktype;
     /**
      * 设备Id

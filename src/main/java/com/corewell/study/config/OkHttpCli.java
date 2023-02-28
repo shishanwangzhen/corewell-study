@@ -1,13 +1,10 @@
 package com.corewell.study.config;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.corewell.study.timing.GetAccessToken;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -172,12 +169,12 @@ public class OkHttpCli {
     public String doPost1(String url, Map<String, Object> params) {
         FormBody.Builder builder = new FormBody.Builder();
         if (params != null && params.keySet().size() > 0) {
-            System.out.println("keySet().size"+params.keySet().size()+"params::"+params);
+            System.out.println("keySet().size" + params.keySet().size() + "params::" + params);
             for (String key : params.keySet()) {
                 builder.add(key, params.get(key).toString());
             }
         }
-        System.out.println("builder"+ com.alibaba.fastjson.JSON.toJSONString(builder));
+        System.out.println("builder" + com.alibaba.fastjson.JSON.toJSONString(builder));
         Request request = new Request.Builder().url(url).post(builder.build())
                 .addHeader("Authorization", "Bearer" + " " + getAccessToken.getAccessToken())
                 .addHeader("Content-Type", "application/json")

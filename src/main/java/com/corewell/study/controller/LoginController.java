@@ -2,6 +2,7 @@ package com.corewell.study.controller;
 
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.AccountReq;
+import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.StudentService;
@@ -32,7 +33,7 @@ public class LoginController {
     @Autowired
     private TeacherService teacherService;
 
-    @ApiOperation("教师登录")
+    @ApiOperation(value = "教师登录", response = AccountDo.class)
     @PostMapping("/loginTeacher")
     public ResultMsg loginTeacher(@RequestBody AccountReq accountReq) {
         String account = accountReq.getAccount();
@@ -46,7 +47,7 @@ public class LoginController {
     }
 
 
-    @ApiOperation("学生登录")
+    @ApiOperation(value = "学生登录", response = AccountDo.class)
     @PostMapping("/loginStudent")
     public ResultMsg loginStudent(@RequestBody AccountReq accountReq) {
         String account = accountReq.getAccount();
@@ -73,6 +74,7 @@ public class LoginController {
     @ApiOperation("退出登录")
     @PostMapping("/loginOut")
     public ResultMsg loginOut() {
+
         return ResultMsg.success();
 
     }

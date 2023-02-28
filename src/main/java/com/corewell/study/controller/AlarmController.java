@@ -1,5 +1,6 @@
 package com.corewell.study.controller;
 
+import com.corewell.study.domain.Alarm;
 import com.corewell.study.domain.request.AlarmActiveParam;
 import com.corewell.study.domain.request.AlarmAddParam;
 import com.corewell.study.domain.request.AlarmReq;
@@ -7,6 +8,7 @@ import com.corewell.study.domain.request.AlarmUpdateParam;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.AlarmService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +30,7 @@ public class AlarmController {
     @Autowired
     private AlarmService alarmService;
 
-    @ApiOperation(value = "添加触发器" )
+    @ApiOperation(value = "添加触发器")
     @PostMapping("addAlarms")
     public ResultMsg addAlarms(@RequestBody AlarmAddParam alarmAddParam) {
         ResultMsg resultMsg = alarmService.addAlarms(alarmAddParam);
@@ -45,12 +47,13 @@ public class AlarmController {
 
     @ApiOperation("删除触发器")
     @PostMapping("deleteAlarms")
+    @ApiImplicitParam(value = "主键id", name = "1", required = true)
     public ResultMsg deleteAlarms(Long id) {
         ResultMsg resultMsg = alarmService.deleteAlarms(id);
         return resultMsg;
     }
 
-    @ApiOperation("查询触发器")
+    @ApiOperation(value = "查询触发器", response = Alarm.class)
     @PostMapping("getAlarms")
     public ResultMsg getAlarms(@RequestBody AlarmReq alarmReq) {
         ResultMsg resultMsg = alarmService.getAlarms(alarmReq);

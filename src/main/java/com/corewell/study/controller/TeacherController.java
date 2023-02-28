@@ -1,5 +1,6 @@
 package com.corewell.study.controller;
 
+import com.corewell.study.domain.response.TeacherDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.TeacherService;
 import io.swagger.annotations.Api;
@@ -25,7 +26,7 @@ public class TeacherController {
     @Resource
     private TeacherService teacherService;
 
-    @ApiOperation("查询老师")
+    @ApiOperation(value = "查询老师", response = TeacherDTO.class)
     @PostMapping("/findTeacher")
     public ResultMsg findTeacher() {
         ResultMsg resultMsg = teacherService.findTeacher();

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("tcp/udp协议标签还参")
+@ApiModel("tcp,udp协议标签还参")
 public class ProtocolLabelDTO extends ResultDTO {
 
     /**
@@ -32,7 +32,7 @@ public class ProtocolLabelDTO extends ResultDTO {
     /**
      * 当前协议对应的解析标签
      */
-    @ApiModelProperty(value = "当前协议对应的解析标签", required = false, example = "[H:#],[D?],[S:,],[D?],[S:,],[D?],[T:#]")
+    @ApiModelProperty(value = "当前协议对应的解析标签", required = false, example = "")
     private String protocolLabel;
 
 }

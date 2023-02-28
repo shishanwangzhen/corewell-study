@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * @author Administrator
  */
@@ -22,9 +20,9 @@ public class FlagSensors {
     @ApiModelProperty(value = "对应的传感器Id", required = true, example = "")
     private Long sensorId;
     /**
-     * /读写标识符
+     * 读写标识符
      */
-    @ApiModelProperty(value = "/读写标识符", required = true, example = "data1")
+    @ApiModelProperty(value = "读写标识符", required = true, example = "data1")
     private String flag;
 
 

@@ -1,5 +1,6 @@
 package com.corewell.study.controller;
 
+import com.corewell.study.domain.DeviceNumber;
 import com.corewell.study.domain.request.DeviceNumberReq;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.DeviceNumberService;
@@ -26,7 +27,7 @@ public class DeviceNumberController {
     @Resource
     private DeviceNumberService deviceNumberService;
 
-    @ApiOperation("查询设备序列号")
+    @ApiOperation(value = "查询设备序列号", response = DeviceNumber.class)
     @PostMapping("/findDeviceNumber")
     public ResultMsg findDeviceNumber(@RequestBody DeviceNumberReq deviceNumberReq) {
         ResultMsg resultMsg = deviceNumberService.findDeviceNumber(deviceNumberReq);

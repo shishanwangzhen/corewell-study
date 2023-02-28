@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * @author Administrator
  */
@@ -36,9 +34,4 @@ public class DeviceSwitcherParam {
     @ApiModelProperty(value = "对应的传感器Id", required = true, example = "")
     private Long sensorId;
 
-    /**
-     * /用户Id
-     */
-    @ApiModelProperty(value = "/用户Id", required = true, example = "")
-    private Long userId;
 }

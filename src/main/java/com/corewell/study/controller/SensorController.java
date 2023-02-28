@@ -1,6 +1,5 @@
 package com.corewell.study.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.corewell.study.domain.Sensor;
 import com.corewell.study.domain.request.SensorReq;
 import com.corewell.study.domain.request.SensorUpdateReq;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 
@@ -25,12 +23,12 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/core/sensor")
-@Api(tags = "传感器控制器")
+@Api(tags = "传感器")
 public class SensorController {
     @Resource
     private SensorService SensorService;
 
-    @ApiOperation(value = "传感器查询",response =Sensor.class )
+    @ApiOperation(value = "传感器查询", response = Sensor.class)
     @PostMapping("/findSensor")
     public ResultMsg findSensor(@RequestBody SensorReq sensorReq) {
         ResultMsg resultMsg = SensorService.findSensor(sensorReq);
