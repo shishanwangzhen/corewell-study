@@ -10,19 +10,18 @@ package com.corewell.study.constants;
 public class BaseConstants {
     /**
      * TLINK还参成功码
-     * */
-    public static final String SUCCESS_00="00";
+     */
+    public static final String SUCCESS_00 = "00";
 
     /**
      * TLINK还参码无数据
-     * */
-    public static final String SUCCESS_01="01";
+     */
+    public static final String SUCCESS_01 = "01";
 
     /**
      * TLINK接口token异常
-     * */
-    public static final String INVALID_TOKEN="invalid_token";
-
+     */
+    public static final String INVALID_TOKEN = "invalid_token";
 
 
 }

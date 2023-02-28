@@ -30,12 +30,12 @@ public class LogController {
     @Resource
     private LogService logService;
 
-    @ApiOperation(value = "查询日志",response = Log.class)
+    @ApiOperation(value = "查询日志", response = Log.class)
     @PostMapping("/findLog")
     public ResultMsg findSensor(@RequestBody LogReq logReq) {
         PageUtil.setPageParams(logReq.getPageParam());
         List<Log> logList = logService.findLog(logReq);
-        PageInfo<Log> logPageInfo=new PageInfo<>(logList);
+        PageInfo<Log> logPageInfo = new PageInfo<>(logList);
         return ResultMsg.success(logPageInfo);
     }
 

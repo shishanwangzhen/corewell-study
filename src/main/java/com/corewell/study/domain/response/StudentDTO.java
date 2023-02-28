@@ -7,9 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author Administrator
@@ -51,7 +49,6 @@ public class StudentDTO implements Serializable {
      */
     @ApiModelProperty(value = "项目组名称", required = false, example = "")
     private String groupName;
-
 
 
 }

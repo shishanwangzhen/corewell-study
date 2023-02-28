@@ -20,13 +20,13 @@ import javax.websocket.server.ServerEndpoint;
 @ApiIgnore//隐藏swagger接口文档
 public class webSocketController {
     @GetMapping("index")
-    public ResponseEntity<String> index(){
+    public ResponseEntity<String> index() {
         return ResponseEntity.ok("请求成功");
     }
 
 
     @GetMapping("page")
-    public ModelAndView page(){
+    public ModelAndView page() {
         return new ModelAndView("webSocket");
     }
 

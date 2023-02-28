@@ -21,11 +21,17 @@
     </select>
 
     <update id="updateDeviceNumberBind" parameterType="DeviceNumber">
-        update device_number set device_id=#{deviceId},status=1 where deviceNo=#{deviceNo}
+        update device_number
+        set device_id=#{deviceId},
+            status=1
+        where deviceNo = #{deviceNo}
     </update>
 
     <update id="updateDeviceNumber" parameterType="Long">
-        update device_number set device_id=null,status=0 where device_id=#{deviceId}
+        update device_number
+        set device_id=null,
+            status=0
+        where device_id = #{deviceId}
     </update>
 </mapper>
 

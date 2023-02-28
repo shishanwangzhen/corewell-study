@@ -2,7 +2,6 @@ package com.corewell.study.service;
 
 import com.corewell.study.domain.Log;
 import com.corewell.study.domain.request.LogReq;
-import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

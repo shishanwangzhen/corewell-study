@@ -3,7 +3,6 @@ package com.corewell.study.service;
 import com.corewell.study.domain.Project;
 import com.corewell.study.domain.request.ProjectReq;
 import com.corewell.study.domain.result.ResultMsg;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * Created with IntelliJ IDEA.

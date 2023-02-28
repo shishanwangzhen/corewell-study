@@ -6,7 +6,6 @@ import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.domain.response.StudentDTO;
-import com.corewell.study.domain.result.ResultMsg;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -101,6 +100,7 @@ public interface StudentDao {
      * @return
      */
     int updateStudentStatus(StudentStatusReq studentStatusReq);
+
     /**
      * 删除学生项目组
      *
@@ -132,7 +132,6 @@ public interface StudentDao {
      * @return
      */
     int updateProjectStatusByTeacherId(Long creatorId);
-
 
 
 }

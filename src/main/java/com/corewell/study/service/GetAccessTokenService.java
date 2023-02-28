@@ -12,8 +12,9 @@ import com.corewell.study.domain.result.ResultMsg;
 public interface GetAccessTokenService {
     /**
      * 手动更新token
+     *
      * @return
-     * */
+     */
     ResultMsg getAccessToken();
 
 }

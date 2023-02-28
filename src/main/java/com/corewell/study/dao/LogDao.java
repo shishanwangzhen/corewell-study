@@ -1,9 +1,7 @@
 package com.corewell.study.dao;
 
 import com.corewell.study.domain.Log;
-import com.corewell.study.domain.Sensor;
 import com.corewell.study.domain.request.LogReq;
-import com.corewell.study.domain.request.SensorReq;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -52,8 +52,8 @@ public class RabbitReceiver {
                         .build());
             }
         }
-       // TODO 测试数据库存储量保存控制器数据，生产环境部署时去掉
-        else if (StringUtils.isAllBlank(pushData.getType())&&sensorsDates.size() > 0) {
+        // TODO 测试数据库存储量保存控制器数据，生产环境部署时去掉
+        else if (StringUtils.isAllBlank(pushData.getType()) && sensorsDates.size() > 0) {
             for (SensorsDates sensorDates : sensorsDates) {
                 System.out.println("sensorDates:  :" + sensorDates);
                 InfluxDB influxDB = influxDbUtils.getInfluxDB();

@@ -17,6 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 public class StudentStatusReqParam {
 
-   private List<StudentStatusReq> studentStatusReqs;
+    private List<StudentStatusReq> studentStatusReqs;
 
 }

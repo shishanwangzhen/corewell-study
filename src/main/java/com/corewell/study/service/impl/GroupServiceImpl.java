@@ -49,7 +49,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    @AddLog( interfaceType="2",interfaceInfo="修改项目组",interfaceName="updateGroup",dataId="#{group.id}")
+    @AddLog(interfaceType = "2", interfaceInfo = "修改项目组", interfaceName = "updateGroup", dataId = "#{group.id}")
     public ResultMsg updateGroup(Group group) {
         group.setUpdateTime(new Date());
 
@@ -61,7 +61,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    @AddLog( interfaceType="1",interfaceInfo="删除项目组",interfaceName="updateGroupStatus",dataId="#{id}")
+    @AddLog(interfaceType = "1", interfaceInfo = "删除项目组", interfaceName = "updateGroupStatus", dataId = "#{id}")
     public ResultMsg updateGroupStatus(Long id) {
         int result = groupDao.updateGroupStatus(id);
         studentDao.updateGroupStudentByGroupId(id);
@@ -73,7 +73,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    @AddLog( interfaceType="1",interfaceInfo="删除项目组学生",interfaceName="updateGroupStudent",dataId="#{id}")
+    @AddLog(interfaceType = "1", interfaceInfo = "删除项目组学生", interfaceName = "updateGroupStudent", dataId = "#{id}")
     public ResultMsg updateGroupStudent(Long id) {
         int result = studentDao.updateGroupStudent(id);
         if (result == 1) {

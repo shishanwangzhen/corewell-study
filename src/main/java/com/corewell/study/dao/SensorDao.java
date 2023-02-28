@@ -32,6 +32,7 @@ public interface SensorDao {
      * @return
      */
     Sensor findSensorBySensorId(Long sensorId);
+
     /**
      * 通过id查询传感器
      *
@@ -55,6 +56,7 @@ public interface SensorDao {
      * @return
      */
     int updateSensor(Sensor sensor);
+
     /**
      * 修改传感器量程
      *

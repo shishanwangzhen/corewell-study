@@ -43,5 +43,4 @@ public class DeviceNumber {
     private long status;
 
 
-
 }

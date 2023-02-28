@@ -4,6 +4,7 @@ import com.corewell.study.utils.InfluxDbUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -24,7 +25,6 @@ public class InfluxDbConfig {
 
     @Value("${spring.influx.database:test}")
     private String database;
-
 
 
     @Bean

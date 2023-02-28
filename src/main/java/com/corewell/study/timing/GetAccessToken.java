@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +39,7 @@ public class GetAccessToken {
 
     public String getAccessToken() {
         try {
-            if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.ACCESS_TOKEN_KEY)){
+            if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.ACCESS_TOKEN_KEY)) {
                 accessToken = stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.ACCESS_TOKEN_KEY);
                 if (StringUtils.isNotBlank(accessToken)) {
                     return accessToken;

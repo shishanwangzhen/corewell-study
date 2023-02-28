@@ -159,7 +159,7 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public ResultMsg getAlarms(AlarmReq alarmReq) {
-        Long deviceId= alarmReq.getDeviceId();
+        Long deviceId = alarmReq.getDeviceId();
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
             mapParam.put("deviceId", deviceId);
@@ -179,18 +179,18 @@ public class AlarmServiceImpl implements AlarmService {
                 String sensorName = null;
                 Long sensorId = null;
                 for (Alarm alarm : alarmList) {
-                     sensorId = alarm.getSensorId();
-                    if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.SENSOR_KEY  +deviceId+":"+ sensorId)) {
-                      String  sensor = stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.SENSOR_KEY +deviceId+":"+ sensorId);
-                        sensorName=JSONObject.parseObject(sensor).getString("sensorName");
+                    sensorId = alarm.getSensorId();
+                    if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId)) {
+                        String sensor = stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId);
+                        sensorName = JSONObject.parseObject(sensor).getString("sensorName");
                         alarm.setSensorName(sensorName);
                         set.add(sensorName);
                     } else {
-                        Sensor sensor=sensorDao.findSensorBySensorId(sensorId);
-                        sensorName=sensor.getSensorName();
+                        Sensor sensor = sensorDao.findSensorBySensorId(sensorId);
+                        sensorName = sensor.getSensorName();
                         alarm.setSensorName(sensorName);
                         set.add(sensorName);
-                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY +deviceId+":"+ sensorId, JSON.toJSONString(sensor), 7*24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+                        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId, JSON.toJSONString(sensor), 7 * 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
                     }
                 }
                 Map<String, List> map = new HashMap<>(16);

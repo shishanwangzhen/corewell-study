@@ -8,9 +8,9 @@ import com.corewell.study.domain.request.PushDataParam;
 public interface PushDataService {
     /**
      * 处理订阅数据
+     *
      * @param pushData
      * @return
-     *
-     * */
+     */
     void getPushData(PushDataParam pushData);
 }

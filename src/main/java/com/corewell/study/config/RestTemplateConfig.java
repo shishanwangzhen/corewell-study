@@ -1,10 +1,5 @@
 package com.corewell.study.config;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.http.Header;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -23,13 +18,18 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author Administrator
  */
 @Configuration
 public class RestTemplateConfig {
 
-    private static final Logger logger= LoggerFactory.getLogger(RestTemplateConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(RestTemplateConfig.class);
 
     @Bean
     public RestTemplate restTemplate() {
@@ -48,7 +48,7 @@ public class RestTemplateConfig {
             converterList.remove(converterTarget);
         }
         HttpMessageConverter<?> converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
-        converterList.add(1,converter);
+        converterList.add(1, converter);
 
         logger.info("-----restTemplate-----初始化完成");
         return restTemplate;

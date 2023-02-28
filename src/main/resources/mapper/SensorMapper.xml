@@ -217,7 +217,9 @@
 
 
     <delete id="deleteSensorById" parameterType="Long">
-        delete from sensor where sensor_id = #{sensorId}
+        delete
+        from sensor
+        where sensor_id = #{sensorId}
     </delete>
     <delete id="deleteSensorByDeviceId" parameterType="Long">
         delete

@@ -68,7 +68,6 @@ public class DeviceDTO {
     private String iotDeviceId;
 
 
-
     private String lat;
     /**
      * 协议类型

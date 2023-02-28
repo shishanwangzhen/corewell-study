@@ -72,6 +72,7 @@ public interface StudentService {
      * @return
      */
     ResultMsg updateStudent(Student student);
+
     /**
      * 删除学生
      *
@@ -79,7 +80,6 @@ public interface StudentService {
      * @return
      */
     ResultMsg deleteStudentById(Long id);
-
 
 
     /**

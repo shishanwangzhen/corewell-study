@@ -1,9 +1,6 @@
 package com.corewell.study.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.corewell.study.annotation.AddLog;
-import com.corewell.study.config.UserRequest;
 import com.corewell.study.dao.StudentDao;
 import com.corewell.study.domain.Student;
 import com.corewell.study.domain.request.StudentParam;
@@ -15,7 +12,6 @@ import com.corewell.study.domain.response.StudentDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.StudentService;
-import com.corewell.study.utils.BeanMapUtils;
 import com.corewell.study.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -10,8 +10,6 @@ import com.corewell.study.domain.request.PushDataParam;
 import com.corewell.study.domain.request.SensorsDates;
 import com.corewell.study.service.PushDataService;
 import com.corewell.study.utils.InfluxDbUtils;
-import org.influxdb.dto.Query;
-import org.influxdb.dto.QueryResult;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -47,7 +45,7 @@ public class PushDataServiceImpl implements PushDataService {
             return;
         }
         Long deviceId = pushData.getDeviceId();
-        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_IS_LINE_KEY +deviceId,"1",  5*60 * 1000, TimeUnit.MILLISECONDS);
+        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_IS_LINE_KEY + deviceId, "1", 5 * 60 * 1000, TimeUnit.MILLISECONDS);
         if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.DEVICE_KEY + deviceId)) {
             pushData.setType("1");
             List<SensorsDates> sensorsDatesList = pushData.getSensorsDates();
@@ -60,11 +58,11 @@ public class PushDataServiceImpl implements PushDataService {
                     sensor = JSONObject.parseObject(sensorStr, Sensor.class);
                 } else {
                     sensor = sensorDao.findSensorBySensorId(sensorId);
-                    stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY +deviceId+":"+ sensorId, JSON.toJSONString(sensor), 7*24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
+                    stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.SENSOR_KEY + deviceId + ":" + sensorId, JSON.toJSONString(sensor), 7 * 24 * 60 * 60 * 1000, TimeUnit.MILLISECONDS);
                 }
                 Double reVal = Double.valueOf(sensorsDates.getReVal());
                 sensorsDates.setIsAbnormal(0L);
-                if (sensor.getMinimum().compareTo(reVal)>0 || sensor.getMaximum().compareTo(reVal)<0) {
+                if (sensor.getMinimum().compareTo(reVal) > 0 || sensor.getMaximum().compareTo(reVal) < 0) {
                     sensorsDates.setIsAbnormal(1L);
                /*     StringBuilder command = new StringBuilder();
                     command.append("SELECT reVal FROM CORE_STUDY where sensorsId=");

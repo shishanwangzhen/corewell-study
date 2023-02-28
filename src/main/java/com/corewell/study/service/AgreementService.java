@@ -3,10 +3,7 @@ package com.corewell.study.service;
 import com.corewell.study.domain.Agreement;
 import com.corewell.study.domain.request.AgreementReq;
 import com.corewell.study.domain.result.ResultMsg;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

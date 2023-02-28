@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * @author Administrator
  */
@@ -24,7 +22,7 @@ public class ResultDTO {
     private String msg;
 
     /**
-     *00 表示请求成功 01 表示请求失败
+     * 00 表示请求成功 01 表示请求失败
      */
     @ApiModelProperty(value = "00 表示请求成功 01 表示请求失败", required = false, example = "00")
     private String flag;

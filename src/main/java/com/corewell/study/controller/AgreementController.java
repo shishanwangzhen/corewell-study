@@ -1,21 +1,26 @@
 package com.corewell.study.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.corewell.study.domain.Agreement;
-import com.corewell.study.domain.Group;
 import com.corewell.study.domain.request.AgreementReq;
-import com.corewell.study.domain.request.GroupReq;
+import com.corewell.study.domain.request.SensorHistoryParam;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.AgreementService;
-import com.corewell.study.service.GroupService;
+import com.corewell.study.utils.InfluxDbUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.influxdb.dto.Query;
+import org.influxdb.dto.QueryResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,12 +31,14 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/core/agreement")
-@Api(tags = "协议")
+@Api(tags = "协议控制器")
+@ApiIgnore
 public class AgreementController {
     @Resource
     private AgreementService agreementService;
 
-    @ApiOperation("查询项目")
+    @ApiOperation(value = "查询项目", response = Agreement.class)
+    @ApiIgnore//隐藏接口
     @PostMapping("/findAgreement")
     public ResultMsg findAgreement(@RequestBody AgreementReq agreementReq) {
         ResultMsg resultMsg = agreementService.findAgreement(agreementReq);
@@ -39,7 +46,59 @@ public class AgreementController {
 
     }
 
-    @ApiOperation("协议修改")
+    @ApiOperation("查询历史数据")
+    @PostMapping("/findData")
+    public ResultMsg findData(@RequestBody SensorHistoryParam sensorHistoryParam) {
+      /*  StringBuilder command = new StringBuilder();
+        command.append("SELECT time,value FROM CORE_STUDY where 1=1");
+        if (sensorHistoryParam.getSensorId()!=null&&sensorHistoryParam.getSensorId()!=0){
+            command.append(" AND sensorsId=");
+            command.append("'");
+            command.append(sensorHistoryParam.getSensorId());
+            command.append("'");
+        }
+        if (StringUtils.isNotBlank(sensorHistoryParam.getStartDate())) {
+            command.append(" AND time>");
+            command.append("'");
+            command.append(sensorHistoryParam.getStartDate());
+            command.append("'");
+        }
+        if (StringUtils.isNotBlank(sensorHistoryParam.getEndDate())) {
+            command.append(" AND time<");
+            command.append("'");
+            command.append(sensorHistoryParam.getEndDate());
+            command.append("'");
+        }
+        //TODO
+       // command.append("GROUP BY *");
+
+        QueryResult resultMsg = query(command.toString());*/
+        StringBuilder command = new StringBuilder();
+        command.append("SELECT reVal FROM CORE_STUDY where sensorsId=");
+        command.append("'");
+        command.append(sensorHistoryParam.getSensorId());
+        command.append("'");
+        command.append(" order by time desc limit 3");
+        QueryResult resultMsg = influxDbUtils.getInfluxDB().query(new Query(command.toString(), "test"));
+
+        System.out.println("查询历史数据还参：resultMsg" + JSONObject.toJSON(resultMsg));
+        if (resultMsg != null && resultMsg.getResults() != null && resultMsg.getResults().get(0) != null && resultMsg.getResults().get(0).getSeries().get(0).getValues() != null) {
+            List<List<Object>> strings = resultMsg.getResults().get(0).getSeries().get(0).getValues();
+            Long avg = Long.valueOf(strings.get(0).get(1).toString()) + Long.valueOf(strings.get(1).get(1).toString()) + Long.valueOf(strings.get(2).get(1).toString());
+            System.out.println("其味无穷无群：" + avg / 3);
+        }
+
+        return ResultMsg.success(resultMsg);
+    }
+
+    @Autowired
+    private InfluxDbUtils influxDbUtils;
+
+    public QueryResult query(String command) {
+        return influxDbUtils.getInfluxDB().query(new Query(command, "test"));
+    }
+
+    @ApiOperation(value = "协议修改", hidden = true)
     @PostMapping("/updateAgreement")
     public ResultMsg updateAgreement(@RequestBody Agreement agreement) {
         System.out.println(JSON.toJSON(agreement));

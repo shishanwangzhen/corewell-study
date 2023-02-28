@@ -27,6 +27,7 @@ public interface DeviceDao {
      * @return
      */
     List<DeviceDo> findDevice(DeviceReq deviceReq);
+
     /**
      * 查询采集控制设备
      *
@@ -36,7 +37,6 @@ public interface DeviceDao {
     List<Device> findControllerAndCollectionDevice(ControllerAndCollectionDeviceReq controllerAndCollectionDeviceReq);
 
 
-
     /**
      * 查询设备绑定项目组
      *
@@ -44,7 +44,6 @@ public interface DeviceDao {
      * @return
      */
     List<Device> findDeviceBindGroup(@Param("projectId") Long projectId);
-
 
 
     /**
@@ -102,6 +101,7 @@ public interface DeviceDao {
      * @return
      */
     int updateBindingByBindingId(Long bindingId);
+
     /**
      * 删除项目组设备移除项目组
      *

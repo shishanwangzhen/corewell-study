@@ -2,7 +2,6 @@ package com.corewell.study.service;
 
 import com.corewell.study.domain.request.DeviceNumberReq;
 import com.corewell.study.domain.result.ResultMsg;
-import org.apache.ibatis.annotations.Mapper;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface DeviceNumberService {
     /**
      * 查询设备序列号
+     *
      * @param deviceNumberReq
      * @return
      */
