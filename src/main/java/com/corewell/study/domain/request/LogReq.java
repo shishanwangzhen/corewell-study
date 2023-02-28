@@ -1,5 +1,6 @@
 package com.corewell.study.domain.request;
 
+import com.corewell.study.domain.result.PageParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -14,19 +15,14 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("查询日志入参")
+@ApiModel("分页查询日志入参")
 public class LogReq {
 
   /**
-   * 用户账号id
+   * 分页
    */
-  @ApiModelProperty(value = "用户账号id", required = false, example = "")
-  private Long accountId;
-  /**
-   * 用户账号
-   */
-  @ApiModelProperty(value = "用户账号", required = false, example = "")
-  private String account;
+  @ApiModelProperty(value = "分页", required = true, example = "")
+  private PageParam pageParam;
   /**
    * 接口类型（1.删除，2.修改）
    */

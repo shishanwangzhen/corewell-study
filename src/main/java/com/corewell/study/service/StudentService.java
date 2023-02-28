@@ -1,6 +1,7 @@
 package com.corewell.study.service;
 
 import com.corewell.study.domain.Student;
+import com.corewell.study.domain.request.StudentParam;
 import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReqParam;
 import com.corewell.study.domain.result.ResultMsg;
@@ -31,6 +32,14 @@ public interface StudentService {
      * @return
      */
     ResultMsg findStudent(StudentReq studentReq);
+
+    /**
+     * 查询学生信息
+     *
+     * @param studentParam
+     * @return
+     */
+    List<Student> findStudentByPage(StudentParam studentParam);
 
     /**
      * 查询组成员

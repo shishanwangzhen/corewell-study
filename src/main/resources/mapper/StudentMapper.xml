@@ -23,7 +23,7 @@
     </resultMap>
 
     <select id="selectStudentByAccount" parameterType="String" resultType="AccountDo">
-        select id, account, password,name
+        select id, account, password, name
         from student
         where account = #{account}
           and status = 1
@@ -70,9 +70,23 @@
         <if test="teacherId!=null and teacherId!=''">
             and teacher_id=#{teacherId}
         </if>
-
+        order by create_time desc
     </select>
 
+    <select id="findStudentByPage" parameterType="StudentParam" resultType="Student">
+        select id, account, password, name, school, major, phone, email,
+        create_time as createTime, update_time as updateTime, role,
+        project_id as projectId, group_id as groupId, teacher_id as teacherId, status
+        from student
+        where status!=3
+        <if test="status!=null and status!=''">
+            and status=#{status}
+        </if>
+        <if test="teacherId!=null and teacherId!=''">
+            and teacher_id=#{teacherId}
+        </if>
+        order by create_time desc
+    </select>
 
     <select id="findStudentByGroupId" parameterType="Long" resultType="Student">
         select id,

@@ -22,9 +22,9 @@ public class LogServiceImpl implements LogService {
     @Autowired
     private LogDao logDao;
     @Override
-    public ResultMsg findLog(LogReq logReq) {
+    public List<Log> findLog(LogReq logReq) {
         List<Log> logList=logDao.findLog(logReq);
-        return ResultMsg.success(logList);
+        return logList;
     }
 
     @Override

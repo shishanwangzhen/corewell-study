@@ -22,7 +22,7 @@ public interface LogService {
      * @param logReq
      * @return
      */
-    ResultMsg findLog(LogReq logReq);
+    List<Log> findLog(LogReq logReq);
 
 
     /**

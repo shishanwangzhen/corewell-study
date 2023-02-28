@@ -3,17 +3,21 @@ package com.corewell.study.controller;
 import com.alibaba.fastjson.JSON;
 import com.corewell.study.config.UserRequest;
 import com.corewell.study.domain.Student;
+import com.corewell.study.domain.request.StudentParam;
 import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReqParam;
 import com.corewell.study.domain.response.StudentDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.StudentService;
+import com.corewell.study.utils.PageUtil;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,6 +40,16 @@ public class StudentController {
         return resultMsg;
 
     }
+
+    @ApiOperation(value = "分页查询学生",response = Student.class)
+    @PostMapping("/findStudentByPage")
+    public ResultMsg findStudentByPage(@RequestBody StudentParam studentParam) {
+        PageUtil.setPageParams(studentParam.getPageParam());
+        List<Student> studentList = studentService.findStudentByPage(studentParam);
+        PageInfo<Student> pageInfo=new PageInfo(studentList);
+        return ResultMsg.success(pageInfo);
+
+}
 
     @ApiOperation(value = "查询组成员",response =  Student.class)
     @PostMapping("/selectStudentGroup")

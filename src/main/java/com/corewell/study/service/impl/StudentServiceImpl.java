@@ -6,6 +6,7 @@ import com.corewell.study.annotation.AddLog;
 import com.corewell.study.config.UserRequest;
 import com.corewell.study.dao.StudentDao;
 import com.corewell.study.domain.Student;
+import com.corewell.study.domain.request.StudentParam;
 import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.request.StudentStatusReqParam;
@@ -61,6 +62,12 @@ public class StudentServiceImpl implements StudentService {
     public ResultMsg findStudent(StudentReq studentReq) {
         List<Student> studentList = studentDao.findStudent(studentReq);
         return ResultMsg.success(studentList);
+    }
+
+    @Override
+    public List<Student> findStudentByPage(StudentParam studentParam) {
+        List<Student> studentList = studentDao.findStudentByPage(studentParam);
+        return studentList;
     }
 
     @Override

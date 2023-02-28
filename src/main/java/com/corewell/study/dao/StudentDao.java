@@ -1,6 +1,7 @@
 package com.corewell.study.dao;
 
 import com.corewell.study.domain.Student;
+import com.corewell.study.domain.request.StudentParam;
 import com.corewell.study.domain.request.StudentReq;
 import com.corewell.study.domain.request.StudentStatusReq;
 import com.corewell.study.domain.response.AccountDo;
@@ -35,6 +36,15 @@ public interface StudentDao {
      * @return
      */
     List<Student> findStudent(StudentReq studentReq);
+
+
+    /**
+     * 分页查询学生
+     *
+     * @param studentParam
+     * @return
+     */
+    List<Student> findStudentByPage(StudentParam studentParam);
 
     /**
      * 查询学生
