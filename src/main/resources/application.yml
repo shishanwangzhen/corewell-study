@@ -6,6 +6,7 @@ spring:
     #url: jdbc:mysql://localhost:3307/core_farming?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: root
+    #password: jsnl2022
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       #连接池名
@@ -82,13 +83,17 @@ mybatis:
   #配置mapper数据还回类型的别名（默认别名是类名）
   #mybatis.configuration.call-setters-on-nulls=true
   type-aliases-package: com.corewell.study.domain
-  configuration-properties: classpath:mapper/mybatis-config.xml
+  configuration-properties: classpath:mybatis-config.xml
 
   #mybatis sql 打印（方法接口所在的包，不是Mapper.xml 文件所在的包）
 logging:
   level:
     com.corewell.study.dao: debug
-
+  #日志相关配置
+    #日志相关配置
+  config: classpath:logback-spring.xml
+  file:
+    path: /home/core_study/logs/
 jwt:
   #JWT 存储请求头
   tokenHeader: Authorization

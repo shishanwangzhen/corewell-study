@@ -52,7 +52,7 @@ public class AddLogAspect {
         Object interfaceInfo = AnnotationResolver.newInstance().resolver(point, addLog.interfaceInfo());
         Object dataId = AnnotationResolver.newInstance().resolver(point, addLog.dataId());
 
-        log.info("切面日志入参：interfaceInfo：" + JSON.toJSONString(interfaceInfo) + "  interfaceName：" + JSON.toJSONString(interfaceName) + "  interfaceType：" + JSON.toJSONString(interfaceType));
+        log.info("切面日志入参：interfaceInfo：" + JSON.toJSONString(interfaceInfo) + "  interfaceName：" + JSON.toJSONString(interfaceName) + "  interfaceType：" + JSON.toJSONString(interfaceType)+ "  interfaceType：" + JSON.toJSONString(dataId));
         String token = UserRequest.getCurrentToken();
         String account = JwtUtil.getUserId(token);
         Map<String, Object> map = JwtUtil.getInfo(token);

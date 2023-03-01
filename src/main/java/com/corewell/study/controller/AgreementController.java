@@ -10,6 +10,7 @@ import com.corewell.study.service.AgreementService;
 import com.corewell.study.utils.InfluxDbUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import java.util.List;
 @RequestMapping("/core/agreement")
 @Api(tags = "协议控制器")
 @ApiIgnore
+@Slf4j
 public class AgreementController {
     @Resource
     private AgreementService agreementService;
@@ -81,13 +83,7 @@ public class AgreementController {
         command.append(" order by time desc limit 3");
         QueryResult resultMsg = influxDbUtils.getInfluxDB().query(new Query(command.toString(), "test"));
 
-        System.out.println("查询历史数据还参：resultMsg" + JSONObject.toJSON(resultMsg));
-        if (resultMsg != null && resultMsg.getResults() != null && resultMsg.getResults().get(0) != null && resultMsg.getResults().get(0).getSeries().get(0).getValues() != null) {
-            List<List<Object>> strings = resultMsg.getResults().get(0).getSeries().get(0).getValues();
-            Long avg = Long.valueOf(strings.get(0).get(1).toString()) + Long.valueOf(strings.get(1).get(1).toString()) + Long.valueOf(strings.get(2).get(1).toString());
-            System.out.println("其味无穷无群：" + avg / 3);
-        }
-
+        log.info("查询历史数据还参：resultMsg" + JSONObject.toJSON(resultMsg));
         return ResultMsg.success(resultMsg);
     }
 

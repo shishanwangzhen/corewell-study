@@ -18,7 +18,7 @@ public class AlarmUpdateParam {
     /**
      * 触发器Id
      */
-    @ApiModelProperty(value = "触发器Id", required = false, example = "")
+    @ApiModelProperty(value = "触发器Id", required = true, example = "")
     private Long id;
 
     /**

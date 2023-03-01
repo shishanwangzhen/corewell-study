@@ -14,35 +14,30 @@ import java.util.regex.Pattern;
  */
 public class ValidateCore {
 
-    /**
-     * 校验手机号
-     *
-     * */
-
-    public static boolean verifyPhone(String phone){
-        Pattern pattern=Pattern.compile(BaseConstants.REG_PATTERN_PHONE);
-        Matcher matcher=pattern.matcher(phone);
-        if(matcher.matches()){
+  /*  public static boolean verifyPhone(String phone) {
+        Pattern pattern = Pattern.compile(BaseConstants.REG_PATTERN_PHONE);
+        Matcher matcher = pattern.matcher(phone);
+        if (matcher.matches()) {
             return true;
-        }else {
+        } else {
             return false;
         }
+    }*/
 
+    /**
+     * 校验手机号
+     */
+
+    public static boolean verifyPhone(String phone) {
+        return Pattern.matches(BaseConstants.REG_PATTERN_PHONE, phone);
     }
 
 
     /**
-     * 校验手机号
-     *
-     * */
+     * 校验账号
+     */
 
-    public static boolean verifyAccount(String account){
-        Pattern pattern=Pattern.compile(BaseConstants.REG_PATTERN_ACCOUNT);
-        Matcher matcher=pattern.matcher(account);
-        if(matcher.matches()){
-            return true;
-        }else {
-            return false;
-        }
+    public static boolean verifyAccount(String account) {
+            return Pattern.matches(BaseConstants.REG_PATTERN_ACCOUNT, account);
     }
 }

@@ -23,7 +23,7 @@ public class AlarmReq {
     /**
      * 传感器Id
      */
-    @ApiModelProperty(value = "传感器Id", required = true, example = "")
+    @ApiModelProperty(value = "传感器Id", required = false, example = "")
     private Long sensorId;
 
 }

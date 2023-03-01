@@ -14,6 +14,7 @@ import com.corewell.study.domain.request.AlarmUpdateParam;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.AlarmService;
 import com.corewell.study.timing.GetAccessToken;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
@@ -33,6 +34,7 @@ import java.util.concurrent.TimeUnit;
  * @Description:
  */
 @Service("AlarmService")
+@Slf4j
 public class AlarmServiceImpl implements AlarmService {
     private static final String TLINK_URL = "https://app.dtuip.com/api/alarms/";
     private static final String TLINK_ADDALARMS_URL = TLINK_URL + "addAlarms";
@@ -55,12 +57,13 @@ public class AlarmServiceImpl implements AlarmService {
         headers.add("Authorization", "Bearer" + " " + getAccessToken.getAccessToken());
         headers.add("Content-Type", "application/json");
         headers.add("tlinkAppId", "621d35860cce451a886b9329affb52c6");
-        System.out.println(JSON.toJSONString(headers));
+        log.info(JSON.toJSONString(headers));
         return headers;
     }
 
     @Override
     public ResultMsg addAlarms(AlarmAddParam alarmAddParam) {
+        log.info("addAlarms：AlarmAddParam：" + JSON.toJSONString(alarmAddParam));
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
             mapParam.put("deviceId", alarmAddParam.getDeviceId());
@@ -77,9 +80,9 @@ public class AlarmServiceImpl implements AlarmService {
             mapParam.put("forwardLinkType", alarmAddParam.getForwardLinkType());
             mapParam.put("forwardValue", alarmAddParam.getForwardValue());
             HttpHeaders headers = getHeaders();
-            System.out.println("新增触发器ru参：：" + JSON.toJSONString(mapParam));
+           log.info("addAlarms：mapParam：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_ADDALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
-            System.out.println("新增触发器还参：：" + responseEntity);
+            log.info("addAlarms：responseEntity：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
             if (!BaseConstants.SUCCESS_00.equals(flag)) {
@@ -87,6 +90,7 @@ public class AlarmServiceImpl implements AlarmService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -97,6 +101,7 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public ResultMsg updateAlarms(AlarmUpdateParam alarmUpdateParam) {
+        log.info("updateAlarms：AlarmUpdateParam：" + JSON.toJSONString(alarmUpdateParam));
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
             mapParam.put("id", alarmUpdateParam.getId());
@@ -114,9 +119,9 @@ public class AlarmServiceImpl implements AlarmService {
             mapParam.put("forwardLinkType", alarmUpdateParam.getForwardLinkType());
             mapParam.put("forwardValue", alarmUpdateParam.getForwardValue());
             HttpHeaders headers = getHeaders();
-            System.out.println("修改触发器ru参：：" + JSON.toJSONString(mapParam));
+            log.info("updateAlarms：mapParam：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_UPDATEALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
-            System.out.println("修改触发器还参：：" + responseEntity);
+           log.info("updateAlarms：responseEntity：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
             if (!BaseConstants.SUCCESS_00.equals(flag)) {
@@ -124,6 +129,7 @@ public class AlarmServiceImpl implements AlarmService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -139,9 +145,9 @@ public class AlarmServiceImpl implements AlarmService {
             mapParam.put("id", id);
             mapParam.put("userId", 77632L);
             HttpHeaders headers = getHeaders();
-            System.out.println("删除触发器ru参：：" + JSON.toJSONString(mapParam));
+            log.info("deleteAlarms：mapParam：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_DELETEALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
-            System.out.println("删除触发器还参：：" + responseEntity);
+            log.info("deleteAlarms：responseEntity：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
             if (!BaseConstants.SUCCESS_00.equals(flag)) {
@@ -149,6 +155,7 @@ public class AlarmServiceImpl implements AlarmService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -159,6 +166,7 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public ResultMsg getAlarms(AlarmReq alarmReq) {
+        log.info("getAlarms：alarmReq：" + JSON.toJSONString(alarmReq));
         Long deviceId = alarmReq.getDeviceId();
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
@@ -168,9 +176,9 @@ public class AlarmServiceImpl implements AlarmService {
             mapParam.put("pageSize", 99);
             mapParam.put("userId", 77632L);
             HttpHeaders headers = getHeaders();
-            System.out.println("查询触发器ru参：：" + JSON.toJSONString(mapParam));
+            log.info("getAlarms：mapParam：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_GETALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
-            System.out.println("查询触发器还参：：" + responseEntity);
+            log.info("getAlarms：responseEntity：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
             if (BaseConstants.SUCCESS_00.equals(flag)) {
@@ -211,6 +219,7 @@ public class AlarmServiceImpl implements AlarmService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -220,15 +229,16 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public ResultMsg activeAlarms(AlarmActiveParam alarmActiveParam) {
+        log.info("activeAlarms：alarmActiveParam：" + JSON.toJSONString(alarmActiveParam));
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
             mapParam.put("id", alarmActiveParam.getId());
             mapParam.put("userId", 77632L);
             mapParam.put("active", alarmActiveParam.getActive());
             HttpHeaders headers = getHeaders();
-            System.out.println("启动/停止触发器ru参：：" + JSON.toJSONString(mapParam));
+           log.info("activeAlarms：mapParam：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_ACTIVEALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
-            System.out.println("启动/停止触发器还参：：" + responseEntity);
+            log.info("activeAlarms：responseEntity：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
             if (!BaseConstants.SUCCESS_00.equals(flag)) {
@@ -236,6 +246,7 @@ public class AlarmServiceImpl implements AlarmService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
