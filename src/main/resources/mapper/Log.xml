@@ -37,7 +37,7 @@
         <if test="endTime != null">
             and <![CDATA[create_time <=#{endTime}]]>
         </if>
-        order by create_time ASC
+        order by create_time desc
 
     </select>
 
