@@ -7,6 +7,8 @@ import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.StudentService;
 import com.corewell.study.service.TeacherService;
+import com.corewell.study.utils.ValidateCore;
+import com.sun.xml.bind.v2.TODO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +57,11 @@ public class LoginController {
         if (StringUtils.isEmpty(account) || StringUtils.isEmpty(password)) {
             return new ResultMsg(ResultStatusCode.USERNAME_PASSWORD_NULL);
         }
+        //TODO
+        //上线后账号校验放开
+        /*if (!ValidateCore.verifyAccount(account)) {
+            return new ResultMsg(ResultStatusCode.ILLEGAL_ACCOUNT);
+        }*/
         ResultMsg resultMsg = studentService.selectStudentByAccount(account, password);
         return resultMsg;
 
@@ -63,9 +70,16 @@ public class LoginController {
     @ApiOperation("学生注册")
     @PostMapping("/registerStudent")
     public ResultMsg registerStudent(@RequestBody Student student) {
-        if (StringUtils.isEmpty(student.getAccount()) || StringUtils.isEmpty(student.getPassword())) {
+        String account = student.getAccount();
+        String password = student.getPassword();
+        if (StringUtils.isEmpty(account) || StringUtils.isEmpty(password)) {
             return new ResultMsg(ResultStatusCode.USERNAME_PASSWORD_NULL);
         }
+        //TODO
+        //上线后账号校验放开
+      /*  if (!ValidateCore.verifyAccount(account)) {
+            return new ResultMsg(ResultStatusCode.ILLEGAL_ACCOUNT);
+        }*/
         ResultMsg resultMsg = studentService.insertStudent(student);
         return resultMsg;
 

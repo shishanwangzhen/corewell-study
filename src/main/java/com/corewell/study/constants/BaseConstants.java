@@ -23,5 +23,15 @@ public class BaseConstants {
      */
     public static final String INVALID_TOKEN = "invalid_token";
 
+    /**
+     * 手机号正则表达式
+     */
+
+    public static final String REG_PATTERN_PHONE = "(^$)|(^(1)[0-9]{10}$)";
+
+    /**
+     * 江苏农林学号正则表达式
+     */
+    public static final String REG_PATTERN_ACCOUNT = "^(20)[0-9]{10}$";
 
 }

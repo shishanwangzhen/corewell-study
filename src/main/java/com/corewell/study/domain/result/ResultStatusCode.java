@@ -17,7 +17,7 @@ public enum ResultStatusCode {
     INVALID_PASSWORD(10004, "用户名或密码不正确"),
     TOKEN_IS_NULL(10005, "token为空"),
     INVALID_TOKEN(10006, "无效的Token"),
-    INVALID_INPUT(10007, "无效输入"),
+    ILLEGAL_ACCOUNT(10007, "账号不合法"),
     USERNAME_PASSWORD_NULL(10008, "用户名或密码不能为空"),
     USERNAME_REGISTERED(10009, "该用户名已被注册"),
     PARAM_NULL(10010, "存在参数为空"),
