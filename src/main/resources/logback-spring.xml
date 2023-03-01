@@ -19,7 +19,7 @@
 
 
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
-    <property name="LOG_HOME" value="/home/logs"/>
+    <property name="LOG_HOME" value="/home/core_study/logs"/>
 
 
     <springProperty scope="context" name="LOG_NAME" source="spring.application.name" defaultValue="localhost"/>
@@ -95,18 +95,18 @@
 
 
     <logger name="com.corewell.study.dao" level="DEBUG"/>
-    <!--    <logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"/>-->
-    <!--    <logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"/>-->
-    <!--    <logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN"/>-->
-    <!--    <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"/>-->
-    <!--    <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>-->
-    <!--    <logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>-->
+    <logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"/>
+    <logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"/>
+    <logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN"/>
+    <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"/>
+    <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>
+    <logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>
 
 
     <!-- 日志输出级别 -->
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <!--        <appender-ref ref="ASYNC-INFO"/>-->
-        <!--        <appender-ref ref="ASYNC-ERROR"/>-->
+        <appender-ref ref="ASYNC-INFO"/>
+        <appender-ref ref="ASYNC-ERROR"/>
     </root>
 </configuration>

@@ -52,14 +52,15 @@ public class AddLogAspect {
         Object interfaceInfo = AnnotationResolver.newInstance().resolver(point, addLog.interfaceInfo());
         Object dataId = AnnotationResolver.newInstance().resolver(point, addLog.dataId());
 
-        System.out.println("h航少看点火开关00000" + JSON.toJSONString(interfaceInfo) + "索拉卡复合弓：" + JSON.toJSONString(interfaceName) + "索拉卡复合弓：" + JSON.toJSONString(interfaceType));
+        log.info("切面日志入参：interfaceInfo：" + JSON.toJSONString(interfaceInfo) + "  interfaceName：" + JSON.toJSONString(interfaceName) + "  interfaceType：" + JSON.toJSONString(interfaceType));
         String token = UserRequest.getCurrentToken();
         String account = JwtUtil.getUserId(token);
         Map<String, Object> map = JwtUtil.getInfo(token);
         JSONObject jsonObject = new JSONObject();
         jsonObject.putAll(map);
         AccountDo accountDo = jsonObject.toJavaObject(AccountDo.class);
-        System.out.println("h航少看点火开关222222" + JSON.toJSONString(token) + "名称，修改后" + JSON.toJSONString(accountDo) + "索拉卡复合弓：" + JSON.toJSONString(account));
+        log.info("请求头 ：token：" + JSON.toJSONString(token) );
+        log.info("token解密用户信息：accountDo：" + JSON.toJSONString(accountDo));
         Log log = new Log();
         log.setAccount(account);
         log.setAccountId(Long.valueOf(map.get("id").toString()));
