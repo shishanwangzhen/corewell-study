@@ -2,6 +2,7 @@ package com.corewell.study.component;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @ServerEndpoint(value = "/socketServer/{userId}", configurator = HttpSessionWSHelper.class)
 @Component
+@Slf4j
 public class WebSocketServer {
     static final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
@@ -64,12 +66,12 @@ public class WebSocketServer {
             addOnlineCount();
             //线程数加1
         }
-        logger.info("用户连接" + userId + "，当前在线人数：" + getOnlineCount());
+        log.info("用户连接" + userId + "，当前在线人数：" + getOnlineCount());
 
         try {
             sendMessage("连接成功");
         } catch (Exception e) {
-            logger.info("用户：" + userId + ",网络异常！！！！！！！！！！！");
+            log.info("用户：" + userId + ",网络异常！！！！！！！！！！！");
         }
     }
 
@@ -84,7 +86,7 @@ public class WebSocketServer {
             subOnlineCount();
         }
 
-        logger.info("用户退出：" + userId + ",当前在线人数为：" + getOnlineCount());
+        log.info("用户退出：" + userId + ",当前在线人数为：" + getOnlineCount());
     }
 
     /**
@@ -94,7 +96,7 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-        logger.info("用户消息：" + userId + ",报文：" + message);
+        log.info("用户消息：" + userId + ",报文：" + message);
         //可以群发消息
         //消息保存到数据库，redis
         if (StringUtils.isNotBlank(message)) {
@@ -108,7 +110,7 @@ public class WebSocketServer {
                 if (StringUtils.isNotBlank(toUserId) && webSocketServerConcurrentHashMap.containsKey(toUserId)) {
                     webSocketServerConcurrentHashMap.get(toUserId).sendMessage(jsonObject.toJSONString());
                 } else {
-                    logger.error("请求的userId：" + toUserId + "不在该服务器上");
+                    log.error("请求的userId：" + toUserId + "不在该服务器上");
                 }
 
             } catch (Exception e) {
@@ -123,7 +125,7 @@ public class WebSocketServer {
      */
     @OnError
     public void onError(Session session, Throwable throwable) {
-        logger.error("用户错误：" + this.userId + ",原因" + throwable.getMessage());
+        log.error("用户错误：" + this.userId + ",原因" + throwable.getMessage());
         throwable.printStackTrace();
     }
 
@@ -133,7 +135,7 @@ public class WebSocketServer {
      */
 
     private void sendMessage(String message) throws Exception {
-        System.out.println("用户：" + userId + ",当前在线人数为：" + getOnlineCount() + ", message::" + message);
+        log.info("用户：" + userId + ",当前在线人数为：" + getOnlineCount() + ", message::" + message);
         this.session.getBasicRemote().sendText(message);
     }
 
@@ -142,7 +144,7 @@ public class WebSocketServer {
      */
 
     public void sendMessageAllUser(String message) throws Exception {
-        System.out.println("实现服务器的主动推送全部用户: " + JSONObject.toJSON(message));
+        log.info("实现服务器的主动推送全部用户: " + JSONObject.toJSON(message));
         for (WebSocketServer webSocketServer : webSocketServerConcurrentHashMap.values()) {
             webSocketServer.sendMessage(message);
         }
@@ -152,14 +154,12 @@ public class WebSocketServer {
      * 发送自定义消息
      */
     public static void sendInfo(String message, @PathParam("userId") String userId) throws Exception {
-
-        logger.info("发送消息到：" + userId + ",报文：" + message);
-
+        log.info("发送消息到：" + userId + ",报文：" + message);
         if (StringUtils.isNotBlank(userId) && webSocketServerConcurrentHashMap.containsKey(userId)) {
             webSocketServerConcurrentHashMap.get(userId).sendMessage(message);
 
         } else {
-            logger.error("用户" + userId + "，不在线！！！！");
+            log.error("用户" + userId + "，不在线！！！！");
         }
 
     }

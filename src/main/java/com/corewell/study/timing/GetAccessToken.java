@@ -3,6 +3,7 @@ package com.corewell.study.timing;
 import com.alibaba.fastjson.JSONObject;
 import com.corewell.study.constants.BaseRedisKeyConstants;
 import com.corewell.study.service.GetAccessTokenService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
  * @Description: 将tlink传感器数据同步到省农业平台
  */
 @Component
+@Slf4j
 public class GetAccessToken {
 
     private static String accessToken;
@@ -52,9 +54,9 @@ public class GetAccessToken {
             Long expiresIn = jsonObject.getLong("expires_in");
             accessToken = jsonObject.get("access_token").toString();
             stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.ACCESS_TOKEN_KEY, accessToken, expiresIn, TimeUnit.SECONDS);
-            System.out.println("获取tlink的access_token值为：" + stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.ACCESS_TOKEN_KEY));
+            log.info("GetAccessToken获取tlink的access_token值为：" + stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.ACCESS_TOKEN_KEY));
         } catch (Exception e) {
-            System.out.println(e);
+            log.error(e.toString());
         }
         return accessToken;
     }
@@ -68,9 +70,9 @@ public class GetAccessToken {
             Long expiresIn = jsonObject.getLong("expires_in");
             accessToken = jsonObject.get("access_token").toString();
             stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.ACCESS_TOKEN_KEY, accessToken, expiresIn, TimeUnit.SECONDS);
-            System.out.println("获取tlink的access_token值为：" + stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.ACCESS_TOKEN_KEY));
+            log.info("GetAccessToken获取tlink的access_token值为：" + stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.ACCESS_TOKEN_KEY));
         } catch (Exception e) {
-            System.out.println(e);
+            log.error(e.toString());
         }
         return accessToken;
     }

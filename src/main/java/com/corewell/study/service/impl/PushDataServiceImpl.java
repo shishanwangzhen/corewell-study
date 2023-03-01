@@ -9,7 +9,7 @@ import com.corewell.study.domain.Sensor;
 import com.corewell.study.domain.request.PushDataParam;
 import com.corewell.study.domain.request.SensorsDates;
 import com.corewell.study.service.PushDataService;
-import com.corewell.study.utils.InfluxDbUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author 863586395
  */
+@Slf4j
 @Service("PushDataService")
 public class PushDataServiceImpl implements PushDataService {
 
@@ -34,9 +35,6 @@ public class PushDataServiceImpl implements PushDataService {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private SensorDao sensorDao;
-
-    @Autowired
-    private InfluxDbUtils influxDbUtils;
 
 
     @Override
@@ -85,12 +83,13 @@ public class PushDataServiceImpl implements PushDataService {
             }
         }
         String data = JSON.toJSONString(pushData);
-        System.out.println("getPushData:" + data);
+        log.info("推送前端并且写入influxdb数据getPushData:" + data);
         try {
             webSocketServer.sendMessageAllUser(data);
             rabbitTemplate.convertAndSend("core-study-queue", data);
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.toString());
         }
 
     }
