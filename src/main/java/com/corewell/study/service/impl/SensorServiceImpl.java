@@ -10,6 +10,7 @@ import com.corewell.study.domain.request.SensorUpdateReq;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.SensorService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit;
  * @Description:
  */
 @Service("SensorService")
+@Slf4j
 public class SensorServiceImpl implements SensorService {
 
     @Autowired
@@ -36,12 +38,14 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public ResultMsg findSensor(SensorReq sensorReq) {
+        log.info("findSensor:  sensorReq:  " + JSON.toJSONString(sensorReq));
         List<Sensor> sensorList = sensorDao.findSensor(sensorReq);
         return ResultMsg.success(sensorList);
     }
 
     @Override
     public ResultMsg updateSensorRange(SensorUpdateReq sensorUpdateReq) {
+        log.info("updateSensorRange:  sensorUpdateReq:  " + JSON.toJSONString(sensorUpdateReq));
         try {
             List<SensorUpdateParam> sensorUpdateParams = sensorUpdateReq.getSensorUpdateParams();
             for (SensorUpdateParam sensorUpdateParam : sensorUpdateParams) {

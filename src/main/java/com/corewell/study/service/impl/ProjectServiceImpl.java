@@ -1,5 +1,6 @@
 package com.corewell.study.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.corewell.study.annotation.AddLog;
 import com.corewell.study.dao.DeviceDao;
 import com.corewell.study.dao.GroupDao;
@@ -11,6 +12,7 @@ import com.corewell.study.domain.response.ProjectDo;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.ProjectService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ import java.util.List;
  * @Description:
  */
 @Service("ProjectService")
+@Slf4j
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProjectDao projectDao;
@@ -37,12 +40,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ResultMsg findProject(ProjectReq projectReq) {
+        log.info("findProject:  projectReq:  " + JSON.toJSONString(projectReq));
         List<ProjectDo> projectDos = projectDao.findProject(projectReq);
         return ResultMsg.success(projectDos);
     }
 
     @Override
     public ResultMsg insertProject(Project project) {
+        log.info("insertProject:  project:  " + JSON.toJSONString(project));
         project.setCreateTime(new Date());
         project.setStatus("1");
         int result = projectDao.insertProject(project);
@@ -55,6 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @AddLog(interfaceType = "2", interfaceInfo = "项目信息修改", interfaceName = "updateProject", dataId = "#{project.id}")
     public ResultMsg updateProject(Project project) {
+        log.info("updateProject:  project:  " + JSON.toJSONString(project));
         project.setUpdateTime(new Date());
         int result = projectDao.updateProject(project);
         if (result == 1) {
@@ -66,6 +72,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @AddLog(interfaceType = "1", interfaceInfo = "项目删除", interfaceName = "updateProjectStatus", dataId = "#{id}")
     public ResultMsg updateProjectStatus(Long id) {
+        log.info("updateProjectStatus:  项目id:  " + JSON.toJSONString(id));
         int result = projectDao.updateProjectStatus(id);
         studentDao.updateProjectStudentByProjectId(id);
         groupDao.updateGroupStatusByProjectId(id);
@@ -79,6 +86,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @AddLog(interfaceType = "1", interfaceInfo = "项目一键删除", interfaceName = "updateProjectStatusByCreatorId", dataId = "#{creatorId}")
     public ResultMsg updateProjectStatusByCreatorId(Long creatorId) {
+        log.info("updateProjectStatusByCreatorId:  项目创建者creatorId:  " + JSON.toJSONString(creatorId));
         int result = projectDao.updateProjectStatusByCreatorId(creatorId);
         studentDao.updateProjectStatusByTeacherId(creatorId);
         groupDao.updateGroupStatusByCreatorId(creatorId);

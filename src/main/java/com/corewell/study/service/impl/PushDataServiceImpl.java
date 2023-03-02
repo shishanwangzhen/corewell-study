@@ -39,6 +39,7 @@ public class PushDataServiceImpl implements PushDataService {
 
     @Override
     public void getPushData(PushDataParam pushData) {
+        log.info("------start------tlink推送前端并且写入influxdb数据getPushData:" + JSON.toJSONString(pushData));
         if (pushData == null || pushData.getDeviceId() == null) {
             return;
         }
@@ -89,7 +90,7 @@ public class PushDataServiceImpl implements PushDataService {
             rabbitTemplate.convertAndSend("core-study-queue", data);
         } catch (Exception e) {
             e.printStackTrace();
-            log.error(e.toString());
+            log.error("tlink推送数据异常：e： "+e.toString());
         }
 
     }

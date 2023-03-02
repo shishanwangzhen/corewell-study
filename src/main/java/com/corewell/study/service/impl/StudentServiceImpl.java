@@ -1,5 +1,6 @@
 package com.corewell.study.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.corewell.study.annotation.AddLog;
 import com.corewell.study.dao.StudentDao;
 import com.corewell.study.domain.Student;
@@ -14,6 +15,7 @@ import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.StudentService;
 import com.corewell.study.utils.JwtUtil;
 import com.corewell.study.utils.ValidateCore;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,12 +33,14 @@ import java.util.Map;
  * @Description:
  */
 @Service("StudentService")
+@Slf4j
 public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentDao studentDao;
 
     @Override
     public ResultMsg selectStudentByAccount(String account, String password) {
+        log.info("selectStudentByAccount:  account:  " + JSON.toJSONString(account));
         AccountDo accountDo = studentDao.selectStudentByAccount(account);
         if (accountDo == null) {
             return new ResultMsg(ResultStatusCode.NO_USER);
@@ -58,24 +62,28 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResultMsg findStudent(StudentReq studentReq) {
+        log.info("findStudent:  studentReq:  " + JSON.toJSONString(studentReq));
         List<Student> studentList = studentDao.findStudent(studentReq);
         return ResultMsg.success(studentList);
     }
 
     @Override
     public List<Student> findStudentByPage(StudentParam studentParam) {
+        log.info("findStudentByPage:  studentParam:  " + JSON.toJSONString(studentParam));
         List<Student> studentList = studentDao.findStudentByPage(studentParam);
         return studentList;
     }
 
     @Override
     public ResultMsg selectStudentGroup(Long groupId) {
+        log.info("selectStudentGroup:  groupId:  " + JSON.toJSONString(groupId));
         List<Student> studentList = studentDao.findStudentByGroupId(groupId);
         return ResultMsg.success(studentList);
     }
 
     @Override
     public ResultMsg selectStudentById(Long id) {
+        log.info("selectStudentById:  id:  " + JSON.toJSONString(id));
         StudentDTO studentDTO = studentDao.selectStudentById(id);
         return ResultMsg.success(studentDTO);
 
@@ -84,6 +92,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResultMsg insertStudent(Student student) {
+        log.info("insertStudent:  student:  " + JSON.toJSONString(student));
         String account = student.getAccount();
         Student studentOld = studentDao.findStudentByAccount(account);
         if (studentOld != null) {
@@ -110,6 +119,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @AddLog(interfaceType = "2", interfaceInfo = "学生信息修改", interfaceName = "updateStudent", dataId = "#{student.id}")
     public ResultMsg updateStudent(Student student) {
+        log.info("updateStudent:  student:  " + JSON.toJSONString(student));
         //TODO
         //校验账号，上线放开
         /*if (StringUtils.isNotBlank(student.getAccount())&& !ValidateCore.verifyAccount(student.getAccount())){
@@ -126,6 +136,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @AddLog(interfaceType = "1", interfaceInfo = "删除学生信息", interfaceName = "deleteStudentById", dataId = "#{id}")
     public ResultMsg deleteStudentById(Long id) {
+        log.info("deleteStudentById:  id:  " + JSON.toJSONString(id));
         int result = studentDao.deleteStudentById(id);
         if (result == 1) {
             return ResultMsg.success();
@@ -136,6 +147,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @AddLog(interfaceType = "2", interfaceInfo = "批量修改学生状态", interfaceName = "updateStudentStatus")
     public ResultMsg updateStudentStatus(StudentStatusReqParam studentStatusReqParam) {
+        log.info("批量修改学生状态updateStudentStatus:  studentStatusReqParam:  " + JSON.toJSONString(studentStatusReqParam));
         List<StudentStatusReq> studentStatusReqs = studentStatusReqParam.getStudentStatusReqs();
         try {
             for (StudentStatusReq studentStatusReq : studentStatusReqs) {

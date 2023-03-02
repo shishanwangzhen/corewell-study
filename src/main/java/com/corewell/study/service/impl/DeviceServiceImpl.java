@@ -18,6 +18,7 @@ import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.DeviceService;
 import com.corewell.study.timing.GetAccessToken;
 import com.corewell.study.utils.InfluxDbUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
@@ -41,6 +42,7 @@ import java.util.concurrent.TimeUnit;
  * @Description:
  */
 @Service("DeviceService")
+@Slf4j
 public class DeviceServiceImpl implements DeviceService {
     private static final String TLINK_URL = "https://app.dtuip.com/api/device/";
     private static final String TLINK_ADDDEVICE_URL = TLINK_URL + "addDevice";
@@ -86,18 +88,19 @@ public class DeviceServiceImpl implements DeviceService {
         headers.add("Authorization", "Bearer" + " " + getAccessToken.getAccessToken());
         headers.add("Content-Type", "application/json");
         headers.add("tlinkAppId", "621d35860cce451a886b9329affb52c6");
-        System.out.println(JSON.toJSONString(headers));
         return headers;
     }
 
     @Override
     public ResultMsg findDevice(DeviceReq deviceReq) {
+        log.info("findDevice:  deviceReq:  " + JSON.toJSONString(deviceReq));
         List<DeviceDo> DeviceDOList = deviceDao.findDevice(deviceReq);
         return ResultMsg.success(DeviceDOList);
     }
 
     @Override
     public ResultMsg findDeviceAndIsLine(DeviceReq deviceReq) {
+        log.info("findDeviceAndIsLine:  deviceReq:  " + JSON.toJSONString(deviceReq));
         List<DeviceDo> DeviceDOList = deviceDao.findDevice(deviceReq);
         for (DeviceDo deviceDo : DeviceDOList) {
             deviceDo.setIsLine(0L);
@@ -119,12 +122,14 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg findControllerAndCollectionDevice(ControllerAndCollectionDeviceReq controllerAndCollectionDeviceReq) {
+        log.info("findControllerAndCollectionDevice:  controllerAndCollectionDeviceReq:  " + JSON.toJSONString(controllerAndCollectionDeviceReq));
         List<Device> DeviceList = deviceDao.findControllerAndCollectionDevice(controllerAndCollectionDeviceReq);
         return ResultMsg.success(DeviceList);
     }
 
     @Override
     public ResultMsg findDeviceBindGroup(Long projectId) {
+        log.info("findDeviceBindGroup:  projectId:  " + JSON.toJSONString(projectId));
         List<Device> DeviceList = deviceDao.findDeviceBindGroup(projectId);
         return ResultMsg.success(DeviceList);
     }
@@ -132,6 +137,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg findDeviceByDeviceId(Long deviceId) {
+        log.info("findDeviceByDeviceId:  deviceId:  " + JSON.toJSONString(deviceId));
         try {
             if (deviceId == null || deviceId.longValue() == 0) {
                 return ResultMsg.error();
@@ -141,7 +147,7 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("deviceId", deviceId);
             mapParam.put("pageSize", 99);
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_GETSINGLEDEVICEDATAS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("deviceNo查询设备还参：：" + responseEntity.getBody());
+            log.info("findDeviceByDeviceId：responseEntity.getBody()：" + responseEntity.getBody());
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
             if (BaseConstants.SUCCESS_00.equals(flag)) {
@@ -153,13 +159,13 @@ public class DeviceServiceImpl implements DeviceService {
                         sensorsList.remove(0);
                     }
                 }
-                System.out.println("deviceDTO::::::" + JSON.toJSONString(deviceDTO));
                 return ResultMsg.success(deviceDTO);
             } else {
                 return ResultMsg.error();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -169,6 +175,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg insertDevice(DeviceInsertParam deviceInsertParam) {
+        log.info("insertDevice:  deviceInsertParam:  " + JSON.toJSONString(deviceInsertParam));
         if ("4".equals(deviceInsertParam.getType())) {
             Device device = new Device();
             device.setDeviceName(deviceInsertParam.getDeviceName());
@@ -192,20 +199,18 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("deviceName", deviceInsertParam.getDeviceName());
             mapParam.put("sensorList", deviceInsertParam.getSensorList());
             HttpHeaders headers = getHeaders();
-            System.out.println("新增设备ru参：：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_ADDDEVICE_URL, new HttpEntity<Map>(mapParam, headers), String.class);
-            System.out.println("新增设备还参：：" + responseEntity);
+            log.info("insertDevice：responseEntity：" + responseEntity);
             if (!JSON.parseObject(responseEntity.getBody()).containsKey("deviceId")) {
                 return ResultMsg.error();
             }
             mapParam.put("pageSize", 99);
             ResponseEntity<String> responseEntity1 = restTemplate.postForEntity(TLINK_GETSINGLEDEVICEDATAS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
-            System.out.println("deviceNo查询设备还参：：" + responseEntity1.getBody());
+            log.info("deviceNo查询设备还参：：" + responseEntity1.getBody());
             JSONObject jsonObject = JSON.parseObject(responseEntity1.getBody());
             String flag = jsonObject.get("flag").toString();
             if (BaseConstants.SUCCESS_00.equals(flag)) {
                 DeviceDTO deviceDTO = JSON.parseObject(jsonObject.get("device").toString(), DeviceDTO.class);
-                System.out.println("deviceDTO::::::" + JSON.toJSONString(deviceDTO));
                 String deviceNo = deviceDTO.getDeviceNo();
                 Device device = new Device();
                 Long deviceId = deviceDTO.getId();
@@ -239,7 +244,6 @@ public class DeviceServiceImpl implements DeviceService {
                             sensor.setUnit(sensorDTO.getUnit());
                             sensor.setSensorType(sensorDTO.getSensorTypeId());
                             sensor.setDecimalPlacse(sensorDTO.getDecimalPlacse());
-                            System.out.println("去去去去去去：" + JSON.toJSONString(sensor));
                             sensor.setMinimum(0D);
                             sensor.setMaximum(100D);
                             sensor.setCreateTime(new Date());
@@ -255,6 +259,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -265,6 +270,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg insertVideoDevice(Device device) {
+        log.info("insertVideoDevice:  device:  " + JSON.toJSONString(device));
         device.setCreateTime(new Date());
         int result = deviceDao.insertDevice(device);
         if (result == 1) {
@@ -276,6 +282,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     @AddLog(interfaceType = "2", interfaceInfo = "修改视频设备", interfaceName = "updateVideoDevice", dataId = "#{device.id}")
     public ResultMsg updateVideoDevice(Device device) {
+        log.info("updateVideoDevice:  device:  " + JSON.toJSONString(device));
         device.setUpdateTime(new Date());
         int result = deviceDao.updateVideoDevice(device);
         if (result == 1) {
@@ -287,6 +294,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     @AddLog(interfaceType = "1", interfaceInfo = "删除视频设备", interfaceName = "deleteVideoDevice", dataId = "#{id}")
     public ResultMsg deleteVideoDevice(Long id) {
+        log.info("deleteVideoDevice:  id:  " + JSON.toJSONString(id));
         int result = deviceDao.deleteDeviceById(id);
         if (result == 1) {
             return ResultMsg.success();
@@ -297,11 +305,11 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     @AddLog(interfaceType = "2", interfaceInfo = "修改设备", interfaceName = "updateDevice", dataId = "#{deviceUpdateParam.deviceId}")
     public ResultMsg updateDevice(DeviceUpdateParam deviceUpdateParam) {
+        log.info("updateDevice:  deviceUpdateParam:  " + JSON.toJSONString(deviceUpdateParam));
         List<SensorParam> sensorList = deviceUpdateParam.getSensorList();
         HttpHeaders headers = getHeaders();
         Map<String, Object> body = new HashMap<>(16);
         try {
-            System.out.println("deviceUpdateParam:::" + JSONObject.toJSON(deviceUpdateParam));
             body.put("lat", "22.601376");
             body.put("lng", "113.956591");
             body.put("userId", 77632L);
@@ -311,16 +319,16 @@ public class DeviceServiceImpl implements DeviceService {
             body.put("linkType", deviceUpdateParam.getLinkType());
             body.put("deviceId", deviceUpdateParam.getDeviceId());
             body.put("delSensorIds", deviceUpdateParam.getDelSensorIds());
-            System.out.println("修改设备ru参：：" + JSON.toJSONString(body));
             HttpEntity<Map> mapHttpEntity = new HttpEntity<Map>(body, headers);
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_UPDATEDEVICE_URL, mapHttpEntity, String.class);
-            System.out.println("修改设备还参：：" + responseEntity.getBody());
+            log.info("updateDevice：responseEntity.getBody()：" + responseEntity.getBody());
             if (!BaseConstants.SUCCESS_00.equals(JSON.parseObject(responseEntity.getBody()).get("flag").toString())) {
                 return ResultMsg.error();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -349,12 +357,10 @@ public class DeviceServiceImpl implements DeviceService {
             }
             body.put("pageSize", 99);
             ResponseEntity<String> responseEntity1 = restTemplate.postForEntity(TLINK_GETSINGLEDEVICEDATAS_URL, new HttpEntity<Map>(body, headers), String.class);
-            System.out.println("deviceNo查询设备还参：：" + responseEntity1.getBody());
             JSONObject jsonObject = JSON.parseObject(responseEntity1.getBody());
             String flag = jsonObject.get("flag").toString();
             if (BaseConstants.SUCCESS_00.equals(flag)) {
                 DeviceDTO deviceDTO = JSON.parseObject(jsonObject.get("device").toString(), DeviceDTO.class);
-                System.out.println("deviceDTO::::::" + JSON.toJSONString(deviceDTO));
                 Long deviceId = deviceDTO.getId();
                 String deviceName = deviceDTO.getDeviceName();
                 List<SensorDTO> sensorsList = deviceDTO.getSensorsList();
@@ -373,7 +379,6 @@ public class DeviceServiceImpl implements DeviceService {
                         sensor.setUnit(sensorDTO.getUnit());
                         sensor.setSensorType(sensorDTO.getSensorTypeId());
                         sensor.setDecimalPlacse(sensorDTO.getDecimalPlacse());
-                        System.out.println("去去去去去去：" + JSON.toJSONString(sensor));
                         Sensor sensorOld = sensorDao.findSensorBySensorId(sensorId);
                         if (sensorOld == null) {
                             sensor.setCreateTime(new Date());
@@ -401,16 +406,16 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     @AddLog(interfaceType = "1", interfaceInfo = "删除设备", interfaceName = "deleteDevice", dataId = "#{deviceId}")
     public ResultMsg deleteDevice(Long deviceId) {
+        log.info("deleteDevice:  deviceId:  " + JSON.toJSONString(deviceId));
         ResponseEntity<String> responseEntity = null;
         try {
             Map<String, Object> body = new HashMap<>(16);
             body.put("userId", 77632L);
             body.put("deviceId", deviceId);
-            System.out.println("删除设备ru参：：" + JSON.toJSONString(body));
             responseEntity = restTemplate.postForEntity(TLINK_DELETEDEVICE_URL, new HttpEntity<Map>(body, getHeaders()), String.class);
-            System.out.println("删除设备还参：：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -431,8 +436,8 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg updateDeviceBinding(DeviceBindingReq deviceBindingReq) {
+        log.info("updateDeviceBinding:  deviceBindingReq:  " + JSON.toJSONString(deviceBindingReq));
         int result = deviceDao.updateDeviceBinding(deviceBindingReq);
-        System.out.println("绑定结果：：：" + result);
         if (result > 0) {
             return ResultMsg.success();
         }
@@ -441,6 +446,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg updateDeviceBindingById(Long id) {
+        log.info("updateDeviceBindingById:  id:  " + JSON.toJSONString(id));
         int result = deviceDao.updateDeviceBindingById(id);
         if (result == 1) {
             return ResultMsg.success();
@@ -450,6 +456,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg updateDeviceBindingGroup(DeviceBindingGroupReq deviceBindingGroupReq) {
+        log.info("updateDeviceBindingGroup:  deviceBindingGroupReq:  " + JSON.toJSONString(deviceBindingGroupReq));
         int result = deviceDao.updateDeviceBindingGroup(deviceBindingGroupReq);
         if (result == 1) {
             return ResultMsg.success();
@@ -460,6 +467,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg switcherController(DeviceSwitcherParam deviceSwitcherParam) {
+        log.info("switcherController:  deviceSwitcherParam:  " + JSON.toJSONString(deviceSwitcherParam));
         ResponseEntity<String> responseEntity = null;
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
@@ -467,12 +475,11 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("deviceNo", deviceSwitcherParam.getDeviceNo());
             mapParam.put("switcher", deviceSwitcherParam.getSwitcher());
             mapParam.put("sensorId", deviceSwitcherParam.getSensorId());
-
-            System.out.println("设备开关下行控制ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_SWITCHER_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("设备开关下行控制还参：：" + responseEntity.getBody());
+            log.info("switcherController： responseEntity.getBody()：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -490,6 +497,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg deviceWrite(DeviceWriteParam deviceWriteParam) {
+        log.info("deviceWrite:  deviceWriteParam:  " + JSON.toJSONString(deviceWriteParam));
         ResponseEntity<String> responseEntity = null;
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
@@ -497,12 +505,11 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("deviceNo", deviceWriteParam.getDeviceNo());
             mapParam.put("value", deviceWriteParam.getValue());
             mapParam.put("sensorId", deviceWriteParam.getSensorId());
-
-            System.out.println("设备数据下行ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_WRITE_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("设备数据下行还参：：" + responseEntity.getBody());
+            log.info("deviceWrite：responseEntity.getBody()：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -519,6 +526,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg sendDataPoint(SendDataPointParam sendDataPointParam) {
+        log.info("sendDataPoint:  sendDataPointParam:  " + JSON.toJSONString(sendDataPointParam));
         ResponseEntity<String> responseEntity = null;
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
@@ -550,7 +558,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg getSensorHistroy(SensorHistoryParam sensorHistoryParam) {
-        System.out.println("查询历史数据入参参：sensorHistoryParam" + JSONObject.toJSON(sensorHistoryParam));
+        log.info("getSensorHistroy：getSensorHistroy:  " + JSONObject.toJSON(sensorHistoryParam));
         StringBuilder command = new StringBuilder();
         command.append("SELECT time,value FROM CORE_STUDY where 1=1");
         if (sensorHistoryParam.getSensorId() != null && sensorHistoryParam.getSensorId() != 0) {
@@ -574,65 +582,23 @@ public class DeviceServiceImpl implements DeviceService {
         //TODO
         // command.append("GROUP BY *");
         QueryResult resultMsg = query(command.toString());
-        System.out.println("查询历史数据还参：resultMsg" + JSONObject.toJSON(resultMsg));
+        log.info("getSensorHistroy：resultMsg:  " + JSONObject.toJSON(resultMsg));
         return ResultMsg.success(resultMsg);
-        //tlink查询历史数据
-      /*  ResponseEntity<String> responseEntity = null;
-        try {
-            Map<String, Object> mapParam = new HashMap<>(16);
-            mapParam.put("userId", 77632L);
-            mapParam.put("sensorId", sensorHistoryParam.getSensorId());
-            mapParam.put("startDate", sensorHistoryParam.getStartDate());
-            mapParam.put("endDate", sensorHistoryParam.getEndDate());
-            mapParam.put("pagingState", sensorHistoryParam.getPagingState());
-            mapParam.put("pageSize", sensorHistoryParam.getPageSize());
-
-            System.out.println("获取设备传感器历史数据ru参：：" + JSON.toJSONString(mapParam));
-            responseEntity = restTemplate.postForEntity(TLINK_HISTORY_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("设备数据下行还参：：" + responseEntity.toString());
-            SensorHistoryDTO sensorHistoryDTO = JSON.parseObject(responseEntity.getBody(), SensorHistoryDTO.class);
-            String flag = sensorHistoryDTO.getFlag();
-            if ("00".equals(flag)) {
-                return ResultMsg.success(sensorHistoryDTO);
-            } else {
-                return ResultMsg.error();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultMsg.error();
-        }*/
     }
-
-  /*  @Override
-    public ResultMsg downloadSensorHistory(SensorHistoryParam sensorHistoryParam, HttpServletResponse response) {
-        String fileName = "人员列表";
-        String sheetName = "人员列表";
-        System.out.println("查询历史数据入参参：sensorHistoryParam" + JSONObject.toJSON(sensorHistoryParam));
-
-        //        setReverseLevel(userTemplates);
-
-        try {
-            ExcelUtil.writeExcel(response, sensorTemplates, fileName, sheetName, SensorTemplate.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResultMsg.success();
-    }*/
-
 
     @Override
     public ResultMsg getParams(Long deviceId) {
+        log.info("getParams：deviceId:  " + JSONObject.toJSON(deviceId));
         ResponseEntity<String> responseEntity = null;
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
             mapParam.put("userId", 77632L);
             mapParam.put("deviceId", deviceId);
-
-            System.out.println("获取设备参数ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_GETPARAMS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("获取设备参数还参：：" + responseEntity.getBody());
+            log.info("getParams：responseEntity.getBody()：" + responseEntity.getBody());
         } catch (RestClientException e) {
             e.printStackTrace();
+            log.error("getParams：e:  " +e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -650,6 +616,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg setParams(SetParamsReq setParamsReq) {
+        log.info("setParams：setParamsReq:  " + JSONObject.toJSON(setParamsReq));
         ResponseEntity<String> responseEntity = null;
         String flag = null;
         try {
@@ -658,12 +625,12 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("deviceId", setParamsReq.getDeviceId());
             mapParam.put("params", setParamsReq.getParams());
             mapParam.put("isWrite", setParamsReq.getIsWrite());
-
             responseEntity = restTemplate.postForEntity(TLINK_SETPARAMS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
+            log.error("setParams：e:  " +e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -678,6 +645,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg setModbus(ModbusReq modbusReq) {
+        log.info("setModbus：modbusReq:  " + JSONObject.toJSON(modbusReq));
         ResponseEntity<String> responseEntity = null;
         String flag = null;
         try {
@@ -687,11 +655,9 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("deviceId", modbusReq.getDeviceId());
             mapParam.put("linktype", modbusReq.getLinktype());
             mapParam.put("modbusList", modbusList);
-
-
             if (modbusList.size() > 0) {
                 responseEntity = restTemplate.postForEntity(TLINK_SETMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-                System.out.println("modbus 协议读写指令设置还参：：" + responseEntity.getBody());
+               log.info("setModbus：responseEntity.getBody()：" + responseEntity.getBody());
                 Iterator<Modbus> iterator = modbusList.iterator();
                 while (iterator.hasNext()) {
                     Modbus modbus = iterator.next();
@@ -701,9 +667,8 @@ public class DeviceServiceImpl implements DeviceService {
                 }
                 if (modbusList.size() > 0) {
                     mapParam.put("modbusList", modbusList);
-                    System.out.println("modbus 协议读写指令修改ru参：：" + JSON.toJSONString(mapParam));
+                   log.info("setModbus：mapParam：" + JSON.toJSONString(mapParam));
                     responseEntity = restTemplate.postForEntity(TLINK_UPDATEMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-                    System.out.println("modbus 协议读写指令修改还参：：" + responseEntity.getBody());
                 }
 
             }
@@ -712,6 +677,7 @@ public class DeviceServiceImpl implements DeviceService {
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -727,6 +693,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg getModbus(ModbusGetReq modbusGetReq) {
+        log.info("getModbus：modbusGetReq:  " + JSONObject.toJSON(modbusGetReq));
         ResponseEntity<String> responseEntity = null;
         String flag = null;
         try {
@@ -735,7 +702,7 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("deviceId", modbusGetReq.getDeviceId());
             mapParam.put("linktype", modbusGetReq.getLinktype());
             responseEntity = restTemplate.postForEntity(TLINK_GETMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("获取modbus读写指令还参：：" + responseEntity.getBody());
+            log.info("getModbus：responseEntity.getBody()：" + responseEntity.getBody());
             ModbusDTO modbusDTO = JSON.parseObject(responseEntity.getBody(), ModbusDTO.class);
             flag = modbusDTO.getFlag();
             if (BaseConstants.SUCCESS_00.equals(flag)) {
@@ -745,6 +712,7 @@ public class DeviceServiceImpl implements DeviceService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -755,6 +723,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg updateModbus(ModbusReq modbusReq) {
+        log.info("updateModbus：modbusReq：" + JSON.toJSONString(modbusReq));
         ResponseEntity<String> responseEntity = null;
         String flag = null;
         try {
@@ -764,13 +733,13 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("linktype", modbusReq.getLinktype());
             mapParam.put("modbusList", modbusReq.getModbusList());
 
-            System.out.println("modbus读写指令修改ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_UPDATEMODBUS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("modbus读写指令修改还参：：" + responseEntity.getBody());
+            log.info("updateModbus：responseEntity.getBody()：" + responseEntity.getBody());
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
             e.printStackTrace();
+            log.error(e.toString());
             if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
                 getAccessToken.getNewAccessToken();
             }
@@ -785,6 +754,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg getProtocolLabel(Long deviceId) {
+        log.info("getProtocolLabel：deviceId：" + JSON.toJSONString(deviceId));
         ResponseEntity<String> responseEntity = null;
         String flag = null;
         try {
@@ -792,9 +762,8 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("userId", 77632L);
             mapParam.put("deviceId", deviceId);
 
-            System.out.println("获取tcp/udp协议标签ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_GETPROTOCOLLABEL_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("获取tcp/udp协议标签还参：：" + responseEntity.getBody());
+            log.info("getProtocolLabel： responseEntity.getBody() ：" + responseEntity.getBody());
             ProtocolLabelDTO protocolLabelDTO = JSON.parseObject(responseEntity.getBody(), ProtocolLabelDTO.class);
             flag = protocolLabelDTO.getFlag();
             if (BaseConstants.SUCCESS_00.equals(flag)) {
@@ -813,6 +782,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg setProtocolLabel(ProtocolLabelReq protocolLabelReq) {
+        log.info("setProtocolLabel：protocolLabelReq：" + JSON.toJSONString(protocolLabelReq));
         ResponseEntity<String> responseEntity = null;
         String flag = null;
         try {
@@ -822,9 +792,8 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("linktype", protocolLabelReq.getLinktype());
             mapParam.put("protocolLabel", protocolLabelReq.getProtocolLabel());
 
-            System.out.println("tcp/udp协议标签设置ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_SETPROTOCOLLABEL_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("tcp/udp协议标签设置还参：：" + responseEntity.getBody());
+            log.info("setProtocolLabel：responseEntity.getBody()：" + responseEntity.getBody());
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
@@ -843,6 +812,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg getFlag(GetSensorFlagReq getSensorFlagReq) {
+        log.info("getFlag：getSensorFlagReq：" + JSON.toJSONString(getSensorFlagReq));
         ResponseEntity<String> responseEntity = null;
         String flag = null;
         try {
@@ -851,9 +821,8 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("deviceId", getSensorFlagReq.getDeviceId());
             mapParam.put("linktype", getSensorFlagReq.getLinktype());
 
-            System.out.println("获取mqtt/tp500/coap协议读写标识ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_GETFLAG_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("获取mqtt/tp500/coap协议读写标识还参：：" + responseEntity.getBody());
+            log.info("getFlag：responseEntity.getBody()：" + responseEntity.getBody());
             GetFlagDTO getFlagDTO = JSON.parseObject(responseEntity.getBody(), GetFlagDTO.class);
             flag = getFlagDTO.getFlag();
             if (BaseConstants.SUCCESS_00.equals(flag)) {
@@ -872,6 +841,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg setFlag(SetSensorFlagReq setFlagReq) {
+        log.info("setFlag：setFlagReq：" + JSON.toJSONString(setFlagReq));
         ResponseEntity<String> responseEntity = null;
         String flag = null;
         try {
@@ -880,10 +850,8 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("deviceId", setFlagReq.getDeviceId());
             mapParam.put("linktype", setFlagReq.getLinktype());
             mapParam.put("sensorList", setFlagReq.getSensorList());
-
-            System.out.println("设置mqtt/tp500/coap协议读写标识ru参：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_SETFLAG_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("设置mqtt/tp500/coap协议读写标识还参：：" + responseEntity.getBody());
+            log.info("setFlag：responseEntity.getBody()：" + responseEntity.getBody());
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
@@ -902,6 +870,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg getSingleSensorDatas(Long sensorId) {
+        log.info("getSingleSensorDatas：sensorId：" + JSON.toJSONString(sensorId));
         ResponseEntity<String> responseEntity = null;
         String flag = null;
         JSONObject jsonObject = null;
@@ -910,9 +879,8 @@ public class DeviceServiceImpl implements DeviceService {
             mapParam.put("userId", 77632L);
             mapParam.put("sensorId", sensorId);
 
-            System.out.println("获取单个传感器数据：：" + JSON.toJSONString(mapParam));
             responseEntity = restTemplate.postForEntity(TLINK_GETSINGLESENSORDATAS_URL, new HttpEntity<Map>(mapParam, getHeaders()), String.class);
-            System.out.println("获取单个传感器数据：：" + responseEntity.getBody());
+            log.info("getSingleSensorDatas：：" + responseEntity.getBody());
             jsonObject = JSONObject.parseObject(responseEntity.getBody());
             flag = jsonObject.get("flag").toString();
         } catch (RestClientException e) {
@@ -931,6 +899,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg updateBindingGroupById(Long id) {
+        log.info("updateBindingGroupById：id：" + JSON.toJSONString(id));
         int result = deviceDao.updateBindingGroupById(id);
         if (result == 1) {
             return ResultMsg.success();
