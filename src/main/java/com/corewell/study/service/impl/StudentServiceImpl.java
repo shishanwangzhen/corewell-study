@@ -13,6 +13,8 @@ import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.domain.result.ResultStatusCode;
 import com.corewell.study.service.StudentService;
 import com.corewell.study.utils.JwtUtil;
+import com.corewell.study.utils.ValidateCore;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -108,6 +110,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @AddLog(interfaceType = "2", interfaceInfo = "学生信息修改", interfaceName = "updateStudent", dataId = "#{student.id}")
     public ResultMsg updateStudent(Student student) {
+        //TODO
+        //校验账号，上线放开
+        /*if (StringUtils.isNotBlank(student.getAccount())&& !ValidateCore.verifyAccount(student.getAccount())){
+            return new ResultMsg(ResultStatusCode.ILLEGAL_ACCOUNT);
+        }*/
         student.setUpdateTime(new Date());
         int result = studentDao.updateStudent(student);
         if (result == 1) {

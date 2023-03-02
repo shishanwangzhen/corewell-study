@@ -29,8 +29,6 @@ import java.util.concurrent.TimeUnit;
 public class GetAccessToken {
 
     private static String accessToken;
-    @Resource
-    private GetAccessTokenService getAccessTokenService;
     @Autowired
     private RestTemplate restTemplate;
     @Autowired

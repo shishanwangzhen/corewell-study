@@ -1,6 +1,5 @@
 package com.corewell.study.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.corewell.study.domain.Device;
 import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.*;
@@ -35,7 +34,6 @@ public class DeviceController {
     @ApiOperation(value = "查询设备", response = DeviceDo.class)
     @PostMapping("/findDevice")
     public ResultMsg findDevice(@RequestBody DeviceReq deviceReq) {
-        System.out.println("findDevice入参：：：：" + JSON.toJSONString(deviceReq));
         ResultMsg resultMsg = DeviceService.findDevice(deviceReq);
         return resultMsg;
 
@@ -88,7 +86,6 @@ public class DeviceController {
     @ApiOperation("设备修改")
     @PostMapping("/updateDevice")
     public ResultMsg updateDevice(@RequestBody DeviceUpdateParam deviceUpdateParam) {
-        System.out.println(JSON.toJSON(deviceUpdateParam));
         ResultMsg resultMsg = DeviceService.updateDevice(deviceUpdateParam);
         return resultMsg;
 
@@ -97,7 +94,6 @@ public class DeviceController {
     @ApiOperation("视频设备修改")
     @PostMapping("/updateVideoDevice")
     public ResultMsg updateVideoDevice(@RequestBody Device device) {
-        System.out.println(JSON.toJSON(device));
         ResultMsg resultMsg = DeviceService.updateVideoDevice(device);
         return resultMsg;
 
@@ -106,7 +102,6 @@ public class DeviceController {
     @ApiOperation("设备新增")
     @PostMapping("/insertDevice")
     public ResultMsg insertDevice(@RequestBody DeviceInsertParam deviceInsertParam) {
-        System.out.println(JSON.toJSON(deviceInsertParam));
         ResultMsg resultMsg = DeviceService.insertDevice(deviceInsertParam);
         return resultMsg;
 
@@ -117,7 +112,6 @@ public class DeviceController {
     @PostMapping("/deleteVideoDevice")
     @ApiImplicitParam(value = "主键id", name = "1", required = true)
     public ResultMsg deleteVideoDevice(Long id) {
-        System.out.println(JSON.toJSON(id));
         ResultMsg resultMsg = DeviceService.deleteVideoDevice(id);
         return resultMsg;
 
@@ -135,7 +129,6 @@ public class DeviceController {
     @ApiOperation("项目配置设备")
     @PostMapping("/updateDeviceBinding")
     public ResultMsg updateDeviceBinding(@RequestBody DeviceBindingReq deviceBindingReq) {
-        System.out.println(JSON.toJSON(deviceBindingReq));
         ResultMsg resultMsg = DeviceService.updateDeviceBinding(deviceBindingReq);
         return resultMsg;
 
@@ -153,7 +146,6 @@ public class DeviceController {
     @ApiOperation("项目组绑定设备")
     @PostMapping("/updateDeviceBindingGroup")
     public ResultMsg updateDeviceBindingGroup(@RequestBody DeviceBindingGroupReq deviceBindingGroupReq) {
-        System.out.println(JSON.toJSON(deviceBindingGroupReq));
         ResultMsg resultMsg = DeviceService.updateDeviceBindingGroup(deviceBindingGroupReq);
         return resultMsg;
 
