@@ -18,9 +18,9 @@ import java.util.Date;
 @ApiModel("项目")
 public class Project {
     /**
-     * 主键id
+     * 主键id,修改必传
      */
-    @ApiModelProperty(value = "主键id", required = false, example = "")
+    @ApiModelProperty(value = "主键id,修改必传", required = false, example = "")
     private Long id;
     /**
      * 项目编号

@@ -20,14 +20,14 @@ import java.util.Date;
 @NoArgsConstructor
 public class Student implements Serializable {
     /**
-     * 主键id
+     * 主键id，修改操作是必传
      */
-    @ApiModelProperty(value = "主键id", required = false, example = "")
+    @ApiModelProperty(value = "主键id，修改操作是必传", required = false, example = "")
     private Long id;
     /**
      * 姓名
      */
-    @ApiModelProperty(value = "主键id", required = false, example = "")
+    @ApiModelProperty(value = "姓名", required = false, example = "")
     private String name;
     /**
      * 学校
@@ -40,9 +40,9 @@ public class Student implements Serializable {
     @ApiModelProperty(value = "专业", required = false, example = "")
     private String major;
     /**
-     * 账号
+     * 账号（学号）
      */
-    @ApiModelProperty(value = "账号", required = true, example = "")
+    @ApiModelProperty(value = "账号（学号）", required = true, example = "")
     @NotNull(message = "账号不能为空")
     private String account;
     /**
@@ -58,7 +58,7 @@ public class Student implements Serializable {
     /**
      * 密码
      */
-    @ApiModelProperty(value = "密码", required = true, example = "123456")
+    @ApiModelProperty(value = "密码", required = true, example = "q123456")
     @NotNull(message = "密码不能为空")
     private String password;
     /**
@@ -79,7 +79,7 @@ public class Student implements Serializable {
     /**
      * 状态（0.待审核，1.审核通过，2.审核未通过,3.已删除）
      */
-    @ApiModelProperty(value = "状态（0.待审核，1.审核通过，2.审核未通过,3.已删除）", required = false, example = "0")
+    @ApiModelProperty(value = "状态（0.待审核，1.审核通过，2.审核未通过,3.已删除）", required = true, example = "0")
     private String status;
     /**
      * 项目id

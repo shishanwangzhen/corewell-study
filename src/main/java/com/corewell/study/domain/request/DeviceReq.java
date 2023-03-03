@@ -27,7 +27,7 @@ public class DeviceReq {
     /**
      * 设备名称
      */
-    @ApiModelProperty(value = "设备名称", required = true, example = "")
+    @ApiModelProperty(value = "设备名称", required = false, example = "")
     private String deviceName;
 
     /**
@@ -67,7 +67,7 @@ public class DeviceReq {
     /**
      * 创建者id
      */
-    @ApiModelProperty(value = "创建者id", required = true, example = "")
+    @ApiModelProperty(value = "创建者id", required = false, example = "")
     private Long creatorId;
 
 }

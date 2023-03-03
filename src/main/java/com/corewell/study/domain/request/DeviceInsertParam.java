@@ -18,9 +18,9 @@ import java.util.List;
 public class DeviceInsertParam {
 
     /**
-     * 设备序列号
+     * 设备序列号，(后台产品生成的序列号， 必填参数)
      */
-    @ApiModelProperty(value = "设备序列号", required = true, example = "")
+    @ApiModelProperty(value = "设备序列号，(后台产品生成的序列号， 必填参数)", required = true, example = "")
     private String deviceNo;
 
     /**
@@ -30,14 +30,14 @@ public class DeviceInsertParam {
     private String deviceName;
 
     /**
-     * 协议类型 "tcp","modbus" "mdtcp","udp","mqtt","tp500","coap","http","nbiot" 注意区分大小写 必填参数
+     * 协议类型 "tcp","modbus" "mdtcp","udp","mqtt","tp500","coap","http","nbiot" 注意区分大小写 传参值为小写 必填参数
      */
-    @ApiModelProperty(value = "协议类型  tcp,modbus,mdtcp,udp,mqtt,tp500coap,http,nbiot 注意区分大小写 必填参数", required = true, example = "")
+    @ApiModelProperty(value = "协议类型  tcp,modbus,mdtcp,udp,mqtt,tp500coap,http,nbiot 注意区分大小写，传参值为小写 必填参数", required = true, example = "")
     private String linkType;
     /**
      * 掉线延时
      */
-    @ApiModelProperty(value = "掉线延时", required = false, example = "")
+    @ApiModelProperty(value = "掉线延时", required = true, example = "")
     private Long timescale;
 
     /**

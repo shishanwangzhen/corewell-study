@@ -64,7 +64,7 @@ public class DeviceController {
 
     }
 
-    @ApiOperation(value = "查询设备绑定项目组", response = Device.class)
+    @ApiOperation(value = "查询可绑定项目组设备", response = Device.class)
     @PostMapping("/findDeviceBindGroup")
     @ApiImplicitParam(value = "项目id", name = "1", required = true)
     public ResultMsg findDeviceBindGroup(Long projectId) {
@@ -151,7 +151,7 @@ public class DeviceController {
 
     }
 
-    @ApiOperation("设备移除项目组")
+    @ApiOperation("项目组解绑设备")
     @PostMapping("/updateBindingGroupById")
     @ApiImplicitParam(value = "主键id", name = "1", required = true)
     public ResultMsg updateBindingGroupById(Long id) {

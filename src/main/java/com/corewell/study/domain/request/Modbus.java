@@ -58,7 +58,7 @@ public class Modbus {
     /**
      * id
      */
-    @ApiModelProperty(value = "id", required = true, example = "")
+    @ApiModelProperty(value = "id", required =false, example = "")
     private Long id;
     /**
      * 协议类型

@@ -21,22 +21,12 @@ public class StudentReq {
      */
     @ApiModelProperty(value = "主键id", required = false, example = "")
     private Long id;
-    /**
-     * 姓名
-     */
-    @ApiModelProperty(value = "姓名", required = false, example = "")
-    private String name;
 
     /**
      * 账号
      */
     @ApiModelProperty(value = "账号", required = false, example = "")
     private String account;
-    /**
-     * 联系方式
-     */
-    @ApiModelProperty(value = "联系方式", required = false, example = "")
-    private String phone;
 
     /**
      * 角色

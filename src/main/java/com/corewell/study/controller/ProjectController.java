@@ -41,7 +41,6 @@ public class ProjectController {
     @ApiOperation("项目信息修改")
     @PostMapping("/updateProject")
     public ResultMsg updateProject(@RequestBody Project project) {
-        System.out.println(JSON.toJSON(project));
         ResultMsg resultMsg = projectService.updateProject(project);
         return resultMsg;
 
@@ -50,7 +49,6 @@ public class ProjectController {
     @ApiOperation("项目信息新增")
     @PostMapping("/insertProject")
     public ResultMsg insertProject(@RequestBody Project project) {
-        System.out.println(JSON.toJSON(project));
         ResultMsg resultMsg = projectService.insertProject(project);
         return resultMsg;
 

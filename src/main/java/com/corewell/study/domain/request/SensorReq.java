@@ -24,11 +24,7 @@ public class SensorReq {
      */
     @ApiModelProperty(value = "传感器id", required = false, example = "")
     private Long sensorId;
-    /**
-     * 传感器名称
-     */
-    @ApiModelProperty(value = "传感器名称", required = true, example = "")
-    private String sensorName;
+
 
     /**
      * 设备id

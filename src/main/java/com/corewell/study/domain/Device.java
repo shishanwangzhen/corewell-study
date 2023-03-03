@@ -20,12 +20,12 @@ public class Device {
     /**
      * 主键id
      */
-    @ApiModelProperty(value = "主键id", required = false, example = "")
+    @ApiModelProperty(value = "主键id,修改时必传", required = true, example = "")
     private Long id;
     /**
-     * 设备id
+     * 设备id，采集，控制设备修改时必传
      */
-    @ApiModelProperty(value = "设备id", required = false, example = "")
+    @ApiModelProperty(value = "设备id，采集，控制设备修改时必传", required = true, example = "")
     private Long deviceId;
 
 

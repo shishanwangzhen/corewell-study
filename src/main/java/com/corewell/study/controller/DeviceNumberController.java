@@ -27,7 +27,7 @@ public class DeviceNumberController {
     @Resource
     private DeviceNumberService deviceNumberService;
 
-    @ApiOperation(value = "查询设备序列号", response = DeviceNumber.class)
+    @ApiOperation(value = "查询可用设备序列号", response = DeviceNumber.class)
     @PostMapping("/findDeviceNumber")
     public ResultMsg findDeviceNumber(@RequestBody DeviceNumberReq deviceNumberReq) {
         ResultMsg resultMsg = deviceNumberService.findDeviceNumber(deviceNumberReq);

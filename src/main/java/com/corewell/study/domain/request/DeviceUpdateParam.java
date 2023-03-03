@@ -31,7 +31,7 @@ public class DeviceUpdateParam {
     /**
      * 掉线延时
      */
-    @ApiModelProperty(value = "掉线延时", required = false, example = "")
+    @ApiModelProperty(value = "掉线延时", required = true, example = "")
     private Long timescale;
 
     /**
@@ -43,7 +43,7 @@ public class DeviceUpdateParam {
     /**
      * 删除的传感器Id，多个Id之间用英文逗号分隔 ，可选参数，没有需要删除的传感器则不用传
      */
-    @ApiModelProperty(value = "删除的传感器Id，多个Id之间用英文逗号分隔 ，可选参数，没有需要删除的传感器则不用传", required = true, example = "")
+    @ApiModelProperty(value = "删除的传感器Id，多个Id之间用英文逗号分隔 ，可选参数，没有需要删除的传感器则不用传", required = false, example = "")
     private String delSensorIds;
 
     /**

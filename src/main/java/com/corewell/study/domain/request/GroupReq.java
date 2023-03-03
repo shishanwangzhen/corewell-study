@@ -20,21 +20,7 @@ public class GroupReq {
      */
     @ApiModelProperty(value = "主键id", required = false, example = "")
     private Long id;
-    /**
-     * 项目组编号
-     */
-    @ApiModelProperty(value = "项目组编号", required = false, example = "")
-    private String number;
-    /**
-     * 项目组名称
-     */
-    @ApiModelProperty(value = "项目组名称", required = false, example = "")
-    private String name;
-    /**
-     * 项目组描述
-     */
-    @ApiModelProperty(value = "项目组描述", required = false, example = "")
-    private String info;
+
     /**
      * 创建者id
      */
@@ -45,10 +31,6 @@ public class GroupReq {
      */
     @ApiModelProperty(value = "项目id", required = false, example = "")
     private Long projectId;
-    /**
-     * 状态（0.删除，1.正常）
-     */
-    @ApiModelProperty(value = "状态（0.删除，1.正常）", required = false, example = "")
-    private String status;
+
 
 }

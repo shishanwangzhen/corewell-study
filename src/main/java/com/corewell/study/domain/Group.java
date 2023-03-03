@@ -18,9 +18,9 @@ import java.util.Date;
 @ApiModel("项目组")
 public class Group {
     /**
-     * 主键id
+     * 主键id,修改操作必选
      */
-    @ApiModelProperty(value = "主键id", required = false, example = "")
+    @ApiModelProperty(value = "主键id,修改操作必选", required = true, example = "")
     private Long id;
     /**
      * 项目组编号
