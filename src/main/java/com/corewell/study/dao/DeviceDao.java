@@ -1,10 +1,7 @@
 package com.corewell.study.dao;
 
 import com.corewell.study.domain.Device;
-import com.corewell.study.domain.request.ControllerAndCollectionDeviceReq;
-import com.corewell.study.domain.request.DeviceBindingGroupReq;
-import com.corewell.study.domain.request.DeviceBindingReq;
-import com.corewell.study.domain.request.DeviceReq;
+import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.response.DeviceDo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -27,6 +24,16 @@ public interface DeviceDao {
      * @return
      */
     List<DeviceDo> findDevice(DeviceReq deviceReq);
+
+    /**
+     * 学生端查询设备添加到项目组
+     *
+     * @param deviceByProjectIdAndTypeReq
+     * @return
+     */
+    List<DeviceDo> findDeviceByProjectId(DeviceByProjectIdAndTypeReq deviceByProjectIdAndTypeReq);
+
+
 
     /**
      * 查询采集控制设备

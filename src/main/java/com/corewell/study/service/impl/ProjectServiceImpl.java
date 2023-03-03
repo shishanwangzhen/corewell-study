@@ -91,7 +91,6 @@ public class ProjectServiceImpl implements ProjectService {
         studentDao.updateProjectStatusByTeacherId(creatorId);
         groupDao.updateGroupStatusByCreatorId(creatorId);
         deviceDao.updateBindingByBindingId(creatorId);
-        System.out.println("删除数目：：：：：" + result);
         if (result >= 0) {
             return ResultMsg.success();
         }

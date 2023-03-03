@@ -97,6 +97,12 @@ public class DeviceServiceImpl implements DeviceService {
         List<DeviceDo> DeviceDOList = deviceDao.findDevice(deviceReq);
         return ResultMsg.success(DeviceDOList);
     }
+    @Override
+    public ResultMsg findDeviceByProjectId(DeviceByProjectIdAndTypeReq deviceByProjectIdAndTypeReq) {
+        log.info("findDeviceByProjectId:  deviceByProjectIdAndTypeReq:  " + JSON.toJSONString(deviceByProjectIdAndTypeReq));
+        List<DeviceDo> DeviceDOList = deviceDao.findDeviceByProjectId(deviceByProjectIdAndTypeReq);
+        return ResultMsg.success(DeviceDOList);
+    }
 
     @Override
     public ResultMsg findDeviceAndIsLine(DeviceReq deviceReq) {

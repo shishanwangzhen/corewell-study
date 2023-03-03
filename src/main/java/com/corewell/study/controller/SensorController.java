@@ -48,7 +48,6 @@ public class SensorController {
     @PostMapping("/updateSensor")
     @ApiIgnore
     public ResultMsg updateSensor(@RequestBody Sensor sensor) {
-        System.out.println(JSON.toJSON(sensor));
         ResultMsg resultMsg = SensorService.updateSensor(sensor);
         return resultMsg;
 
@@ -58,7 +57,6 @@ public class SensorController {
     @PostMapping("/insertSensor")
     @ApiIgnore
     public ResultMsg insertSensor(@RequestBody Sensor sensor) {
-        System.out.println(JSON.toJSON(sensor));
         ResultMsg resultMsg = SensorService.insertSensor(sensor);
         return resultMsg;
 

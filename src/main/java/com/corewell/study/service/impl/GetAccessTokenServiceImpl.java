@@ -27,8 +27,6 @@ public class GetAccessTokenServiceImpl implements GetAccessTokenService {
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
-    private GetAccessToken getAccessToken;
-    @Autowired
     private StringRedisTemplate stringRedisTemplate;
     private static final String LOGIN_URL = "https://app.dtuip.com/oauth/token?grant_type=password&username=bydwadmin&password=bydwadmin123";
     String accessToken = null;
@@ -37,15 +35,12 @@ public class GetAccessTokenServiceImpl implements GetAccessTokenService {
     @Override
     public ResultMsg getAccessToken() {
         try {
-            System.out.println("hhhhh" + getAccessToken.getAccessToken());
             headers.clear();
             headers.add("authorization", "Basic NGI4NDIwZDRkYzk3NGZkNDgyODUwODZkMDkwMjJmOWI6YzliM2RjYjBkNjcxNDE0YTg2Mjg2ZmQyZDNmMGM2N2I=");
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(LOGIN_URL, new HttpEntity<Map>(null, headers), String.class);
-            System.out.println(responseEntity.getBody());
             JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
             accessToken = jsonObject.get("access_token").toString();
             stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.ACCESS_TOKEN_KEY, accessToken);
-            System.out.println("获取tlink的access_token值为：" + stringRedisTemplate.opsForValue().get(BaseRedisKeyConstants.ACCESS_TOKEN_KEY));
         } catch (Exception e) {
             System.out.println(e);
         }

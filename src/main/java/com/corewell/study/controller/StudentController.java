@@ -56,7 +56,6 @@ public class StudentController {
     @PostMapping("/selectStudentGroup")
     @ApiImplicitParam(value = "项目组主键id", name = "1", required = true)
     public ResultMsg selectStudentGroup(Long id) {
-        System.out.println("查询组成员 id");
         ResultMsg resultMsg = studentService.selectStudentGroup(id);
         return resultMsg;
 

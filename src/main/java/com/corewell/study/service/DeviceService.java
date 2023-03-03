@@ -19,6 +19,13 @@ public interface DeviceService {
      * @return
      */
     ResultMsg findDevice(DeviceReq deviceReq);
+    /**
+     * 学生端查询设备添加到项目组
+     *
+     * @param deviceByProjectIdAndTypeReq
+     * @return
+     */
+    ResultMsg findDeviceByProjectId(DeviceByProjectIdAndTypeReq deviceByProjectIdAndTypeReq);
 
     /**
      * 查询设备和状态

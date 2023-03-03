@@ -36,7 +36,14 @@ public class DeviceController {
     public ResultMsg findDevice(@RequestBody DeviceReq deviceReq) {
         ResultMsg resultMsg = DeviceService.findDevice(deviceReq);
         return resultMsg;
+    }
 
+
+    @ApiOperation(value = "学生端查询设备添加到项目组", response = DeviceDo.class)
+    @PostMapping("/findDeviceByProjectId")
+    public ResultMsg findDeviceByProjectId(@RequestBody DeviceByProjectIdAndTypeReq deviceByProjectIdAndTypeReq) {
+        ResultMsg resultMsg = DeviceService.findDeviceByProjectId(deviceByProjectIdAndTypeReq);
+        return resultMsg;
     }
 
     @ApiOperation(value = "查询设备和状态", response = DeviceDo.class)

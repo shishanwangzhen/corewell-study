@@ -84,6 +84,35 @@
         </if>
 
     </select>
+
+    <select id="findDeviceByProjectId" parameterType="DeviceReq" resultType="DeviceDo">
+        select d.id,
+               d.device_id   as deviceId,
+               d.device_name as deviceName,
+               d.deviceNo,
+               d.link_type   as linkType,
+               d.timescale,
+               d.ioc_url     as iocUrl,
+               d.is_delete   as isDelete,
+               d.type,
+               d.binding,
+               d.binding_id  as bindingId,
+               d.project_id  as projectId,
+               d.group_id    as groupId,
+               d.creator_id  as creatorId,
+               d.create_time as createTime,
+               d.update_time as updateTime,
+               d.video_url   as videoUrl,
+               p.name        as projectName
+        from device d
+                 left join project p on d.project_id = p.id
+        where d.is_delete = 0
+          and d.group_id = 0
+          and d.project_id = #{projectId}
+          and d.type = #{type}
+
+    </select>
+
     <select id="findControllerAndCollectionDevice" parameterType="ControllerAndCollectionDeviceReq" resultType="Device">
         select id,
         device_id as deviceId,
@@ -124,6 +153,7 @@
         from device
         where is_delete = 0
           and group_id = 0
+          and binding_id = 1
           and project_id = #{projectId}
     </select>
 
