@@ -9,6 +9,7 @@ import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.service.LogService;
 import com.corewell.study.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -69,7 +70,9 @@ public class AddLogAspect {
         log.setInterfaceType(Long.valueOf(interfaceType.toString()));
         log.setInterfaceName(interfaceName.toString());
         log.setInterfaceInfo(interfaceInfo.toString());
-        log.setDataId(Long.valueOf(dataId.toString()));
+        if (StringUtils.isNotBlank(dataId.toString())){
+            log.setDataId(Long.valueOf(dataId.toString()));
+        }
         logService.insertLog(log);
         return null;
     }
