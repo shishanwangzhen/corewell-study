@@ -44,7 +44,7 @@ public class PushDataServiceImpl implements PushDataService {
             return;
         }
         Long deviceId = pushData.getDeviceId();
-        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_IS_LINE_KEY + deviceId, "1", 5 * 60 * 1000, TimeUnit.MILLISECONDS);
+        stringRedisTemplate.opsForValue().set(BaseRedisKeyConstants.DEVICE_IS_LINE_KEY + deviceId, "1", 6 * 60 * 1000, TimeUnit.MILLISECONDS);
         if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.DEVICE_KEY + deviceId)) {
             pushData.setType("1");
             List<SensorsDates> sensorsDatesList = pushData.getSensorsDates();
@@ -63,23 +63,6 @@ public class PushDataServiceImpl implements PushDataService {
                 sensorsDates.setIsAbnormal(0L);
                 if (sensor.getMinimum().compareTo(reVal) > 0 || sensor.getMaximum().compareTo(reVal) < 0) {
                     sensorsDates.setIsAbnormal(1L);
-               /*     StringBuilder command = new StringBuilder();
-                    command.append("SELECT reVal FROM CORE_STUDY where sensorsId=");
-                    command.append("'");
-                    command.append(sensorsDates.getSensorsId());
-                    command.append("'");
-                    command.append(" order by time desc limit 3");
-                    QueryResult resultMsg =influxDbUtils.getInfluxDB().query(new Query(command.toString(), "test"));
-                    System.out.println("查询历史数据还参：resultMsg" + JSONObject.toJSON(resultMsg));
-                    if (resultMsg!=null&&resultMsg.toString().contains("values")){
-                        List<List<Object>> strings= resultMsg.getResults().get(0).getSeries().get(0).getValues();
-                        Double avg=0D;
-                        for (List<Object> objectList:strings){
-                            avg=avg+ Double.valueOf(objectList.get(1).toString());
-                        }
-                        avg=avg/3;
-                        sensorsDates.setReVal(avg.toString());
-                    }*/
                 }
             }
         }
