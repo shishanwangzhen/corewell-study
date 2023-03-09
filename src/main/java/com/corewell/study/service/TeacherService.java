@@ -28,6 +28,14 @@ public interface TeacherService {
     ResultMsg findTeacher();
 
     /**
+     * 查询老师详情
+     * @param id
+     * @return
+     */
+    ResultMsg findTeacherById(Long id);
+
+
+    /**
      * 修改老师
      * @param teacher
      * @return

@@ -5,6 +5,7 @@ import com.corewell.study.domain.response.TeacherDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.TeacherService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,14 @@ public class TeacherController {
     @PostMapping("/findTeacher")
     public ResultMsg findTeacher() {
         ResultMsg resultMsg = teacherService.findTeacher();
+        return resultMsg;
+
+    }
+    @ApiOperation(value = "查询老师详情", response = TeacherDTO.class)
+    @PostMapping("/findTeacherById")
+    @ApiImplicitParam(value = "主键id", name = "1", required = true)
+    public ResultMsg findTeacherById(Long id) {
+        ResultMsg resultMsg = teacherService.findTeacherById(id);
         return resultMsg;
 
     }

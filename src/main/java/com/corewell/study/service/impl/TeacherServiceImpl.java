@@ -1,5 +1,6 @@
 package com.corewell.study.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.corewell.study.config.UserRequest;
 import com.corewell.study.dao.TeacherDao;
@@ -34,6 +35,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public ResultMsg selectTeacher(String account, String password) {
+        log.info("selectTeacher:  account:  " + JSON.toJSONString(account));
         AccountDo accountDo = teacherDao.selectTeacher(account);
         if (accountDo == null) {
             return new ResultMsg(ResultStatusCode.NO_USER);
@@ -56,12 +58,31 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public ResultMsg findTeacher() {
+        log.info("findTeacher: :  ");
         List<TeacherDTO> teacherList = teacherDao.findTeacher();
         return ResultMsg.success(teacherList);
     }
 
     @Override
+    public ResultMsg findTeacherById(Long id) {
+        log.info("findTeacherById:  id:  " + JSON.toJSONString(id));
+        String token = UserRequest.getCurrentToken();
+        Map<String, Object> map = JwtUtil.getInfo(token);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.putAll(map);
+        AccountDo accountDo = jsonObject.toJavaObject(AccountDo.class);
+        if ((id.equals(accountDo.getId()))) {
+            Teacher teacher = teacherDao.findTeacherById(id);
+            return ResultMsg.success(teacher);
+        }else {
+            return ResultMsg.error();
+        }
+
+    }
+
+    @Override
     public ResultMsg updateTeacher(Teacher teacher) {
+        log.info("updateTeacher:  teacher:  " + JSON.toJSONString(teacher));
         String token = UserRequest.getCurrentToken();
         Map<String, Object> map = JwtUtil.getInfo(token);
         JSONObject jsonObject = new JSONObject();
