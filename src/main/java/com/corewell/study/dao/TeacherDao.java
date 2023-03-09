@@ -1,5 +1,6 @@
 package com.corewell.study.dao;
 
+import com.corewell.study.domain.Teacher;
 import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.domain.response.TeacherDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -30,4 +31,12 @@ public interface TeacherDao {
      * @return
      */
     List<TeacherDTO> findTeacher();
+
+
+    /**
+     * 修改老师
+     * @param teacher
+     * @return
+     */
+    int updateTeacher(Teacher teacher);
 }

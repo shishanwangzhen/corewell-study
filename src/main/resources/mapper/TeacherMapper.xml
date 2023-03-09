@@ -3,6 +3,13 @@
         PUBLIC "-//www.mybatis.org//DTD Mapper 3.0//EN"
         "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.corewell.study.dao.TeacherDao">
+    <resultMap id="TeacherMap" type="com.corewell.study.domain.Teacher">
+        <id property="id" column="id"/>
+        <result property="account" column="account"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
 
     <select id="selectTeacher" parameterType="String" resultType="AccountDo">
         select id, account, password, name
@@ -14,6 +21,25 @@
         select id, name
         from teacher
     </select>
+    <update id="updateTeacher" parameterType="Teacher">
+        update teacher
+        <set>
+            <if test="account!=null and account!=''">
+                account = #{account},
+            </if>
+            <if test="password!=null and password!=''">
+                password =#{password},
+            </if>
+            <if test="name!=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="updateTime!=null">
+                update_time =#{updateTime},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
 
 </mapper>
 

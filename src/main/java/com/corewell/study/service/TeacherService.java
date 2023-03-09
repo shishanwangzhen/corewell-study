@@ -1,5 +1,6 @@
 package com.corewell.study.service;
 
+import com.corewell.study.domain.Teacher;
 import com.corewell.study.domain.result.ResultMsg;
 
 /**
@@ -25,4 +26,11 @@ public interface TeacherService {
      * @return
      */
     ResultMsg findTeacher();
+
+    /**
+     * 修改老师
+     * @param teacher
+     * @return
+     */
+    ResultMsg updateTeacher(Teacher teacher);
 }

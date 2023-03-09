@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @author Administrator
  */
@@ -35,5 +37,11 @@ public class Teacher {
      */
     @ApiModelProperty(value = "名字", required = false, example = "")
     private String name;
+
+    /**
+     * 更新时间
+     */
+    @ApiModelProperty(value = "更新时间", required = false, example = "")
+    private Date updateTime;
 
 }

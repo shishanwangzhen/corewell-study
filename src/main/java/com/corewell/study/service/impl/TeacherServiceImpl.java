@@ -1,6 +1,9 @@
 package com.corewell.study.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.corewell.study.config.UserRequest;
 import com.corewell.study.dao.TeacherDao;
+import com.corewell.study.domain.Teacher;
 import com.corewell.study.domain.response.AccountDo;
 import com.corewell.study.domain.response.TeacherDTO;
 import com.corewell.study.domain.result.ResultMsg;
@@ -11,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,5 +58,25 @@ public class TeacherServiceImpl implements TeacherService {
     public ResultMsg findTeacher() {
         List<TeacherDTO> teacherList = teacherDao.findTeacher();
         return ResultMsg.success(teacherList);
+    }
+
+    @Override
+    public ResultMsg updateTeacher(Teacher teacher) {
+        String token = UserRequest.getCurrentToken();
+        Map<String, Object> map = JwtUtil.getInfo(token);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.putAll(map);
+        AccountDo accountDo = jsonObject.toJavaObject(AccountDo.class);
+        if ((teacher.getId()).equals(accountDo.getId())) {
+            teacher.setUpdateTime(new Date());
+            int result = teacherDao.updateTeacher(teacher);
+            if (result == 1) {
+                return ResultMsg.success();
+            } else {
+                return ResultMsg.error();
+            }
+        } else {
+            return ResultMsg.error();
+        }
     }
 }

@@ -1,11 +1,13 @@
 package com.corewell.study.controller;
 
+import com.corewell.study.domain.Teacher;
 import com.corewell.study.domain.response.TeacherDTO;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.TeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +32,14 @@ public class TeacherController {
     @PostMapping("/findTeacher")
     public ResultMsg findTeacher() {
         ResultMsg resultMsg = teacherService.findTeacher();
+        return resultMsg;
+
+    }
+
+    @ApiOperation(value = "修改老师")
+    @PostMapping("/updateTeacher")
+    public ResultMsg updateTeacher(@RequestBody Teacher teacher) {
+        ResultMsg resultMsg = teacherService.updateTeacher(teacher);
         return resultMsg;
 
     }
