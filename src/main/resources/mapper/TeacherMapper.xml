@@ -30,9 +30,6 @@
     <update id="updateTeacher" parameterType="Teacher">
         update teacher
         <set>
-            <if test="account!=null and account!=''">
-                account = #{account},
-            </if>
             <if test="password!=null and password!=''">
                 password =#{password},
             </if>
