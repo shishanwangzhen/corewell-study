@@ -153,7 +153,7 @@
         from device
         where is_delete = 0
           and group_id = 0
-          and binding_id = 1
+          and binding = 1
           and project_id = #{projectId}
     </select>
 
