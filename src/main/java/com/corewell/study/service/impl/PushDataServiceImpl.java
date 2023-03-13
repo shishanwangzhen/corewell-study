@@ -41,6 +41,11 @@ public class PushDataServiceImpl implements PushDataService {
     public void getPushData(PushDataParam pushData) {
         log.info("------start------tlink推送前端并且写入influxdb数据getPushData:" + JSON.toJSONString(pushData));
         if (pushData == null || pushData.getDeviceId() == null) {
+            try {
+                webSocketServer.sendMessageAllUser("测试连接");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return;
         }
         Long deviceId = pushData.getDeviceId();

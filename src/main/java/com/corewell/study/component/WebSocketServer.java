@@ -55,8 +55,9 @@ public class WebSocketServer {
     public void onOpen(Session session, @PathParam("userId") String userId) {
         this.session = session;
         this.userId = userId;
-
-        if (webSocketServerConcurrentHashMap.contains(userId)) {
+        log.info("+++++" + userId);
+        log.info("webSocketServerConcurrentHashMap   :" + JSON.toJSONString(webSocketServerConcurrentHashMap));
+        if (webSocketServerConcurrentHashMap.containsKey(userId)) {
             webSocketServerConcurrentHashMap.remove(userId);
             webSocketServerConcurrentHashMap.put(userId, this);
             //加入set
@@ -136,9 +137,9 @@ public class WebSocketServer {
 
     private void sendMessage(String message) throws Exception {
         log.info("用户：" + userId + ",当前在线人数为：" + getOnlineCount() + ", message::" + message);
-       synchronized (session){
-           session.getBasicRemote().sendText(message);
-       }
+        synchronized (session) {
+            session.getBasicRemote().sendText(message);
+        }
     }
 
     /**
