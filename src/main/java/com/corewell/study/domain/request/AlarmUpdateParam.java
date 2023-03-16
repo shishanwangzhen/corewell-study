@@ -42,19 +42,19 @@ public class AlarmUpdateParam {
      * 警戒值高值（X值） 可选参数，根据alarmType触发器类型填写
      */
     @ApiModelProperty(value = "警戒值高值（X值） 可选参数，根据alarmType触发器类型填写", required = false, example = "")
-    private Long heightValue;
+    private String heightValue;
 
     /**
      * 警戒值低值（Y值）可选参数，根据alarmType触发器类型填写
      */
     @ApiModelProperty(value = "警戒值低值（Y值）可选参数，根据alarmType触发器类型填写", required = false, example = "")
-    private Long belowValue;
+    private String belowValue;
 
     /**
      * 时间临界点（M值）单位分钟可选参数，根据alarmType触发器类型填写
      */
     @ApiModelProperty(value = "时间临界点（M值）单位分钟可选参数，根据alarmType触发器类型填写", required = false, example = "")
-    private Long duration;
+    private String duration;
 
     /**
      * 是否转发 取值范围 0-1 0表示不转发，1表示转发 必选参数

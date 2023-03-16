@@ -48,7 +48,7 @@ public class AlarmAddParam {
      * 时间临界点（M值）单位分钟可选参数，根据alarmType触发器类型填写
      */
     @ApiModelProperty(value = "时间临界点（M值）单位分钟可选参数，根据alarmType触发器类型填写", required = false, example = "")
-    private Long duration;
+    private String duration;
 
     /**
      * 是否转发 取值范围 0-1 0表示不转发，1表示转发 必选参数
