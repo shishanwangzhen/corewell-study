@@ -54,5 +54,29 @@ public interface AlarmService {
      */
     ResultMsg activeAlarms(AlarmActiveParam alarmActiveParam);
 
+    /**
+     * 一键启动触发器
+     *
+     * @param ids
+     * @return
+     */
+    ResultMsg activeAlarmsByList(String ids);
+
+    /**
+     * 一键关闭触发器
+     *
+     * @param ids
+     * @return
+     */
+    ResultMsg shutdownAlarmsByList(String ids);
+    /**
+     * 一键删除触发器
+     *
+     * @param ids
+     * @return
+     */
+    ResultMsg deleteAlarmsByList(String ids);
+
+
 
 }

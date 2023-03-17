@@ -2,6 +2,7 @@ package com.corewell.study.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.corewell.study.annotation.AddLog;
 import com.corewell.study.constants.BaseConstants;
 import com.corewell.study.constants.BaseRedisKeyConstants;
 import com.corewell.study.dao.SensorDao;
@@ -80,7 +81,7 @@ public class AlarmServiceImpl implements AlarmService {
             mapParam.put("forwardLinkType", alarmAddParam.getForwardLinkType());
             mapParam.put("forwardValue", alarmAddParam.getForwardValue());
             HttpHeaders headers = getHeaders();
-           log.info("addAlarms：mapParam：" + JSON.toJSONString(mapParam));
+            log.info("addAlarms：mapParam：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_ADDALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
             log.info("addAlarms：responseEntity：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
@@ -100,6 +101,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
+    @AddLog(interfaceType = "2", interfaceInfo = "修改触发器", interfaceName = "updateAlarms", dataId = "#{alarmUpdateParam.id}")
     public ResultMsg updateAlarms(AlarmUpdateParam alarmUpdateParam) {
         log.info("updateAlarms：AlarmUpdateParam：" + JSON.toJSONString(alarmUpdateParam));
         try {
@@ -121,7 +123,7 @@ public class AlarmServiceImpl implements AlarmService {
             HttpHeaders headers = getHeaders();
             log.info("updateAlarms：mapParam：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_UPDATEALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
-           log.info("updateAlarms：responseEntity：" + responseEntity);
+            log.info("updateAlarms：responseEntity：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
             String flag = jsonObject.get("flag").toString();
             if (!BaseConstants.SUCCESS_00.equals(flag)) {
@@ -139,6 +141,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
+    @AddLog(interfaceType = "1", interfaceInfo = "删除触发器", interfaceName = "deleteAlarms", dataId = "#{id}")
     public ResultMsg deleteAlarms(Long id) {
         try {
             Map<String, Object> mapParam = new HashMap<>(16);
@@ -228,6 +231,7 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
+    @AddLog(interfaceType = "2", interfaceInfo = "启动触发器", interfaceName = "activeAlarms", dataId = "#{alarmActiveParam.id}")
     public ResultMsg activeAlarms(AlarmActiveParam alarmActiveParam) {
         log.info("activeAlarms：alarmActiveParam：" + JSON.toJSONString(alarmActiveParam));
         try {
@@ -236,7 +240,7 @@ public class AlarmServiceImpl implements AlarmService {
             mapParam.put("userId", 77632L);
             mapParam.put("active", alarmActiveParam.getActive());
             HttpHeaders headers = getHeaders();
-           log.info("activeAlarms：mapParam：" + JSON.toJSONString(mapParam));
+            log.info("activeAlarms：mapParam：" + JSON.toJSONString(mapParam));
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_ACTIVEALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
             log.info("activeAlarms：responseEntity：" + responseEntity);
             JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
@@ -251,6 +255,102 @@ public class AlarmServiceImpl implements AlarmService {
                 getAccessToken.getNewAccessToken();
             }
             return ResultMsg.error();
+        }
+        return ResultMsg.success();
+    }
+
+    @Override
+    @AddLog(interfaceType = "2", interfaceInfo = "一键启动触发器", interfaceName = "activeAlarmsByList")
+    public ResultMsg activeAlarmsByList(String ids) {
+        log.info("activeAlarms：alarmActiveParam：" + JSON.toJSONString(ids));
+        String[] list=ids.split(",");
+        for (String id : list) {
+            try {
+                Map<String, Object> mapParam = new HashMap<>(16);
+                mapParam.put("id", id);
+                mapParam.put("userId", 77632L);
+                mapParam.put("active", "1");
+                HttpHeaders headers = getHeaders();
+                log.info("activeAlarms：mapParam：" + JSON.toJSONString(mapParam));
+                ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_ACTIVEALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
+                log.info("activeAlarms：responseEntity：" + responseEntity);
+                JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
+                String flag = jsonObject.get("flag").toString();
+                if (!BaseConstants.SUCCESS_00.equals(flag)) {
+                    return ResultMsg.error();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error(e.toString());
+                if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
+                    getAccessToken.getNewAccessToken();
+                }
+                return ResultMsg.error();
+            }
+        }
+        return ResultMsg.success();
+    }
+
+    @Override
+    @AddLog(interfaceType = "2", interfaceInfo = "一键关闭触发器", interfaceName = "shutdownAlarmsByList")
+    public ResultMsg shutdownAlarmsByList(String ids) {
+        log.info("activeAlarms：alarmActiveParam：" + JSON.toJSONString(ids));
+        String[] list=ids.split(",");
+        for (String id : list) {
+            try {
+                Map<String, Object> mapParam = new HashMap<>(16);
+                mapParam.put("id", id);
+                mapParam.put("userId", 77632L);
+                mapParam.put("active", "0");
+                HttpHeaders headers = getHeaders();
+                log.info("activeAlarms：mapParam：" + JSON.toJSONString(mapParam));
+                ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_ACTIVEALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
+                log.info("activeAlarms：responseEntity：" + responseEntity);
+                JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
+                String flag = jsonObject.get("flag").toString();
+                if (!BaseConstants.SUCCESS_00.equals(flag)) {
+                    return ResultMsg.error();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error(e.toString());
+                if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
+                    getAccessToken.getNewAccessToken();
+                }
+                return ResultMsg.error();
+            }
+        }
+        return ResultMsg.success();
+    }
+
+    @Override
+    @AddLog(interfaceType = "1", interfaceInfo = "一键删除触发器", interfaceName = "deleteAlarmsByList")
+    public ResultMsg deleteAlarmsByList(String ids) {
+        log.info("activeAlarms：alarmActiveParam：" + JSON.toJSONString(ids));
+        String[] list=ids.split(",");
+        for (String id : list) {
+            try {
+                Map<String, Object> mapParam = new HashMap<>(16);
+                mapParam.put("id", id);
+                mapParam.put("userId", 77632L);
+                HttpHeaders headers = getHeaders();
+                log.info("deleteAlarms：mapParam：" + JSON.toJSONString(mapParam));
+                ResponseEntity<String> responseEntity = restTemplate.postForEntity(TLINK_DELETEALARMS_URL, new HttpEntity<Map>(mapParam, headers), String.class);
+                log.info("deleteAlarms：responseEntity：" + responseEntity);
+                JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
+                String flag = jsonObject.get("flag").toString();
+                if (!BaseConstants.SUCCESS_00.equals(flag)) {
+                    return ResultMsg.error();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error(e.toString());
+                if (e.getMessage().contains(BaseConstants.INVALID_TOKEN)) {
+                    getAccessToken.getNewAccessToken();
+                }
+                return ResultMsg.error();
+            }
+
         }
         return ResultMsg.success();
     }

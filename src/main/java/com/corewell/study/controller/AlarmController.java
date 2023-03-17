@@ -67,5 +67,29 @@ public class AlarmController {
         return resultMsg;
     }
 
+    @ApiOperation("一键启动触发器")
+    @PostMapping("activeAlarmsByList")
+    @ApiImplicitParam(value = "触发器主键id集合，以逗号分割", name = "1", required = true)
+    public ResultMsg activeAlarmsByList(String ids) {
+        ResultMsg resultMsg = alarmService.activeAlarmsByList(ids);
+        return resultMsg;
+    }
+
+
+    @ApiOperation("一键关闭触发器")
+    @PostMapping("shutdownAlarmsByList")
+    @ApiImplicitParam(value = "触发器主键id集合，以逗号分割", name = "1", required = true)
+    public ResultMsg shutdownAlarmsByList(String ids) {
+        ResultMsg resultMsg = alarmService.shutdownAlarmsByList(ids);
+        return resultMsg;
+    }
+    @ApiOperation("一键删除触发器")
+    @PostMapping("deleteAlarmsByList")
+    @ApiImplicitParam(value = "触发器主键id集合，以逗号分割", name = "1", required = true)
+    public ResultMsg deleteAlarmsByList(String ids) {
+        ResultMsg resultMsg = alarmService.deleteAlarmsByList(ids);
+        return resultMsg;
+    }
+
 
 }
