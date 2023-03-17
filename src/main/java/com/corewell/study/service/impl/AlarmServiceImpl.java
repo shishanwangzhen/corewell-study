@@ -8,10 +8,7 @@ import com.corewell.study.constants.BaseRedisKeyConstants;
 import com.corewell.study.dao.SensorDao;
 import com.corewell.study.domain.Alarm;
 import com.corewell.study.domain.Sensor;
-import com.corewell.study.domain.request.AlarmActiveParam;
-import com.corewell.study.domain.request.AlarmAddParam;
-import com.corewell.study.domain.request.AlarmReq;
-import com.corewell.study.domain.request.AlarmUpdateParam;
+import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.AlarmService;
 import com.corewell.study.timing.GetAccessToken;
@@ -261,10 +258,9 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     @AddLog(interfaceType = "2", interfaceInfo = "一键启动触发器", interfaceName = "activeAlarmsByList")
-    public ResultMsg activeAlarmsByList(String ids) {
-        log.info("activeAlarms：alarmActiveParam：" + JSON.toJSONString(ids));
-        String[] list=ids.split(",");
-        for (String id : list) {
+    public ResultMsg activeAlarmsByList(IdsParam ids) {
+        log.info("activeAlarms：ids：" + ids);
+        for (String id : ids.getStringList()) {
             try {
                 Map<String, Object> mapParam = new HashMap<>(16);
                 mapParam.put("id", id);
@@ -293,10 +289,9 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     @AddLog(interfaceType = "2", interfaceInfo = "一键关闭触发器", interfaceName = "shutdownAlarmsByList")
-    public ResultMsg shutdownAlarmsByList(String ids) {
-        log.info("activeAlarms：alarmActiveParam：" + JSON.toJSONString(ids));
-        String[] list=ids.split(",");
-        for (String id : list) {
+    public ResultMsg shutdownAlarmsByList(IdsParam ids) {
+        log.info("activeAlarms：ids：" + JSON.toJSONString(ids));
+        for (String id : ids.getStringList()) {
             try {
                 Map<String, Object> mapParam = new HashMap<>(16);
                 mapParam.put("id", id);
@@ -325,10 +320,9 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     @AddLog(interfaceType = "1", interfaceInfo = "一键删除触发器", interfaceName = "deleteAlarmsByList")
-    public ResultMsg deleteAlarmsByList(String ids) {
-        log.info("activeAlarms：alarmActiveParam：" + JSON.toJSONString(ids));
-        String[] list=ids.split(",");
-        for (String id : list) {
+    public ResultMsg deleteAlarmsByList(IdsParam ids) {
+        log.info("activeAlarms：ids：" + JSON.toJSONString(ids));
+        for (String id : ids.getStringList()) {
             try {
                 Map<String, Object> mapParam = new HashMap<>(16);
                 mapParam.put("id", id);

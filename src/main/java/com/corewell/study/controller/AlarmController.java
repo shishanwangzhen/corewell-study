@@ -1,10 +1,7 @@
 package com.corewell.study.controller;
 
 import com.corewell.study.domain.Alarm;
-import com.corewell.study.domain.request.AlarmActiveParam;
-import com.corewell.study.domain.request.AlarmAddParam;
-import com.corewell.study.domain.request.AlarmReq;
-import com.corewell.study.domain.request.AlarmUpdateParam;
+import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 import com.corewell.study.service.AlarmService;
 import io.swagger.annotations.Api;
@@ -69,8 +66,7 @@ public class AlarmController {
 
     @ApiOperation("一键启动触发器")
     @PostMapping("activeAlarmsByList")
-    @ApiImplicitParam(value = "触发器主键id集合，以逗号分割", name = "1", required = true)
-    public ResultMsg activeAlarmsByList(String ids) {
+    public ResultMsg activeAlarmsByList(@RequestBody IdsParam ids) {
         ResultMsg resultMsg = alarmService.activeAlarmsByList(ids);
         return resultMsg;
     }
@@ -78,15 +74,13 @@ public class AlarmController {
 
     @ApiOperation("一键关闭触发器")
     @PostMapping("shutdownAlarmsByList")
-    @ApiImplicitParam(value = "触发器主键id集合，以逗号分割", name = "1", required = true)
-    public ResultMsg shutdownAlarmsByList(String ids) {
+    public ResultMsg shutdownAlarmsByList(@RequestBody IdsParam ids) {
         ResultMsg resultMsg = alarmService.shutdownAlarmsByList(ids);
         return resultMsg;
     }
     @ApiOperation("一键删除触发器")
     @PostMapping("deleteAlarmsByList")
-    @ApiImplicitParam(value = "触发器主键id集合，以逗号分割", name = "1", required = true)
-    public ResultMsg deleteAlarmsByList(String ids) {
+    public ResultMsg deleteAlarmsByList(@RequestBody IdsParam ids) {
         ResultMsg resultMsg = alarmService.deleteAlarmsByList(ids);
         return resultMsg;
     }

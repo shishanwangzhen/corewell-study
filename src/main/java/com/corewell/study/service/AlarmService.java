@@ -1,9 +1,6 @@
 package com.corewell.study.service;
 
-import com.corewell.study.domain.request.AlarmActiveParam;
-import com.corewell.study.domain.request.AlarmAddParam;
-import com.corewell.study.domain.request.AlarmReq;
-import com.corewell.study.domain.request.AlarmUpdateParam;
+import com.corewell.study.domain.request.*;
 import com.corewell.study.domain.result.ResultMsg;
 
 /**
@@ -60,7 +57,7 @@ public interface AlarmService {
      * @param ids
      * @return
      */
-    ResultMsg activeAlarmsByList(String ids);
+    ResultMsg activeAlarmsByList(IdsParam ids);
 
     /**
      * 一键关闭触发器
@@ -68,14 +65,14 @@ public interface AlarmService {
      * @param ids
      * @return
      */
-    ResultMsg shutdownAlarmsByList(String ids);
+    ResultMsg shutdownAlarmsByList(IdsParam ids);
     /**
      * 一键删除触发器
      *
      * @param ids
      * @return
      */
-    ResultMsg deleteAlarmsByList(String ids);
+    ResultMsg deleteAlarmsByList(IdsParam ids);
 
 
 
