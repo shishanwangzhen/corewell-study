@@ -28,12 +28,14 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class GetAccessToken {
 
+    private  static final String password="Corewell2022";
+    private static final String username="jsnl";
     private static String accessToken;
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
-    private static final String LOGIN_URL = "https://app.dtuip.com/oauth/token?grant_type=password&username=jsnl&password=Corewell2022";
+    private static final String LOGIN_URL = "https://app.dtuip.com/oauth/token?grant_type=password&username="+username+"&password="+password;
     HttpHeaders headers = new HttpHeaders();
 
 
