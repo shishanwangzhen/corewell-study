@@ -119,10 +119,13 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultMsg findDeviceIsLine(Long deviceId) {
+        log.info("findDeviceIsLine:  deviceId:  " + JSON.toJSONString(deviceId));
+        DeviceIsLineDTO deviceIsLineDTO = new DeviceIsLineDTO(deviceId, 0L);
         if (stringRedisTemplate.hasKey(BaseRedisKeyConstants.DEVICE_IS_LINE_KEY + deviceId)) {
-            return ResultMsg.success(1);
+            deviceIsLineDTO.setIsLine(1L);
+            return ResultMsg.success(deviceIsLineDTO);
         }
-        return ResultMsg.success(0);
+        return ResultMsg.success(deviceIsLineDTO);
     }
 
 
