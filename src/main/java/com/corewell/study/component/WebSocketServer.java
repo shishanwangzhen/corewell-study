@@ -2,6 +2,7 @@ package com.corewell.study.component;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -34,6 +36,8 @@ public class WebSocketServer {
      */
 
     private static ConcurrentHashMap<String, WebSocketServer> webSocketServerConcurrentHashMap = new ConcurrentHashMap<>();
+    //private static ConcurrentHashSet<String, WebSocketServer> set = new ConcurrentHashMap<>();
+    Set<String> s = Sets.newConcurrentHashSet();
 
     /**
      * 与某个客服端的连接会话，需要通过它来给客服端发送数据

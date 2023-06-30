@@ -120,11 +120,10 @@ public class StudentServiceImpl implements StudentService {
     @AddLog(interfaceType = "2", interfaceInfo = "学生信息修改", interfaceName = "updateStudent", dataId = "#{student.id}")
     public ResultMsg updateStudent(Student student) {
         log.info("updateStudent:  student:  " + JSON.toJSONString(student));
-        //TODO
-        //校验账号，上线放开
-        /*if (StringUtils.isNotBlank(student.getAccount())&& !ValidateCore.verifyAccount(student.getAccount())){
+        //TODO 校验账号，上线放开
+        if (StringUtils.isNotBlank(student.getAccount())&& !ValidateCore.verifyAccount(student.getAccount())){
             return new ResultMsg(ResultStatusCode.ILLEGAL_ACCOUNT);
-        }*/
+        }
         student.setUpdateTime(new Date());
         int result = studentDao.updateStudent(student);
         if (result == 1) {

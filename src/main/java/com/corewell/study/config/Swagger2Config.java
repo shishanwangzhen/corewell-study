@@ -45,7 +45,7 @@ public class Swagger2Config {
                 //页面标题
                 .title("江苏农林学院农业物联网实训云平台API接口文档")
                 //创建人
-                .contact(new Contact("王振", null,
+                .contact(new Contact("接口doc文档", "http://193.112.122.204:8081/doc.html",
                         null))
                 //版本号
                 .version("1.0")

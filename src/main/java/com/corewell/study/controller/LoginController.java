@@ -57,11 +57,10 @@ public class LoginController {
         if (StringUtils.isEmpty(account) || StringUtils.isEmpty(password)) {
             return new ResultMsg(ResultStatusCode.USERNAME_PASSWORD_NULL);
         }
-        //TODO
-        //上线后账号校验放开
-        /*if (!ValidateCore.verifyAccount(account)) {
+        //TODO 上线后账号校验放开
+        if (!ValidateCore.verifyAccount(account)) {
             return new ResultMsg(ResultStatusCode.ILLEGAL_ACCOUNT);
-        }*/
+        }
         ResultMsg resultMsg = studentService.selectStudentByAccount(account, password);
         return resultMsg;
 
@@ -75,11 +74,10 @@ public class LoginController {
         if (StringUtils.isEmpty(account) || StringUtils.isEmpty(password)) {
             return new ResultMsg(ResultStatusCode.USERNAME_PASSWORD_NULL);
         }
-        //TODO
-        //上线后账号校验放开
-      /*  if (!ValidateCore.verifyAccount(account)) {
+        //TODO 上线后账号校验放开
+        if (!ValidateCore.verifyAccount(account)) {
             return new ResultMsg(ResultStatusCode.ILLEGAL_ACCOUNT);
-        }*/
+        }
         ResultMsg resultMsg = studentService.insertStudent(student);
         return resultMsg;
 
